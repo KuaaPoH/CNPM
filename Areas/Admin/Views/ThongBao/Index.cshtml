@@ -1,0 +1,87 @@
+@model IEnumerable<aznews.Areas.Admin.Models.ThongBao>
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold text-primary mb-0 text-uppercase">Quản lý thông báo</h4>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-success"><i class="bi bi-download me-1"></i>Import</a>
+                            <a href="#" class="btn btn-outline-success"><i class="bi bi-file-earmark-excel me-1"></i>Excel</a>
+                            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Thêm mới</a>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <select class="form-select w-auto">
+                            <option>Tất cả loại</option>
+                            <option>Học vụ</option>
+                            <option>Học phí</option>
+                            <option>Kỹ thuật</option>
+                        </select>
+                        <div class="input-group w-auto">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm tiêu đề...">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 5%;">STT</th>
+                                    <th style="width: 25%;">Tiêu đề</th>
+                                    <th style="width: 15%;">Loại thông báo</th>
+                                    <th style="width: 12%;">Ngày đăng</th>
+                                    <th style="width: 18%;">Tệp đính kèm</th>
+                                    <th style="width: 10%;">Người đăng</th>
+                                    <th style="width: 15%;">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int counter = 1;
+                                }
+                                @foreach (var tb in Model)
+                                {
+                                    <tr>
+                                        <td>@counter</td>
+                                        <td class="text-start">@tb.TieuDe</td>
+                                        <td>@tb.LoaiThongBao</td>
+                                        <td>@(tb.NgayDang != null ? tb.NgayDang.Value.ToString("dd/MM/yyyy") : "")</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(tb.TepDinhKem))
+                                            {
+                                                <a href="@Url.Content("~/uploads/" + tb.TepDinhKem)" target="_blank">Xem</a>
+                                            }
+                                            else
+                                            {
+                                                <span>-</span>
+                                            }
+                                        </td>
+                                        <td>@tb.MaND</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <a asp-action="Edit" asp-route-id="@tb.MaTB" class="btn btn-sm btn-outline-primary" title="Sửa">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    counter++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

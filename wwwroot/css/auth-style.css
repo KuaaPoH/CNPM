@@ -1,0 +1,77 @@
+﻿/* Định dạng tổng thể cho trang đăng nhập và đăng ký */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f2f5;
+}
+
+/* Định dạng cho vùng chứa của form đăng nhập và đăng ký */
+.auth-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.auth-section {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+    /* Tiêu đề của form */
+    .auth-section h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    /* Định dạng cho các ô nhập liệu */
+    .auth-section .form-control {
+        font-size: 16px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* Định dạng cho nút đăng nhập và đăng ký */
+    .auth-section .btn-primary {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+    }
+
+        .auth-section .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    /* Định dạng cho liên kết đến trang đăng ký */
+    .auth-section .btn-link {
+        display: block;
+        margin-top: 15px;
+        color: #007bff;
+        font-size: 14px;
+    }
+
+        .auth-section .btn-link:hover {
+            text-decoration: underline;
+        }
+
+/* Định dạng cho thông báo lỗi */
+.text-danger {
+    font-size: 14px;
+    color: #dc3545;
+}

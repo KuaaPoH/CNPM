@@ -1,0 +1,56 @@
+﻿@using aznews.Areas.Admin.Models
+@model KhoaVien
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="pagetitle mt-3 ms-4 mb-3">
+                    <h4 class="fw-bold text-primary text-uppercase">CHỈNH SỬA THÔNG TIN KHOA / VIỆN</h4>
+                </div>
+
+                <div class="card-body title-spacing">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="MaKhoaVien" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="TenKhoaVien" class="form-label">Tên Khoa / Viện:</label>
+                                    <input asp-for="TenKhoaVien" class="form-control" placeholder="Nhập tên khoa hoặc viện..." />
+                                    <span asp-validation-for="TenKhoaVien" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="DiaChi" class="form-label">Địa Chỉ:</label>
+                                    <input asp-for="DiaChi" class="form-control" placeholder="Nhập địa chỉ..." />
+                                    <span asp-validation-for="DiaChi" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="DienThoai" class="form-label">Điện Thoại:</label>
+                                    <input asp-for="DienThoai" class="form-control" pattern="\d{10,11}" placeholder="Nhập số điện thoại..." />
+                                    <span asp-validation-for="DienThoai" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label">Email:</label>
+                                    <input asp-for="Email" class="form-control" type="email" placeholder="example@domain.com" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-success px-4">Cập nhật</button>
+                            <a asp-action="Index" class="btn btn-secondary px-4">Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

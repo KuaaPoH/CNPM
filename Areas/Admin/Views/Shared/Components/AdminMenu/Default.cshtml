@@ -1,0 +1,87 @@
+@using aznews.Areas.Admin.Models
+@model IList<AdminMenu>
+
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model
+                .Where(m => m.ParentLevel == 0 && m.IsActive == true)
+                .OrderBy(m => m.ItemOrder))
+            {
+                var subMenus = Model
+                    .Where(m => m.ParentLevel == item.AdminMenuID && m.IsActive == true)
+                    .OrderBy(m => m.ItemOrder)
+                    .ToList();
+
+                if (subMenus.Any())
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="@item.AreaName" asp-controller="@item.ControllerName" asp-action="@item.ActionName">
+                            <i class="@item.Icon"></i>
+                            <span>@item.ItemName</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#submenu-@item.AdminMenuID" data-bs-toggle="collapse" href="#">
+                            <i class="@item.Icon"></i>
+                            <span>@item.ItemName</span>
+                            <i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="submenu-@item.AdminMenuID" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                            @foreach (var sub in subMenus)
+                            {
+                                var subSubMenus = Model
+                                    .Where(m => m.ParentLevel == sub.AdminMenuID && m.IsActive == true)
+                                    .OrderBy(m => m.ItemOrder)
+                                    .ToList();
+
+                                if (!subSubMenus.Any())
+                                {
+                                    <li>
+                                        <a asp-area="@sub.AreaName" asp-controller="@sub.ControllerName" asp-action="@sub.ActionName">
+                                            <i class="@sub.Icon"></i>
+                                            <span>@sub.ItemName</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link collapsed" data-bs-target="#subsubmenu-@sub.AdminMenuID" data-bs-toggle="collapse" href="#">
+                                            <i class="@sub.Icon"></i>
+                                            <span>@sub.ItemName</span>
+                                            <i class="bi bi-chevron-down ms-auto"></i>
+                                        </a>
+                                        <ul id="subsubmenu-@sub.AdminMenuID" class="nav-content collapse" data-bs-parent="#submenu-@item.AdminMenuID">
+                                            @foreach (var subSub in subSubMenus)
+                                            {
+                                                <li>
+                                                    <a asp-area="@subSub.AreaName" asp-controller="@subSub.ControllerName" asp-action="@subSub.ActionName">
+                                                        <i class="@subSub.Icon"></i>
+                                                        <span>@subSub.ItemName</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+            }
+        }
+        else
+        {
+            <li class="nav-item">
+                <span class="nav-link text-muted">
+                    <i class="bi bi-exclamation-triangle"></i> Không có dữ liệu menu
+                </span>
+            </li>
+        }
+    </ul>
+</aside>

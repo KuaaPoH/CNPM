@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Cổng sinh viên</title>
+    <link rel="icon" type="image/png" href="~/Imgs/logo_dhvinh.png" />
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+
+    <!-- Vendor CSS Files -->
+    <!-- Vendor CSS Files -->
+    <link href="~/vendor/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/vendor/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/vendor/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/vendor/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/vendor/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/vendor/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/vendor/vendor/simple-datatables/style.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    <!-- Template Main CSS File -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/content.css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+
+        <div class="d-flex align-items-center justify-content-start" style="height: 90px;">
+            <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center text-decoration-none">
+                <img src="~/Imgs/Logodhv.webp" alt="Logo Trường Đại học Vinh"
+                    style="height: 50px; width: auto; margin-right: 12px; object-fit: contain;">
+                <span style="font-size: 20px; font-weight: 600; color: #003366;">Trường Đại học Vinh</span>
+            </a>
+        </div>
+
+
+        @* @await Component.InvokeAsync("MenuView") *@
+        @RenderBody()
+
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <li class="nav-item d-block d-lg-none">
+                    <a class="nav-link nav-icon search-bar-toggle " href="#">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li><!-- End Search Icon-->
+                <!--Hiện thông báo-->
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span class="badge bg-success badge-number">3</span>
+                    </a><!-- End Messages Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                        <li class="dropdown-header">
+                            You have 3 new messages
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="message-item">
+                            <a href="#">
+                                <div>
+                                    <h4>Maria Hudson</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>4 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+
+
+                        <li class="dropdown-footer">
+                            <a href="#">Show all messages</a>
+                        </li>
+
+                    </ul><!-- End Messages Dropdown Items -->
+
+                </li><!-- End Messages Nav -->
+                <!--Logo ten-->
+                <li class="nav-item dropdown pe-3">
+
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <div class="profile-container" style="position: relative; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0;">
+                            <img src="~/img/logo1.jpg" alt="Profile" class="rounded-circle" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 100%; height: 100%; object-fit: cover;">
+                            <i class="fa-solid fa-user" style="font-size: 24px; color: #6c757d; display: none;"></i>
+                        </div>
+                    </a>
+                    <!-- End Profile Iamge Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>Kevin Anderson</h6>
+                            <span>Web Designer</span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                <i class="bi bi-gear"></i>
+                                <span>Account Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                                <i class="bi bi-question-circle"></i>
+                                <span>Need Help?</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </li>
+
+                    </ul><!-- End Profile Dropdown Items -->
+                </li><!-- End Profile Nav -->
+
+            </ul>
+        </nav><!-- End Icons Navigation -->
+
+    </header><!-- End Header -->
+    <!-- ======= Sidebar ======= -->
+
+
+    <main id="main" class="main">
+
+        @RenderBody()
+
+    </main><!-- End #main -->
+    <!-- ======= Footer ======= -->
+    <!-- Vendor JS Files -->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/vendor/chart.js/chart.min.js"></script>
+    <script src="~/vendor/echarts/echarts.min.js"></script>
+    <script src="~/vendor/quill/quill.min.js"></script>
+    <script src="~/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="~/vendor/tinymce/tinymce.min.js"></script>
+    <script src="~/vendor/php-email-form/validate.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Thêm Chart.js từ CDN -->
+
+    <!-- Template Main JS File -->
+    <script src="~/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+
+</html>

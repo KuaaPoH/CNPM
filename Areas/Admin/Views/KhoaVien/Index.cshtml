@@ -1,0 +1,243 @@
+@model IEnumerable<aznews.Areas.Admin.Models.KhoaVien>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    // Lấy thông tin phân trang từ Controller (ViewBag)
+    int curPage = ViewBag.Page ?? 1;
+    int pageSize = ViewBag.PageSize ?? 10;
+    int totalPages = ViewBag.TotalPages ?? 1;
+
+    // Giữ từ khoá tìm kiếm hiện tại
+    string search = (ViewData["SearchString"] as string) ?? string.Empty;
+
+    // STT theo trang
+    int stt = (curPage - 1) * pageSize + 1;
+
+    // Tạo danh sách nút trang có "…"
+    var tokens = new List<string>();
+    void AddDots() { if (tokens.Count == 0 || tokens[^1] != "...") tokens.Add("..."); }
+
+    if (totalPages <= 7)
+    {
+        for (int p = 1; p <= totalPages; p++) tokens.Add(p.ToString());
+    }
+    else
+    {
+        tokens.Add("1");
+        if (curPage > 4) AddDots();
+
+        int start = Math.Max(2, curPage - 1);
+        int end = Math.Min(totalPages - 1, curPage + 1);
+        for (int p = start; p <= end; p++) tokens.Add(p.ToString());
+
+        if (curPage < totalPages - 3) AddDots();
+        tokens.Add(totalPages.ToString());
+    }
+}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold text-primary mb-0 text-uppercase">Quản lý khoa viện</h4>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-success"><i class="bi bi-download me-1"></i>Import</a>
+                            <a href="#" class="btn btn-outline-success"><i class="bi bi-file-earmark-excel me-1"></i>Xuất Excel</a>
+                            <a asp-area="Admin" asp-controller="KhoaVien" asp-action="Create" class="btn btn-primary">
+                                <i class="bi bi-plus-lg me-1"></i>Thêm mới
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <form asp-area="Admin" asp-controller="KhoaVien" asp-action="Index" method="get" id="searchForm" class="input-group w-auto">
+                            <input type="text" id="searchInput" name="searchString" value="@search"
+                                   class="form-control" placeholder="Tìm kiếm tên khoa viện...">
+                            <button class="btn btn-outline-secondary" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <!-- Reset về trang 1 khi tìm -->
+                            <input type="hidden" name="page" value="1" />
+                        </form>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 5%;">STT</th>
+                                    <th style="width: 20%;">Tên khoa viện</th>
+                                    <th style="width: 25%;">Địa chỉ</th>
+                                    <th style="width: 15%;">Điện thoại</th>
+                                    <th style="width: 20%;">Email</th>
+                                    <th style="width: 15%;">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var kv in Model)
+                                {
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td class="text-start">@kv.TenKhoaVien</td>
+                                        <td class="text-start">@kv.DiaChi</td>
+                                        <td>@kv.DienThoai</td>
+                                        <td>@kv.Email</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <a asp-action="Edit"
+                                                   asp-route-id="@kv.MaKhoaVien"
+                                                   asp-route-page="@(curPage)"
+                                                   asp-route-searchString="@(search)"
+                                                   class="btn btn-sm btn-outline-primary" title="Sửa">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <a asp-action="Details"
+                                                   asp-route-id="@kv.MaKhoaVien"
+                                                   asp-route-page="@(curPage)"
+                                                   asp-route-searchString="@(search)"
+                                                   class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+
+                                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal-@kv.MaKhoaVien">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+
+                                                <!-- Modal Xác nhận xóa -->
+                                                <div class="modal fade" id="deleteModal-@kv.MaKhoaVien" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Xác nhận xóa</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Bạn có chắc chắn muốn xóa <b>@kv.TenKhoaVien</b> không?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                <form asp-area="Admin" asp-controller="KhoaVien" asp-action="Delete" method="post" class="d-inline">
+                                                                    @Html.AntiForgeryToken()
+                                                                    <input type="hidden" name="id" value="@kv.MaKhoaVien" />
+                                                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    stt++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if (totalPages > 1)
+                    {
+                        <nav class="d-flex justify-content-center mt-3">
+                            <ul class="pagination pager-ellipses">
+                                <li class="page-item @(curPage == 1 ? "disabled" : "")">
+                                    <a class="page-link"
+                                       asp-route-page="@(curPage - 1)"
+                                       asp-route-searchString="@(search)">&lt;</a>
+                                </li>
+
+                                @foreach (var t in tokens)
+                                {
+                                    if (t == "...")
+                                    {
+                                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                                    }
+                                    else
+                                    {
+                                        var p = int.Parse(t);
+                                        <li class="page-item @(p == curPage ? "active" : "")">
+                                            <a class="page-link"
+                                               asp-route-page="@(p)"
+                                               asp-route-searchString="@(search)">@p</a>
+                                        </li>
+                                    }
+                                }
+
+                                <li class="page-item @(curPage == totalPages ? "disabled" : "")">
+                                    <a class="page-link"
+                                       asp-route-page="@(curPage + 1)"
+                                       asp-route-searchString="@(search)">&gt;</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .pager-ellipses .page-link {
+        border-radius: 8px;
+        min-width: 36px;
+        text-align: center;
+    }
+
+    .pager-ellipses .page-item + .page-item {
+        margin-left: .25rem;
+    }
+
+    .pager-ellipses .page-item.active .page-link {
+        color: #fff;
+        background: #111; /* màu ô đang chọn như ảnh mẫu */
+        border-color: #111;
+    }
+
+    .pager-ellipses .page-item.disabled .page-link {
+        color: #adb5bd;
+        pointer-events: none;
+        background-color: #fff;
+    }
+    /* Mặc định: số trang màu đen (không chọn) */
+    .pager-ellipses .page-link {
+        color: #111 !important; /* text đen */
+        --bs-pagination-color: #111; /* Bootstrap 5 var */
+        --bs-pagination-hover-color: #111;
+        --bs-pagination-focus-color: #111;
+    }
+
+    /* Ô đang chọn: giữ trắng trên nền đen như cũ */
+    .pager-ellipses .page-item.active .page-link {
+        color: #fff !important;
+        background: #111;
+        border-color: #111;
+    }
+
+    /* Disabled giữ xám */
+    .pager-ellipses .page-item.disabled .page-link {
+        color: #adb5bd !important;
+    }
+
+    /* (tuỳ chọn) Hover nhẹ cho ô thường */
+    .pager-ellipses .page-item:not(.active):not(.disabled) .page-link:hover {
+        background-color: #f8f9fa;
+        border-color: #e5e7eb;
+    }
+
+</style>
+
+@section Scripts {
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        const searchForm  = document.getElementById("searchForm");
+        let typingTimer;
+        if (searchInput && searchForm) {
+            searchInput.addEventListener("keyup", function () {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => searchForm.submit(), 1000);
+            });
+        }
+    </script>
+}

@@ -1,0 +1,289 @@
+﻿
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Tùy chỉnh bảng */
+.custom-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .custom-table th, .custom-table td {
+        padding: 0.75rem;
+        font-size: 0.875rem;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    /* Tùy chỉnh hàng đầu tiên */
+    .custom-table th {
+        background-color: #e9ecef;
+        color: #000; /* Màu chữ đen */
+        font-weight: bold;
+        font-size: 1rem; /* Tăng kích thước chữ */
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    /* Định dạng ô dữ liệu */
+    .custom-table td {
+        color: #343a40;
+        border-top: 1px solid #dee2e6;
+    }
+
+    /* Hover cho các hàng */
+    .custom-table tbody tr:hover {
+        background-color: #f1f3f5;
+    }
+
+    /* Tùy chỉnh nút hành động */
+    .custom-table .custom-action-btn {
+        padding: 0.25rem 0.5rem;
+    }
+
+        .custom-table .custom-action-btn i {
+            font-size: 1rem;
+        }
+
+/* Màu sắc của các nút */
+.btn-outline-warning {
+    color: #ffc107;
+    border-color: #ffc107;
+}
+
+    .btn-outline-warning:hover {
+        background-color: #ffc107;
+        color: #fff;
+    }
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+
+input.form-control.form-input {
+    border-radius: 20px !important;
+    height: 38px;
+    width: 310px;
+    padding-left: 35px; /* Thêm khoảng trống bên trái cho chữ */
+}
+
+    input.form-control.form-input::placeholder {
+        font-size: 10px;
+        color: #888;
+    }
+
+button.btn-Search {
+    background: none;
+    border: none;
+}
+
+.icon-search {
+    transition: color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for color and shadow */
+}
+
+    .icon-search:hover {
+        color: aqua; /* Change color to aqua on hover */
+        box-shadow: 0 0 10px aqua, 0 0 20px aqua; /* Add glowing shadow effect */
+    }
+
+.input-group {
+    position: relative; /* Đặt vị trí cho nhóm input */
+    width: 100%; /* Đặt chiều rộng cho input group */
+}
+
+.form-input {
+    width: 100%; /* Đảm bảo input chiếm hết chiều rộng */
+    padding-left: 30px; /* Thêm khoảng trống bên trái cho chữ */
+    padding-right: 40px; /* Thêm khoảng trống bên phải cho nút tìm kiếm */
+    border: 1px solid #ccc; /* Đặt viền cho input */
+    border-radius: 20px; /* Bo góc cho input */
+    background-color: white; /* Nền trắng cho input */
+}
+
+
+.btn-Search i {
+    display: inline; /* Hiển thị biểu tượng tìm kiếm trong nút */
+}
+
+
+
+input.form-input {
+    border-radius: 20px !important;
+    height: 38px;
+    width: 310px;
+    padding-left: 35px; /* Thêm khoảng trống bên trái cho biểu tượng */
+    padding-right: 40px; /* Thêm khoảng trống bên phải cho nút tìm kiếm */
+    border: 1px solid #ccc; /* Đặt viền cho input */
+    background-color: white; /* Nền trắng cho input */
+}
+
+    input.form-input::placeholder {
+        font-size: 10px;
+        color: #888;
+    }
+
+.icon-search {
+    position: absolute; /* Đặt biểu tượng ở vị trí tuyệt đối */
+    top: 50%; /* Giữa theo chiều dọc */
+    left: 10px; /* Khoảng cách từ bên trái */
+    transform: translateY(-50%); /* Căn giữa hoàn hảo */
+    pointer-events: none; /* Không cho phép tương tác với biểu tượng */
+    color: #aaa; /* Màu sắc cho biểu tượng */
+}
+
+.btn-Search {
+    position: absolute; /* Đặt nút tìm kiếm ở vị trí tuyệt đối */
+    right: 10px; /* Khoảng cách từ bên phải */
+    top: 50%; /* Giữa theo chiều dọc */
+    transform: translateY(-50%); /* Căn giữa hoàn hảo */
+    border: none; /* Ẩn viền */
+    background: transparent; /* Nền trong suốt */
+    cursor: pointer; /* Thay đổi con trỏ khi hover */
+    color: #aaa; /* Màu sắc cho nút tìm kiếm */
+}
+/* Custom styling for the search input field */
+.form-input {
+    border: 1px solid #d3d3d3; /* Light gray border */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: none; /* Remove any default shadow */
+}
+
+    /* Remove outline when input is focused */
+    .form-input:focus {
+        outline: none; /* No outline */
+        border-color: #d3d3d3; /* Keeps the border light gray on focus */
+        box-shadow: none; /* Remove shadow on focus */
+    }
+
+
+
+
+.content {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Custom input styling with search icon inside */
+.position-relative .icon-search {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.form-control.form-input {
+    padding-left: 35px;
+    height: 38px;
+    border-radius: 20px;
+    width: 310px;
+}
+
+/* Primary button styling */
+.btn-primary {
+    color: #fff;
+    border-color: #03052a;
+    background: #020431;
+    border-radius: 20px;
+    height: 38px;
+    font-size: 13px;
+}
+
+/* Success button styling */
+.btn-success {
+    background-color: #fff;
+    border-color: #03052a;
+    color: #000;
+    border-radius: 20px;
+    height: 38px;
+    font-size: 13px;
+}
+
+    /* Combined hover effect for both buttons */
+    .btn-primary:hover, .btn-success:hover {
+        background-color: #000;
+        color: #fff;
+    }
+
+.modal-footer {
+    border-top: none !important;
+}
+
+.modal-content {
+    max-width: 300px; /* Hoặc giá trị bạn muốn */
+    margin: auto; /* Để căn giữa modal */
+}
+
+.modal-header {
+    border-bottom: none !important;
+}
+
+h5.modal-title.text {
+    margin-left: 68px;
+}
+
+.icon-edit:hover {
+    color: #FFD700;
+}
+
+.icon-delete:hover {
+    color: #FF0000
+}
+
+.custom-action-btn {
+    border: none; /* Tắt border */
+    background: transparent; /* Tắt màu nền */
+    padding: 0; /* Tắt padding nếu cần thiết */
+    cursor: pointer; /* Hiển thị con trỏ chuột là pointer */
+}
+
+    /* Nếu bạn muốn điều chỉnh màu sắc khi hover */
+    .custom-action-btn:hover {
+        background: rgba(0, 0, 0, 0.1); /* Màu nền khi hover */
+    }
+
+a.btn-btn.btn-sm {
+    color: #1a1818;
+}
+
+button.btn-btn.btn-sm {
+    background: transparent;
+    border: none;
+}
+.input-style {
+    border: 1px solid #ccc; /* Light grey border */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for border and shadow */
+}
+
+    .input-style:focus {
+        border-color: rgba(0, 0, 255, 0.7); /* Dark blue border on focus */
+        box-shadow: 0 0 5px rgba(0, 0, 255, 0.7); /* Blue shadow effect */
+        outline: none; /* Remove default outline */
+    }
+
+.btn-donate {
+    margin-left: 10px; /* Space between buttons */
+}
+
+.Add-create {
+    justify-content: right;
+}
+
+.pagetitle {
+    margin: 20px 0 30px 20px;
+}
+.alert {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#successMessage {
+    display: block; /* Show message initially */
+}

@@ -1,87 +1,247 @@
 @model IEnumerable<aznews.Areas.Admin.Models.ThongBao>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    int curPage = ViewBag.Page ?? 1;
+    int pageSize = ViewBag.PageSize ?? 10;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    string search = (ViewData["SearchString"] as string) ?? string.Empty;
+    int stt = (curPage - 1) * pageSize + 1;
+
+    var tokens = new List<string>();
+    void AddDots() { if (tokens.Count == 0 || tokens[^1] != "...") tokens.Add("..."); }
+
+    if (totalPages <= 7)
+    {
+        for (int p = 1; p <= totalPages; p++) tokens.Add(p.ToString());
+    }
+    else
+    {
+        tokens.Add("1");
+        if (curPage > 4) AddDots();
+        int start = Math.Max(2, curPage - 1);
+        int end = Math.Min(totalPages - 1, curPage + 1);
+        for (int p = start; p <= end; p++) tokens.Add(p.ToString());
+        if (curPage < totalPages - 3) AddDots();
+        tokens.Add(totalPages.ToString());
+    }
+}
 
 <section class="section">
     <div class="row">
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
+
+                    <!-- Tiêu đề + nút thêm -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h4 class="fw-bold text-primary mb-0 text-uppercase">Quản lý thông báo</h4>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-success"><i class="bi bi-download me-1"></i>Import</a>
-                            <a href="#" class="btn btn-outline-success"><i class="bi bi-file-earmark-excel me-1"></i>Excel</a>
-                            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Thêm mới</a>
+                            <a asp-area="Admin" asp-controller="ThongBao" asp-action="Create" class="btn btn-primary">
+                                <i class="bi bi-plus-lg me-1"></i>Thêm mới
+                            </a>
                         </div>
                     </div>
 
+                    <!-- Form tìm kiếm -->
                     <div class="d-flex flex-wrap gap-2 mb-3">
-                        <select class="form-select w-auto">
-                            <option>Tất cả loại</option>
-                            <option>Học vụ</option>
-                            <option>Học phí</option>
-                            <option>Kỹ thuật</option>
-                        </select>
-                        <div class="input-group w-auto">
-                            <input type="text" class="form-control" placeholder="Tìm kiếm tiêu đề...">
-                            <button class="btn btn-outline-secondary" type="button">
+                        <form asp-area="Admin" asp-controller="ThongBao" asp-action="Index" method="get" id="searchForm" class="input-group w-auto">
+                            <input type="text" id="searchInput" name="searchString" value="@search"
+                                   class="form-control" placeholder="Tìm kiếm tiêu đề...">
+                            <button class="btn btn-outline-secondary" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
-                        </div>
+                            <input type="hidden" name="page" value="1" />
+                        </form>
                     </div>
 
+                    <!-- Bảng dữ liệu -->
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover align-middle text-center">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width: 5%;">STT</th>
-                                    <th style="width: 25%;">Tiêu đề</th>
-                                    <th style="width: 15%;">Loại thông báo</th>
-                                    <th style="width: 12%;">Ngày đăng</th>
-                                    <th style="width: 18%;">Tệp đính kèm</th>
-                                    <th style="width: 10%;">Người đăng</th>
-                                    <th style="width: 15%;">Hành động</th>
+                                    <th style="width:5%;">STT</th>
+                                    <th style="width:25%;">Tiêu đề</th>
+                                    <th style="width:15%;">Loại thông báo</th>
+                                    <th style="width:12%;">Ngày đăng</th>
+                                    <th style="width:15%;">Tệp đính kèm</th>
+                                    <th style="width:15%;">Người đăng</th>
+                                    <th style="width:10%;">Trạng thái</th>
+                                    <th style="width:20%;">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @{
-                                    int counter = 1;
-                                }
                                 @foreach (var tb in Model)
                                 {
                                     <tr>
-                                        <td>@counter</td>
+                                        <td>@stt</td>
                                         <td class="text-start">@tb.TieuDe</td>
                                         <td>@tb.LoaiThongBao</td>
-                                        <td>@(tb.NgayDang != null ? tb.NgayDang.Value.ToString("dd/MM/yyyy") : "")</td>
+                                        <td>@(tb.NgayDang?.ToString("dd/MM/yyyy"))</td>
+                                        <td> @if (!string.IsNullOrEmpty(tb.TepDinhKem)) { 
+                                            <a href="@Url.Content("~/uploads/" + tb.TepDinhKem)" target="_blank">Xem</a> 
+                                            } else { 
+                                                <span>-</span> 
+                                                } 
+                                        </td>
+                                        <td>@tb.NguoiDung?.VaiTro?.TenVaiTro</td>
                                         <td>
-                                            @if (!string.IsNullOrEmpty(tb.TepDinhKem))
+                                            @if (tb.TrangThai == true)
                                             {
-                                                <a href="@Url.Content("~/uploads/" + tb.TepDinhKem)" target="_blank">Xem</a>
+                                                <span class="badge bg-success">Hiển thị</span>
                                             }
                                             else
                                             {
-                                                <span>-</span>
+                                                <span class="badge bg-secondary">Ẩn</span>
                                             }
                                         </td>
-                                        <td>@tb.MaND</td>
                                         <td>
                                             <div class="d-flex justify-content-center gap-2">
-                                                <a asp-action="Edit" asp-route-id="@tb.MaTB" class="btn btn-sm btn-outline-primary" title="Sửa">
+                                                <!-- Nút bật/tắt hiển thị -->
+                                                <form asp-area="Admin" asp-controller="ThongBao" asp-action="ToggleTrangThai" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@tb.MaTB" />
+                                                    <button type="submit" class="btn btn-sm @(tb.TrangThai ? "btn-outline-success" : "btn-outline-secondary")" title="Ẩn/Hiện">
+                                                        <i class="bi @(tb.TrangThai ? "bi-eye" : "bi-eye-slash")"></i>
+                                                    </button>
+                                                </form>
+
+                                                <!-- Sửa -->
+                                                <a asp-action="Edit"
+                                                   asp-route-id="@tb.MaTB"
+                                                   class="btn btn-sm btn-outline-primary" title="Sửa">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
-                                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+
+                                                <!-- Xóa -->
+                                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal-@tb.MaTB">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
+
+                                                <!-- Modal xác nhận xóa -->
+                                                <div class="modal fade" id="deleteModal-@tb.MaTB" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Xác nhận xóa</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Bạn có chắc chắn muốn xóa thông báo <b>@tb.TieuDe</b> không?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                <form asp-area="Admin" asp-controller="ThongBao" asp-action="Delete" method="post" class="d-inline">
+                                                                    @Html.AntiForgeryToken()
+                                                                    <input type="hidden" name="id" value="@tb.MaTB" />
+                                                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    counter++;
+                                    stt++;
                                 }
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Phân trang -->
+                    @if (totalPages > 1)
+                    {
+                        <nav class="d-flex justify-content-center mt-3">
+                            <ul class="pagination pager-ellipses">
+                                <li class="page-item @(curPage == 1 ? "disabled" : "")">
+                                    <a class="page-link" asp-route-page="@(curPage - 1)" asp-route-searchString="@(search)">&lt;</a>
+                                </li>
+                                @foreach (var t in tokens)
+                                {
+                                    if (t == "...")
+                                    {
+                                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                                    }
+                                    else
+                                    {
+                                        var p = int.Parse(t);
+                                        <li class="page-item @(p == curPage ? "active" : "")">
+                                            <a class="page-link" asp-route-page="@(p)" asp-route-searchString="@(search)">@p</a>
+                                        </li>
+                                    }
+                                }
+                                <li class="page-item @(curPage == totalPages ? "disabled" : "")">
+                                    <a class="page-link" asp-route-page="@(curPage + 1)" asp-route-searchString="@(search)">&gt;</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </section>
+<style>
+    .pager-ellipses .page-link {
+        border-radius: 8px;
+        min-width: 36px;
+        text-align: center;
+    }
+
+    .pager-ellipses .page-item + .page-item {
+        margin-left: .25rem;
+    }
+
+    .pager-ellipses .page-item.active .page-link {
+        color: #fff;
+        background: #111; /* màu ô đang chọn như ảnh mẫu */
+        border-color: #111;
+    }
+
+    .pager-ellipses .page-item.disabled .page-link {
+        color: #adb5bd;
+        pointer-events: none;
+        background-color: #fff;
+    }
+    /* Mặc định: số trang màu đen (không chọn) */
+    .pager-ellipses .page-link {
+        color: #111 !important; /* text đen */
+        --bs-pagination-color: #111; /* Bootstrap 5 var */
+        --bs-pagination-hover-color: #111;
+        --bs-pagination-focus-color: #111;
+    }
+
+    /* Ô đang chọn: giữ trắng trên nền đen như cũ */
+    .pager-ellipses .page-item.active .page-link {
+        color: #fff !important;
+        background: #111;
+        border-color: #111;
+    }
+
+    /* Disabled giữ xám */
+    .pager-ellipses .page-item.disabled .page-link {
+        color: #adb5bd !important;
+    }
+
+    /* (tuỳ chọn) Hover nhẹ cho ô thường */
+    .pager-ellipses .page-item:not(.active):not(.disabled) .page-link:hover {
+        background-color: #f8f9fa;
+        border-color: #e5e7eb;
+    }
+
+</style>
+@section Scripts {
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        const searchForm = document.getElementById("searchForm");
+        let typingTimer;
+        if (searchInput && searchForm) {
+            searchInput.addEventListener("keyup", function () {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => searchForm.submit(), 800);
+            });
+        }
+    </script>
+}

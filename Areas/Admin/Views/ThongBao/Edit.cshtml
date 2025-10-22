@@ -1,0 +1,110 @@
+@using aznews.Areas.Admin.Models
+@model ThongBao
+@{
+    ViewData["Title"] = "Chỉnh sửa thông báo";
+}
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="pagetitle mt-3 ms-4 mb-3">
+                    <h4 class="fw-bold text-primary text-uppercase">CHỈNH SỬA THÔNG BÁO</h4>
+                </div>
+
+                <div class="card-body title-spacing">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="MaTB" />
+
+                        <div class="row">
+                            <!-- Tiêu đề -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="TieuDe" class="form-label">Tiêu đề thông báo:</label>
+                                    <input asp-for="TieuDe" class="form-control" placeholder="Nhập tiêu đề thông báo..." />
+                                    <span asp-validation-for="TieuDe" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Loại thông báo -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Loại thông báo:</label>
+                                    <select asp-for="LoaiThongBao" class="form-select" asp-items="ViewBag.LoaiThongBaoList">
+                                        <option value="">-- Chọn loại thông báo --</option>
+                                    </select>
+                                    <span asp-validation-for="LoaiThongBao" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nội dung -->
+                        <div class="mb-3">
+                            <label asp-for="NoiDung" class="form-label">Nội dung:</label>
+                            <textarea asp-for="NoiDung" class="form-control" rows="6" placeholder="Nhập nội dung thông báo..."></textarea>
+                            <span asp-validation-for="NoiDung" class="text-danger"></span>
+                        </div>
+
+                        <!-- Cập nhật tệp mới -->
+                        <div class="mb-3">
+                            <label class="form-label">Chọn tệp mới (nếu muốn thay thế):</label>
+                            <input type="file" name="file" class="form-control" />
+                        </div>
+
+                        <!-- Tệp hiện tại với nút gỡ -->
+                        @if (!string.IsNullOrEmpty(Model.TepDinhKem))
+                        {
+                            <div class="mt-2 d-flex align-items-center">
+                                <label class="form-label me-2">Tệp hiện tại:</label>
+                                <a href="~/uploads/@Model.TepDinhKem" target="_blank" class="text-primary me-3" id="currentFileLink">
+                                    @Model.TepDinhKem
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm" id="btnDeleteFile">
+                                    <i class="bi bi-trash me-1"></i> Gỡ tệp
+                                </button>
+                                <input type="hidden" name="RemoveFile" id="RemoveFile" value="false" />
+                            </div>
+                        }
+
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-save me-1"></i> Lưu thay đổi
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary px-4">
+                                <i class="bi bi-arrow-left me-1"></i> Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Xử lý nút Gỡ tệp
+        document.getElementById('btnDeleteFile')?.addEventListener('click', function () {
+            Swal.fire({
+                title: 'Bạn có chắc muốn xoá tệp này?',
+                text: "Tệp sẽ bị gỡ khỏi thông báo, nhưng chưa lưu!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Có, gỡ ngay!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('currentFileLink').style.display = 'none';
+                    document.getElementById('btnDeleteFile').style.display = 'none';
+                    document.getElementById('RemoveFile').value = 'true';
+                    Swal.fire('Đã gỡ!', 'Tệp sẽ được loại bỏ khi bạn lưu thay đổi.', 'success');
+                }
+            })
+        });
+    </script>
+}

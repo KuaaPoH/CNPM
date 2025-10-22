@@ -7,15 +7,17 @@ using System.Threading.Tasks;
 
 namespace aznews.Areas.Admin.Models
 {
-    [Table("KhoaVien")]
-    public class KhoaVien
+    [Table("Nganh")]
+    public class Nganh
     {
         [Key]
+        public int MaNganh { get; set; }
+
+        public string? TenNganh { get; set; }
+
         public int MaKhoaVien { get; set; }
-        public string? TenKhoaVien { get; set; }
-        public string? DiaChi { get; set; }
-        public string? DienThoai { get; set; }
-        public string? Email { get; set; }
-        public ICollection<Nganh>? Nganhs { get; set; }
+        
+        [ForeignKey("MaKhoaVien")]
+        public KhoaVien? KhoaVien { get; set; }
     }
 }

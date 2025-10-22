@@ -1,0 +1,62 @@
+@using aznews.Areas.Admin.Models
+@model LopHanhChinh
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="pagetitle mt-3 ms-4 mb-3">
+                    <h4 class="fw-bold text-primary text-uppercase">CHỈNH SỬA LỚP HÀNH CHÍNH</h4>
+                </div>
+
+                <div class="card-body title-spacing">
+                    <form asp-action="Edit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <!-- Ẩn mã lớp hành chính để giữ ID -->
+                        <input type="hidden" asp-for="MaLopHC" />
+
+                        <div class="row">
+                            <!-- Tên lớp hành chính -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="TenLopHC" class="form-label">Tên lớp hành chính:</label>
+                                    <input asp-for="TenLopHC" class="form-control" placeholder="Nhập tên lớp hành chính..." />
+                                    <span asp-validation-for="TenLopHC" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Khóa học -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="KhoaHoc" class="form-label">Khóa học:</label>
+                                    <input asp-for="KhoaHoc" class="form-control" placeholder="Nhập khóa học (ví dụ: K46)..." />
+                                    <span asp-validation-for="KhoaHoc" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ngành -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MaNganh" class="form-label">Ngành:</label>
+                                    <select asp-for="MaNganh" class="form-select" asp-items="ViewBag.NganhList">
+                                        <option value="">-- Chọn Ngành --</option>
+                                    </select>
+                                    <span asp-validation-for="MaNganh" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nút hành động -->
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-success px-4">Cập nhật</button>
+                            <a asp-action="Index" class="btn btn-secondary px-4">Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

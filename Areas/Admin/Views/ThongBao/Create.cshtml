@@ -1,0 +1,61 @@
+@using aznews.Areas.Admin.Models
+@model ThongBao
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="pagetitle mt-3 ms-4 mb-3">
+                    <h4 class="fw-bold text-primary text-uppercase">THÊM THÔNG BÁO MỚI</h4>
+                </div>
+
+                <div class="card-body title-spacing">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <!-- Tiêu đề -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="TieuDe" class="form-label">Tiêu đề thông báo:</label>
+                                    <input asp-for="TieuDe" class="form-control" placeholder="Nhập tiêu đề thông báo..." />
+                                    <span asp-validation-for="TieuDe" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Loại thông báo -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Loại thông báo:</label>
+                                    <select asp-for="LoaiThongBao" class="form-select" asp-items="ViewBag.LoaiThongBaoList">
+                                        <option value="">-- Chọn loại thông báo --</option>
+                                    </select>
+                                    <span asp-validation-for="LoaiThongBao" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nội dung -->
+                        <div class="mb-3">
+                            <label asp-for="NoiDung" class="form-label">Nội dung:</label>
+                            <textarea asp-for="NoiDung" class="form-control" rows="6" placeholder="Nhập nội dung thông báo..."></textarea>
+                            <span asp-validation-for="NoiDung" class="text-danger"></span>
+                        </div>
+
+                        <!-- Tệp đính kèm -->
+                        <div class="mb-3">
+                            <label class="form-label">Tệp đính kèm (nếu có):</label>
+                            <input type="file" name="file" class="form-control" />
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary px-4">Đăng thông báo</button>
+                            <a asp-action="Index" class="btn btn-secondary px-4">Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

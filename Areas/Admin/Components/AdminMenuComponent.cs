@@ -19,7 +19,7 @@ namespace aznews.Areas.Admin.Components
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var mnList = (from mn in _context.AdminMenus
-            where (mn.IsActive == true && mn.ItemLevel == 1 && mn.MaVaiTro == 1)
+            where (mn.IsActive == true && mn.MaVaiTro == 1)
             select mn).ToList();
             return await Task.FromResult((IViewComponentResult)View("Default",mnList));
         }

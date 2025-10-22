@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 
 namespace aznews.Areas.Admin.Models
 {
-    [Table("NguoiDung")]
-    public class NguoiDung
+    [Table("VaiTro")]
+    public class VaiTro
     {
         [Key]
-        public int MaND { get; set; }
-        public string TenDangNhap { get; set; }
-        public string MatKhau { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MaVaiTro { get; set; }
-         public bool? TrangThai { get; set; }
-         [ForeignKey("MaVaiTro")]
-        public VaiTro? VaiTro { get; set; }
+
+        [Required, StringLength(50)]
+        [Display(Name = "Tên Vai Trò")]
+        public string TenVaiTro { get; set; }
         
     }
 }

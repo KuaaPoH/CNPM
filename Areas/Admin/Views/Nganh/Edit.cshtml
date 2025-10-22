@@ -1,0 +1,47 @@
+@using aznews.Areas.Admin.Models
+@model Nganh
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="pagetitle mt-3 ms-4 mb-3">
+                    <h4 class="fw-bold text-primary text-uppercase">CHỈNH SỬA THÔNG TIN NGÀNH</h4>
+                </div>
+
+                <div class="card-body title-spacing">
+                    <form asp-action="Edit" method="post">
+                        @* Ẩn mã ngành để biết bản ghi cần cập nhật *@
+                        <input type="hidden" asp-for="MaNganh" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="TenNganh" class="form-label">Tên Ngành:</label>
+                                    <input asp-for="TenNganh" class="form-control" placeholder="Nhập tên ngành..." />
+                                    <span asp-validation-for="TenNganh" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MaKhoaVien" class="form-label">Khoa / Viện:</label>
+                                    <select asp-for="MaKhoaVien" class="form-select" asp-items="ViewBag.KhoaVienList">
+                                        <option value="">-- Chọn Khoa / Viện --</option>
+                                    </select>
+                                    <span asp-validation-for="MaKhoaVien" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-success px-4">Cập nhật</button>
+                            <a asp-action="Index" class="btn btn-secondary px-4">Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

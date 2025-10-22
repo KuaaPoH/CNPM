@@ -18,9 +18,6 @@ namespace aznews.Areas.Admin.Controllers
             _context = context;
         }
 
-
-        // GET: Admin/KhoaVien
-        // ?searchString=...&page=1
         public async Task<IActionResult> Index(string? searchString, int page = 1)
         {
             const int pageSize = 10;
@@ -29,7 +26,6 @@ namespace aznews.Areas.Admin.Controllers
                                 .AsNoTracking()
                                 .AsQueryable();
 
-            // Tìm kiếm (không phân biệt hoa/thường, bỏ khoảng trắng thừa)
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 var k = searchString.Trim().ToLower();

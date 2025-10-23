@@ -1,30 +1,38 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\CNPM\\",
+  "WorkspaceRootPath": "D:\\CNPM1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm\\areas\\admin\\views\\khoavien\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\khoavien\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\giangvien\\views\\shared\\_layout_giangvien.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\giangvien\\views\\shared\\_layout_giangvien.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm\\areas\\admin\\views\\khoavien\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\khoavien\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\giangvien\\views\\shared\\components\\giangvienmenu\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\giangvien\\views\\shared\\components\\giangvienmenu\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm\\areas\\admin\\controllers\\khoaviencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\controllers\\khoaviencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\giangvien\\components\\giangvienmenuviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\giangvien\\components\\giangvienmenuviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\shared\\components\\adminmenu\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\shared\\components\\adminmenu\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm\\wwwroot\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:wwwroot\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\components\\menuviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:components\\menuviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\shared\\_layoutadmin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\shared\\_layoutadmin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\giangvien\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\giangvien\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,82 +42,111 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "D:\\CNPM\\Areas\\Admin\\Views\\KhoaVien\\Edit.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\KhoaVien\\Edit.cshtml",
-              "ToolTip": "D:\\CNPM\\Areas\\Admin\\Views\\KhoaVien\\Edit.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\KhoaVien\\Edit.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-17T12:55:35.109Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "style.css",
-              "DocumentMoniker": "D:\\CNPM\\wwwroot\\css\\style.css",
-              "RelativeDocumentMoniker": "wwwroot\\css\\style.css",
-              "ToolTip": "D:\\CNPM\\wwwroot\\css\\style.css",
-              "RelativeToolTip": "wwwroot\\css\\style.css",
-              "ViewState": "AgIAALYEAAAAAAAAAAAAAOAEAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-10-17T10:47:58.889Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\CNPM\\Areas\\Admin\\Views\\KhoaVien\\Index.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\KhoaVien\\Index.cshtml",
-              "ToolTip": "D:\\CNPM\\Areas\\Admin\\Views\\KhoaVien\\Index.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\KhoaVien\\Index.cshtml",
-              "ViewState": "AgIAAOEAAAAAAAAAAAAAAO0AAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-17T09:42:47.482Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "KhoaVienController.cs",
-              "DocumentMoniker": "D:\\CNPM\\Areas\\Admin\\Controllers\\KhoaVienController.cs",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\KhoaVienController.cs",
-              "ToolTip": "D:\\CNPM\\Areas\\Admin\\Controllers\\KhoaVienController.cs",
-              "RelativeToolTip": "Areas\\Admin\\Controllers\\KhoaVienController.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAAAIwFoAAAA1AAAAAAAAAA==",
+              "Title": "GiangVienMenuViewComponent.cs",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Components\\GiangVienMenuViewComponent.cs",
+              "RelativeDocumentMoniker": "Areas\\GiangVien\\Components\\GiangVienMenuViewComponent.cs",
+              "ToolTip": "D:\\CNPM1\\Areas\\GiangVien\\Components\\GiangVienMenuViewComponent.cs",
+              "RelativeToolTip": "Areas\\GiangVien\\Components\\GiangVienMenuViewComponent.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAUwB0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-17T10:30:16.848Z",
+              "WhenOpened": "2025-10-23T16:36:41.696Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\CNPM\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "D:\\CNPM\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-17T09:44:16.106Z"
+              "Title": "Default.cshtml",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\Shared\\Components\\AdminMenu\\Default.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Shared\\Components\\AdminMenu\\Default.cshtml",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\Shared\\Components\\AdminMenu\\Default.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Shared\\Components\\AdminMenu\\Default.cshtml",
+              "ViewState": "AgIAABQAAAAAAAAAAAAIwCUAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-23T16:29:02.046Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Default.cshtml",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Views\\Shared\\Components\\GiangVienMenu\\Default.cshtml",
+              "RelativeDocumentMoniker": "Areas\\GiangVien\\Views\\Shared\\Components\\GiangVienMenu\\Default.cshtml",
+              "ToolTip": "D:\\CNPM1\\Areas\\GiangVien\\Views\\Shared\\Components\\GiangVienMenu\\Default.cshtml",
+              "RelativeToolTip": "Areas\\GiangVien\\Views\\Shared\\Components\\GiangVienMenu\\Default.cshtml",
+              "ViewState": "AgIAACEAAAAAAAAAAAAIwDIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-23T16:27:44.971Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MenuViewComponent.cs",
+              "DocumentMoniker": "D:\\CNPM1\\Components\\MenuViewComponent.cs",
+              "RelativeDocumentMoniker": "Components\\MenuViewComponent.cs",
+              "ToolTip": "D:\\CNPM1\\Components\\MenuViewComponent.cs",
+              "RelativeToolTip": "Components\\MenuViewComponent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T16:23:24.533Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_Layout_GiangVien.cshtml",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Views\\Shared\\_Layout_GiangVien.cshtml",
+              "RelativeDocumentMoniker": "Areas\\GiangVien\\Views\\Shared\\_Layout_GiangVien.cshtml",
+              "ToolTip": "D:\\CNPM1\\Areas\\GiangVien\\Views\\Shared\\_Layout_GiangVien.cshtml",
+              "RelativeToolTip": "Areas\\GiangVien\\Views\\Shared\\_Layout_GiangVien.cshtml",
+              "ViewState": "AgIAAGcAAAAANTMzMzMLwI4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-23T15:06:52.365Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\CNPM\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "ToolTip": "D:\\CNPM\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "_LayoutAdmin.cshtml",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "ViewState": "AgIAAHMAAABAMzMzMzMrwLQAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-17T09:42:40.355Z"
+              "WhenOpened": "2025-10-23T15:09:41.185Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\CNPM1\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\CNPM1\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T15:02:48.969Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Areas\\GiangVien\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\CNPM1\\Areas\\GiangVien\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Areas\\GiangVien\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:56:09.298Z",
+              "EditorCaption": ""
             }
           ]
         }

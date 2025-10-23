@@ -19,5 +19,7 @@ namespace aznews.Models
         public DbSet<KhoaVien> KhoaViens { get; set; }
         public DbSet<Nganh> Nganhs { get; set; }
         public DbSet<LopHanhChinh> LopHanhChinhs { get; set; }
+        public DbSet<GiangVien> GiangViens { get; set; }
+
     }
 }

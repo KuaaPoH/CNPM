@@ -1,0 +1,110 @@
+﻿@using aznews.Areas.Admin.Models
+@model IEnumerable<DangKyLop>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    var lop = ViewBag.Lop as LopHocPhan;
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    int stt = (page - 1) * 20 + 1;
+
+    var tokens = new List<string>();
+    void AddDots() { if (tokens.Count == 0 || tokens[^1] != "...") tokens.Add("..."); }
+    if (totalPages <= 7) { for (int p = 1; p <= totalPages; p++) tokens.Add(p.ToString()); }
+    else { tokens.Add("1"); if (page > 4) AddDots(); for (int p = Math.Max(2, page - 1); p <= Math.Min(totalPages - 1, page + 1); p++) tokens.Add(p.ToString()); if (page < totalPages - 3) AddDots(); tokens.Add(totalPages.ToString()); }
+}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+
+                    <h5 class="mb-3">
+                        Danh sách sinh viên – @lop?.HocPhan?.TenHP (@lop?.HocKy, @lop?.NamHoc)
+                    </h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width:6%">#</th>
+                                    <th style="width:18%">Mã SV</th>
+                                    <th>Họ tên</th>
+                                    <th style="width:24%">Email</th>
+                                    <th style="width:10%">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var d in Model)
+                                {
+                                    <tr>
+                                        <td class="text-center">@stt</td>
+                                        <td>@d.SinhVien?.MaSoSV</td>
+                                        <td>@d.SinhVien?.HoTen</td>
+                                        <td>@d.SinhVien?.Email</td>
+                                        <td class="text-center">@(d.TrangThai == 1 ? "Đang học" : "Khác")</td>
+                                    </tr>
+                                    stt++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if (totalPages > 1)
+                    {
+                        <nav class="d-flex justify-content-center mt-3">
+                            <ul class="pagination pager-ellipses">
+                                <li class="page-item @(page == 1 ? "disabled" : "")">
+                                    <a class="page-link" asp-route-page="@(page - 1)" asp-route-lopId="@lop!.MaLHP">&lt;</a>
+                                </li>
+                                @foreach (var t in tokens)
+                                {
+                                    if (t == "...")
+                                    {
+                                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                                    }
+                                    else
+                                    {
+                                        var p = int.Parse(t);
+                                        <li class="page-item @(p == page ? "active" : "")">
+                                            <a class="page-link" asp-route-page="@p" asp-route-lopId="@lop!.MaLHP">@p</a>
+                                        </li>
+                                    }
+                                }
+                                <li class="page-item @(page == totalPages ? "disabled" : "")">
+                                    <a class="page-link" asp-route-page="@(page + 1)" asp-route-lopId="@lop!.MaLHP">&gt;</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .pager-ellipses .page-link {
+        border-radius: 8px;
+        min-width: 36px;
+        text-align: center
+    }
+
+    .pager-ellipses .page-item + .page-item {
+        margin-left: .25rem
+    }
+
+    .pager-ellipses .page-item.active .page-link {
+        color: #fff;
+        background: #111;
+        border-color: #111
+    }
+
+    .pager-ellipses .page-item.disabled .page-link {
+        color: #adb5bd;
+        pointer-events: none;
+        background: #fff
+    }
+</style>

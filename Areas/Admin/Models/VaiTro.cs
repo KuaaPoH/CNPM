@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace aznews.Areas.Admin.Models
 {
@@ -15,8 +11,6 @@ namespace aznews.Areas.Admin.Models
         public int MaVaiTro { get; set; }
 
         [Required, StringLength(50)]
-        [Display(Name = "Tên Vai Trò")]
-        public string TenVaiTro { get; set; }
-        
+        public string TenVaiTro { get; set; } = string.Empty;
     }
 }

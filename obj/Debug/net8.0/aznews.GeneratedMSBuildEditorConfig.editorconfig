@@ -96,8 +96,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/CNPM1/Areas/GiangVien/Views/DiemDanh/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcR2lhbmdWaWVuXFZpZXdzXERpZW1EYW5oXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/CNPM1/Areas/GiangVien/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcR2lhbmdWaWVuXFZpZXdzXEhvbWVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CNPM1/Areas/GiangVien/Views/LopDay/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcR2lhbmdWaWVuXFZpZXdzXExvcERheVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/CNPM1/Areas/GiangVien/Views/Shared/Components/GiangVienMenu/Default.cshtml]
@@ -108,12 +116,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcR2lhbmdWaWVuXFZpZXdzXFNoYXJlZFxfTGF5b3V0X0dpYW5nVmllbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/CNPM1/Areas/GiangVien/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcR2lhbmdWaWVuXF9WaWV3SW1wb3J0cy5jc2h0bWw=
+[D:/CNPM1/Areas/GiangVien/Views/SinhVien/DanhSach.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcR2lhbmdWaWVuXFZpZXdzXFNpbmhWaWVuXERhbmhTYWNoLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/CNPM1/Areas/GiangVien/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcR2lhbmdWaWVuXF9WaWV3U3RhcnQuY3NodG1s
+[D:/CNPM1/Areas/GiangVien/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcR2lhbmdWaWVuXFZpZXdzXF9WaWV3SW1wb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CNPM1/Areas/GiangVien/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcR2lhbmdWaWVuXFZpZXdzXF9WaWV3U3RhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CNPM1/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/CNPM1/Views/Home/Index.cshtml]

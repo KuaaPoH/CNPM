@@ -1,23 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace aznews.Areas.Admin.Models
 {
     [Table("NguoiDung")]
     public class NguoiDung
     {
-        [Key]
-        public int MaND { get; set; }
-        public string TenDangNhap { get; set; }
-        public string MatKhau { get; set; }
-        public int MaVaiTro { get; set; }
-         public bool? TrangThai { get; set; }
-         [ForeignKey("MaVaiTro")]
-        public VaiTro? VaiTro { get; set; }
-        
+        [Key] public int MaND { get; set; }
+
+        [Required] public string TenDangNhap { get; set; } = string.Empty;
+        [Required] public string MatKhau { get; set; } = string.Empty;
+
+        public int MaVaiTro { get; set; }          // FK thực
+        public bool? TrangThai { get; set; }
+
+        // KHÔNG gắn [ForeignKey] ở đây để tránh EF sinh shadow FK
+        public VaiTro? VaiTro { get; set; }         // navigation
     }
 }

@@ -1,0 +1,50 @@
+﻿@using aznews.Areas.Admin.Models
+@model IList<AdminMenu>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    // Nếu cột AreaName trống, mặc định về "GiangVien"
+    string AreaOf(AdminMenu m) => string.IsNullOrWhiteSpace(m.AreaName) ? "GiangVien" : m.AreaName!;
+}
+
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        @foreach (var item in Model.Where(m => m.IsActive == true && m.ParentLevel == 0))
+        {
+            var subMenus = Model.Where(m => m.ParentLevel == item.AdminMenuID).ToList();
+
+            if (subMenus.Count == 0)
+            {
+                <li class="nav-item">
+                    <a class="nav-link"
+                       asp-area="@AreaOf(item)"
+                       asp-controller="@item.ControllerName"
+                       asp-action="@item.ActionName">
+                        <i class="@item.Icon"></i>
+                        <span>@item.ItemName</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#submenu-@item.AdminMenuID" data-bs-toggle="collapse" href="#">
+                        <i class="@item.Icon"></i><span>@item.ItemName</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="submenu-@item.AdminMenuID" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                        @foreach (var sub in subMenus)
+                        {
+                            <li>
+                                <a asp-area="@AreaOf(sub)"
+                                   asp-controller="@sub.ControllerName"
+                                   asp-action="@sub.ActionName">
+                                    <i class="@sub.Icon"></i><span>@sub.ItemName</span>
+                                </a>
+                            </li>
+                        }   
+                    </ul>
+                </li>
+            }
+        }
+    </ul>
+</aside>

@@ -1,0 +1,142 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Cổng giảng viên</title>
+    <link rel="icon" type="image/png" href="~/Imgs/logo_dhvinh.png" />
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Đồng bộ assets với Admin -->
+    <link href="~/admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/admin/css/style.css" rel="stylesheet" />
+
+    <!-- (Tuỳ chọn) FontAwesome/Summernote nếu bạn cần -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
+
+    <style>
+        /* Nhấn mạnh mục menu đang mở (nếu style.css chưa có) */
+        .sidebar .nav-link.active,
+        .sidebar .nav-link[aria-expanded="true"] {
+            color: #0d6efd;
+            font-weight: 600;
+        }
+        /* Fix khoảng trống khi header fixed-top */
+        .main {
+            padding-top: 90px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+
+        <div class="d-flex align-items-center justify-content-start" style="height: 90px;">
+            <a asp-area="GiangVien" asp-controller="Home" asp-action="Index" class="d-flex align-items-center text-decoration-none">
+                <img src="~/Imgs/Logodhv.webp" alt="Logo Trường Đại học Vinh"
+                     style="height: 50px; width: auto; margin-right: 12px; object-fit: contain;">
+                <span style="font-size: 20px; font-weight: 600; color: #003366;">Cổng giảng viên</span>
+            </a>
+        </div>
+
+        <!-- Thanh công cụ bên phải -->
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <!-- Tin nhắn / Thông báo -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span class="badge bg-success badge-number">3</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                        <li class="dropdown-header">
+                            Bạn có 3 tin nhắn mới
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Xem tất cả</span></a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="message-item">
+                            <a href="#">
+                                <div>
+                                    <h4>Maria Hudson</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>4 giờ trước</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="dropdown-footer"><a href="#">Tất cả tin nhắn</a></li>
+                    </ul>
+                </li>
+
+                <!-- Hồ sơ người dùng -->
+                <li class="nav-item dropdown pe-3">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <div class="profile-container"
+                             style="position: relative; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0;">
+                            <img src="~/img/logo1.jpg" alt="Profile" class="rounded-circle"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                            <i class="fa-solid fa-user" style="font-size: 24px; color: #6c757d; display: none;"></i>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>Giảng viên</h6>
+                            <span>Đại học Vinh</span>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" asp-area="GiangVien" asp-controller="HoSo" asp-action="Index">
+                                <i class="bi bi-person"></i><span>Hồ sơ của tôi</span>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Logout">
+                                <i class="bi bi-box-arrow-right"></i><span>Đăng xuất</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- End header tools -->
+
+    </header>
+    <!-- End Header -->
+    <!-- ======= Sidebar ======= -->
+    @* Sidebar trái giống admin, nhưng lấy menu theo MaVaiTro = 2 thông qua VC *@
+    @await Component.InvokeAsync("GiangVienMenu")
+    <!-- End Sidebar -->
+    <!-- ======= Main ======= -->
+    <main id="main" class="main">
+        @RenderBody()
+    </main>
+    <!-- End Main -->
+    <!-- Vendor JS Files (đồng bộ với admin) -->
+    <script src="~/admin/vendor/jquery/jquery.min.js"></script>
+    <script src="~/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/admin/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="~/admin/vendor/chart.js/chart.min.js"></script>
+    <script src="~/admin/vendor/echarts/echarts.min.js"></script>
+    <script src="~/admin/vendor/quill/quill.min.js"></script>
+    <script src="~/admin/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="~/admin/vendor/tinymce/tinymce.min.js"></script>
+    <script src="~/admin/vendor/php-email-form/validate.js"></script>
+
+    <!-- (Tuỳ chọn) CDN thêm nếu page cần -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
+
+    <script src="~/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

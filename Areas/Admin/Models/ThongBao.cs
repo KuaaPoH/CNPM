@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace aznews.Areas.Admin.Models
 {
@@ -12,14 +9,26 @@ namespace aznews.Areas.Admin.Models
     {
         [Key]
         public int MaTB { get; set; }
-        public string? TieuDe { get; set; }
+
+        [Required, StringLength(200)]
+        public string TieuDe { get; set; }
+
         public string? NoiDung { get; set; }
+
         public DateTime? NgayDang { get; set; }
+
+        [StringLength(100)]
         public string? LoaiThongBao { get; set; }
+
         public string? TepDinhKem { get; set; }
-        public int MaND { get; set; }
-        [ForeignKey("MaND")]
-        public NguoiDung? NguoiDung { get; set; }
+
+        // bạn đã đổi sang MaVaiTro trong DB
+        public int MaVaiTro { get; set; }
+
+        // để ẩn/hiện TB
         public bool TrangThai { get; set; } = true;
+
+        [ForeignKey(nameof(MaVaiTro))]
+        public VaiTro? VaiTro { get; set; }
     }
 }

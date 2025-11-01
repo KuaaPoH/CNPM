@@ -9,36 +9,24 @@ namespace aznews.Models
 
         public DbSet<AdminMenu> AdminMenus { get; set; }
         public DbSet<ThongBao> ThongBaos { get; set; }
-        public DbSet<NguoiDung> NguoiDungs { get; set; }
         public DbSet<VaiTro> VaiTros { get; set; }
         public DbSet<KhoaVien> KhoaViens { get; set; }
         public DbSet<Nganh> Nganhs { get; set; }
         public DbSet<LopHanhChinh> LopHanhChinhs { get; set; }
         public DbSet<GiangVien> GiangViens { get; set; }
+        public DbSet<SinhVien> SinhViens { get; set; }
+
+        // các bảng đào tạo mà bạn đã tạo
         public DbSet<HocPhan> HocPhans { get; set; }
         public DbSet<LopHocPhan> LopHocPhans { get; set; }
         public DbSet<DangKyLop> DangKyLops { get; set; }
-        public DbSet<SinhVien> SinhViens { get; set; }
         public DbSet<DiemDanh> DiemDanhs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder mb)
         {
             base.OnModelCreating(mb);
 
-            // ===== NguoiDung
-            mb.Entity<NguoiDung>(e =>
-            {
-                e.ToTable("NguoiDung");
-                e.Property(x => x.TenDangNhap).HasMaxLength(100).IsRequired();
-                e.Property(x => x.MatKhau).HasMaxLength(200).IsRequired();
-                e.HasIndex(x => x.TenDangNhap).IsUnique();
-
-                e.HasOne(x => x.VaiTro)
-                 .WithMany()                    // hoặc .WithMany(v => v.NguoiDungs) nếu bạn thêm navigation ngược
-                 .HasForeignKey(x => x.MaVaiTro)
-                 .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // ===== VaiTro
+            // VaiTro
             mb.Entity<VaiTro>(e =>
             {
                 e.ToTable("VaiTro");
@@ -46,7 +34,7 @@ namespace aznews.Models
                 e.HasIndex(x => x.TenVaiTro).IsUnique();
             });
 
-            // ===== Bảng khác (nếu có)
+            // AdminMenu
             mb.Entity<AdminMenu>(e =>
             {
                 e.ToTable("AdminMenu");
@@ -54,23 +42,53 @@ namespace aznews.Models
                 e.Property(x => x.IsActive).HasDefaultValue(true);
             });
 
-            mb.Entity<KhoaVien>(e =>
-            {
-                e.ToTable("KhoaVien");
-                // e.HasIndex(x => x.TenKhoaVien).IsUnique(); // bật nếu muốn khóa unique ở DB
-            });
+            // KhoaVien
+            mb.Entity<KhoaVien>().ToTable("KhoaVien");
 
+            // GiangVien
             mb.Entity<GiangVien>(e =>
             {
                 e.ToTable("GiangVien");
-                // e.HasIndex(x => x.MaSoGV).IsUnique();       // bật nếu muốn khóa unique ở DB
+                e.Property(x => x.TrangThai).HasDefaultValue(true);
+
+                e.HasOne(x => x.VaiTro)
+                 .WithMany(v => v.GiangViens)
+                 .HasForeignKey(x => x.MaVaiTro)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
+
+            // SinhVien
+            mb.Entity<SinhVien>(e =>
+            {
+                e.ToTable("SinhVien");
+                e.Property(x => x.TrangThai).HasDefaultValue(true);
+
+                e.HasOne(x => x.VaiTro)
+                 .WithMany(v => v.SinhViens)
+                 .HasForeignKey(x => x.MaVaiTro)
+                 .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // ThongBao
+            mb.Entity<ThongBao>(e =>
+            {
+                e.ToTable("ThongBao");
+                e.Property(x => x.TrangThai).HasDefaultValue(true);
+
+                e.HasOne(x => x.VaiTro)
+                 .WithMany(v => v.ThongBaos)
+                 .HasForeignKey(x => x.MaVaiTro)
+                 .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // HocPhan
             mb.Entity<HocPhan>(e =>
             {
                 e.ToTable("HocPhan");
                 e.Property(x => x.TenHP).HasMaxLength(100).IsRequired();
             });
 
+            // LopHocPhan
             mb.Entity<LopHocPhan>(e =>
             {
                 e.ToTable("LopHocPhan");
@@ -87,6 +105,8 @@ namespace aznews.Models
                  .HasForeignKey(x => x.MaGiangVien)
                  .OnDelete(DeleteBehavior.Restrict);
             });
+
+            // DangKyLop
             mb.Entity<DangKyLop>(e =>
             {
                 e.ToTable("DangKyLop");
@@ -102,10 +122,12 @@ namespace aznews.Models
                  .HasForeignKey(x => x.MaSinhVien)
                  .OnDelete(DeleteBehavior.Restrict);
             });
+
+            // DiemDanh
             mb.Entity<DiemDanh>(e =>
             {
                 e.ToTable("DiemDanh");
-                e.Property(x => x.TrangThai).HasConversion<byte>(); // enum -> tinyint
+                e.Property(x => x.TrangThai).HasConversion<byte>();
                 e.HasIndex(x => new { x.MaLHP, x.Ngay, x.MaSinhVien }).IsUnique();
 
                 e.HasOne(x => x.LopHocPhan)
@@ -118,9 +140,9 @@ namespace aznews.Models
                  .HasForeignKey(x => x.MaSinhVien)
                  .OnDelete(DeleteBehavior.Restrict);
             });
+
             mb.Entity<Nganh>().ToTable("Nganh");
             mb.Entity<LopHanhChinh>().ToTable("LopHanhChinh");
-            mb.Entity<ThongBao>().ToTable("ThongBao");
         }
     }
 }

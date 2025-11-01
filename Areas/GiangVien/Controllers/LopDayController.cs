@@ -16,26 +16,22 @@ namespace aznews.Areas.GiangVien.Controllers
         {
             const int pageSize = 10;
 
-            var username = HttpContext.Session.GetString("UserName");
-            if (string.IsNullOrEmpty(username)) return RedirectToAction("Login", "Account");
+            // lấy từ session do AccountController đã set
+            var maGV = HttpContext.Session.GetInt32("MaGV");
+            if (maGV == null) return RedirectToAction("Login", "Account", new { area = "" });
 
-            // Map NguoiDung -> GiangVien thông qua MaND
-            var gv = await _db.NguoiDungs
-                .Where(x => x.TenDangNhap == username)
-                .Join(_db.GiangViens, nd => nd.MaND, gv => gv.MaND, (nd, gv) => gv)
-                .AsNoTracking()
-                .FirstOrDefaultAsync();
-
-            if (gv == null) return Unauthorized();
-
-            // Lấy lớp GV đang dạy, Include HocPhan để hiển thị TenHP/SoTinChi
+            // lớp mà giảng viên này đang dạy
             var query = _db.LopHocPhans
                 .AsNoTracking()
                 .Include(x => x.HocPhan)
-                .Where(x => x.MaGiangVien == gv.MaGiangVien);
+                .Where(x => x.MaGiangVien == maGV.Value);
 
-            if (!string.IsNullOrWhiteSpace(hk)) query = query.Where(x => x.HocKy == hk);
-            if (!string.IsNullOrWhiteSpace(nam)) query = query.Where(x => x.NamHoc == nam);
+            // filter
+            if (!string.IsNullOrWhiteSpace(hk))
+                query = query.Where(x => x.HocKy == hk);
+
+            if (!string.IsNullOrWhiteSpace(nam))
+                query = query.Where(x => x.NamHoc == nam);
 
             if (!string.IsNullOrWhiteSpace(q))
             {
@@ -46,15 +42,15 @@ namespace aznews.Areas.GiangVien.Controllers
                     x.NamHoc.ToLower().Contains(kw));
             }
 
-            // Dropdown Năm học cho GV này
+            // dropdown năm học
             ViewBag.NamHocs = await _db.LopHocPhans
-                .Where(x => x.MaGiangVien == gv.MaGiangVien)
+                .Where(x => x.MaGiangVien == maGV.Value)
                 .Select(x => x.NamHoc)
                 .Distinct()
                 .OrderByDescending(x => x)
                 .ToListAsync();
 
-            // Phân trang
+            // phân trang
             int total = await query.CountAsync();
             int totalPages = (int)System.Math.Ceiling(total / (double)pageSize);
             if (page < 1) page = 1;

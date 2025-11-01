@@ -24,14 +24,12 @@ namespace aznews.Areas.Admin.Controllers
             _env = env;
         }
 
-        // ------------------ INDEX ------------------
+        // ========== LIST ==========
         public async Task<IActionResult> Index(string? searchString, string? loai, int page = 1)
         {
             const int pageSize = 10;
 
             var query = _context.ThongBaos
-                .Include(t => t.NguoiDung)
-                .ThenInclude(nd => nd.VaiTro)
                 .AsNoTracking()
                 .AsQueryable();
 
@@ -40,13 +38,17 @@ namespace aznews.Areas.Admin.Controllers
 
             if (!string.IsNullOrWhiteSpace(searchString))
             {
-                var keyword = searchString.Trim().ToLower();
-                query = query.Where(t => t.TieuDe != null && t.TieuDe.ToLower().Contains(keyword));
+                var kw = searchString.Trim().ToLower();
+                query = query.Where(t =>
+                    (t.TieuDe != null && t.TieuDe.ToLower().Contains(kw)) ||
+                    (t.NoiDung != null && t.NoiDung.ToLower().Contains(kw)));
             }
 
             int total = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(total / (double)pageSize);
             if (totalPages == 0) totalPages = 1;
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
 
             var list = await query
                 .OrderByDescending(t => t.NgayDang)
@@ -54,45 +56,49 @@ namespace aznews.Areas.Admin.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
+            // list loại để filter
+            ViewBag.ListLoai = await _context.ThongBaos
+                .Where(x => x.LoaiThongBao != null && x.LoaiThongBao != "")
+                .Select(x => x.LoaiThongBao)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToListAsync();
+
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = totalPages;
             ViewData["SearchString"] = searchString;
+            ViewData["Loai"] = loai;
 
             return View(list);
         }
 
-        // ------------------ TOGGLE TRẠNG THÁI ------------------
+        // ========== BẬT / TẮT ==========
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ToggleTrangThai(int id)
         {
             var tb = await _context.ThongBaos.FindAsync(id);
-            if (tb == null)
-                return NotFound();
+            if (tb == null) return NotFound();
 
             tb.TrangThai = !tb.TrangThai;
             _context.Update(tb);
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = tb.TrangThai
-                ? "Thông báo đã được hiển thị!"
-                : "Thông báo đã được ẩn!";
-
             return RedirectToAction(nameof(Index));
         }
 
-        // ------------------ CREATE ------------------
+        // ========== CREATE ==========
         [HttpGet]
         public IActionResult Create()
         {
-            var loaiList = _context.ThongBaos
-                .Select(t => t.LoaiThongBao)
-                .Where(l => !string.IsNullOrEmpty(l))
-                .Distinct()
-                .ToList();
-
-            ViewBag.LoaiThongBaoList = new SelectList(loaiList);
+            ViewBag.LoaiThongBaoList = new SelectList(
+                _context.ThongBaos
+                    .Where(x => x.LoaiThongBao != null && x.LoaiThongBao != "")
+                    .Select(x => x.LoaiThongBao)
+                    .Distinct()
+                    .ToList()
+            );
             return View();
         }
 
@@ -102,65 +108,110 @@ namespace aznews.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var loaiList = _context.ThongBaos
-                    .Select(t => t.LoaiThongBao)
-                    .Where(l => !string.IsNullOrEmpty(l))
-                    .Distinct()
-                    .ToList();
-
-                ViewBag.LoaiThongBaoList = new SelectList(loaiList);
+                ViewBag.LoaiThongBaoList = new SelectList(
+                    _context.ThongBaos
+                        .Where(x => x.LoaiThongBao != null && x.LoaiThongBao != "")
+                        .Select(x => x.LoaiThongBao)
+                        .Distinct()
+                        .ToList()
+                );
                 return View(model);
             }
 
-            try
+            // mặc định: thông báo do admin (1) đăng
+            model.MaVaiTro = 1;
+            model.NgayDang = DateTime.Now;
+            if (model.TrangThai == false) model.TrangThai = true;
+
+            // upload file
+            if (file != null && file.Length > 0)
             {
-                model.MaND = 1;
-                model.NgayDang = DateTime.Now;
+                string uploads = Path.Combine(_env.WebRootPath, "uploads");
+                if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
 
-                // --- Xử lý file ---
-                if (file != null && file.Length > 0)
-                {
-                    string uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
-                    if (!Directory.Exists(uploadsFolder))
-                        Directory.CreateDirectory(uploadsFolder);
+                string ext = Path.GetExtension(file.FileName);
+                string name = Path.GetFileNameWithoutExtension(file.FileName);
+                string finalName = $"{name}_{DateTime.Now:yyyyMMddHHmmss}{ext}";
+                foreach (var c in Path.GetInvalidFileNameChars())
+                    finalName = finalName.Replace(c, '_');
 
-                    string originalFileName = Path.GetFileNameWithoutExtension(file.FileName);
-                    string extension = Path.GetExtension(file.FileName);
-                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-                    string safeFileName = $"{originalFileName}_{timestamp}{extension}";
+                string path = Path.Combine(uploads, finalName);
+                using (var stream = new FileStream(path, FileMode.Create))
+                    await file.CopyToAsync(stream);
 
-                    foreach (var c in Path.GetInvalidFileNameChars())
-                        safeFileName = safeFileName.Replace(c, '_');
-
-                    string filePath = Path.Combine(uploadsFolder, safeFileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-
-                    model.TepDinhKem = safeFileName;
-                }
-
-                _context.ThongBaos.Add(model);
-                await _context.SaveChangesAsync();
-
-                TempData["Success"] = "Thêm thông báo thành công!";
-                return RedirectToAction(nameof(Index));
+                model.TepDinhKem = finalName;
             }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "Lỗi khi lưu thông báo: " + ex.Message);
-                var loaiList = _context.ThongBaos
-                    .Select(t => t.LoaiThongBao)
-                    .Where(l => !string.IsNullOrEmpty(l))
-                    .Distinct()
-                    .ToList();
-                ViewBag.LoaiThongBaoList = new SelectList(loaiList);
-                return View(model);
-            }
+
+            _context.ThongBaos.Add(model);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // ------------------ DELETE ------------------
+        // ========== EDIT ==========
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var tb = await _context.ThongBaos.FindAsync(id);
+            if (tb == null) return NotFound();
+
+            ViewBag.LoaiThongBaoList = new SelectList(
+                _context.ThongBaos
+                    .Where(x => x.LoaiThongBao != null && x.LoaiThongBao != "")
+                    .Select(x => x.LoaiThongBao)
+                    .Distinct()
+                    .ToList(),
+                tb.LoaiThongBao
+            );
+
+            return View(tb);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ThongBao model, string? RemoveFile, IFormFile? file)
+        {
+            var tb = await _context.ThongBaos.FindAsync(model.MaTB);
+            if (tb == null) return NotFound();
+
+            tb.TieuDe = model.TieuDe;
+            tb.NoiDung = model.NoiDung;
+            tb.LoaiThongBao = model.LoaiThongBao;
+            tb.TrangThai = model.TrangThai;
+            tb.MaVaiTro = 1; // vẫn là admin đăng
+
+            // xóa file cũ
+            if (RemoveFile == "true" && !string.IsNullOrEmpty(tb.TepDinhKem))
+            {
+                string old = Path.Combine(_env.WebRootPath, "uploads", tb.TepDinhKem);
+                if (System.IO.File.Exists(old)) System.IO.File.Delete(old);
+                tb.TepDinhKem = null;
+            }
+
+            // upload file mới
+            if (file != null && file.Length > 0)
+            {
+                string uploads = Path.Combine(_env.WebRootPath, "uploads");
+                if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+
+                string ext = Path.GetExtension(file.FileName);
+                string name = Path.GetFileNameWithoutExtension(file.FileName);
+                string finalName = $"{name}_{DateTime.Now:yyyyMMddHHmmss}{ext}";
+
+                string path = Path.Combine(uploads, finalName);
+                using (var stream = new FileStream(path, FileMode.Create))
+                    await file.CopyToAsync(stream);
+
+                tb.TepDinhKem = finalName;
+            }
+
+            _context.Update(tb);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // ========== DELETE ==========
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -170,77 +221,14 @@ namespace aznews.Areas.Admin.Controllers
 
             if (!string.IsNullOrEmpty(tb.TepDinhKem))
             {
-                string filePath = Path.Combine(_env.WebRootPath, "uploads", tb.TepDinhKem);
-                if (System.IO.File.Exists(filePath))
-                    System.IO.File.Delete(filePath);
+                string path = Path.Combine(_env.WebRootPath, "uploads", tb.TepDinhKem);
+                if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
             }
 
             _context.ThongBaos.Remove(tb);
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = "Xóa thông báo thành công!";
             return RedirectToAction(nameof(Index));
         }
-
-        // ------------------ EDIT ------------------
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var tb = await _context.ThongBaos.FindAsync(id);
-            if (tb == null)
-                return NotFound();
-
-            var loaiList = _context.ThongBaos
-                .Select(t => t.LoaiThongBao)
-                .Where(l => !string.IsNullOrEmpty(l))
-                .Distinct()
-                .ToList();
-
-            ViewBag.LoaiThongBaoList = new SelectList(loaiList, tb.LoaiThongBao);
-            return View(tb);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ThongBao model, string RemoveFile, IFormFile file)
-        {
-            var tb = await _context.ThongBaos.FindAsync(model.MaTB);
-            if (tb == null) return NotFound();
-
-            tb.TieuDe = model.TieuDe;
-            tb.LoaiThongBao = model.LoaiThongBao;
-            tb.NoiDung = model.NoiDung;
-
-            // Xóa tệp nếu người dùng đánh dấu RemoveFile
-            if (RemoveFile == "true")
-            {
-                if (!string.IsNullOrEmpty(tb.TepDinhKem))
-                {
-                    var path = Path.Combine(_env.WebRootPath, "uploads", tb.TepDinhKem);
-                    if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
-                    tb.TepDinhKem = null;
-                }
-            }
-
-            // Upload tệp mới nếu có
-            if (file != null && file.Length > 0)
-            {
-                var fileName = Path.GetFileName(file.FileName);
-                var path = Path.Combine(_env.WebRootPath, "uploads", fileName);
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-                tb.TepDinhKem = fileName;
-            }
-
-            _context.Update(tb);
-            await _context.SaveChangesAsync();
-
-            TempData["SuccessMessage"] = "Cập nhật thành công!";
-            return RedirectToAction(nameof(Index));
-        }
-
-
     }
 }

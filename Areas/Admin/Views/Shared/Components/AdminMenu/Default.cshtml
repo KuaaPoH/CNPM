@@ -1,15 +1,39 @@
 @using aznews.Areas.Admin.Models
 @model IList<AdminMenu>
+@using System
+
+@{
+    var curArea = (ViewContext.RouteData.Values["area"] ?? "").ToString();
+    var curController = (ViewContext.RouteData.Values["controller"] ?? "").ToString();
+    var curAction = (ViewContext.RouteData.Values["action"] ?? "").ToString();
+}
 
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
-        @foreach (var item in Model.Where(m => m.IsActive == true && m.ParentLevel == 0))
+        @foreach (var item in Model.Where(m => m.IsActive == true && m.ParentLevel == 0).OrderBy(m => m.ItemOrder))
         {
-            var subMenus = Model.Where(m => m.ParentLevel == item.AdminMenuID).ToList();
-            if (subMenus.Count == 0)
+            var subMenus = Model
+            .Where(m => m.IsActive == true && m.ParentLevel == item.AdminMenuID)
+            .OrderBy(m => m.ItemOrder)
+            .ToList();
+
+            bool isParentActive = subMenus.Any(s =>
+            string.Equals(s.AreaName, curArea, StringComparison.OrdinalIgnoreCase) &&
+            string.Equals(s.ControllerName, curController, StringComparison.OrdinalIgnoreCase) &&
+            string.Equals(s.ActionName, curAction, StringComparison.OrdinalIgnoreCase));
+
+            if (!subMenus.Any())
             {
+                bool isActive =
+                string.Equals(item.AreaName, curArea, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(item.ControllerName, curController, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(item.ActionName, curAction, StringComparison.OrdinalIgnoreCase);
+
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="@item.AreaName" asp-controller="@item.ControllerName" asp-action="@item.ActionName">
+                    <a class="nav-link @(isActive ? "" : "collapsed")"
+                       asp-area="@item.AreaName"
+                       asp-controller="@item.ControllerName"
+                       asp-action="@item.ActionName">
                         <i class="@item.Icon"></i>
                         <span>@item.ItemName</span>
                     </a>
@@ -17,16 +41,34 @@
             }
             else
             {
+                var linkClass = isParentActive ? "nav-link" : "nav-link collapsed";
+                var ulClass = isParentActive ? "nav-content collapse show" : "nav-content collapse";
+                var collapseId = $"submenu-{item.AdminMenuID}";
+
                 <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#submenu-@item.AdminMenuID" data-bs-toggle="collapse" href="#">
-                        <i class="@item.Icon"></i><span>@item.ItemName</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <a class="@linkClass"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#@collapseId"
+                       href="#">
+                        <i class="@item.Icon"></i>
+                        <span>@item.ItemName</span>
+                        <i class="bi bi-chevron-down ms-auto"></i>
                     </a>
-                    <ul id="submenu-@item.AdminMenuID" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <ul id="@collapseId" class="@ulClass" data-bs-parent="#sidebar-nav">
                         @foreach (var sub in subMenus)
                         {
+                            bool subActive =
+                            string.Equals(sub.AreaName, curArea, StringComparison.OrdinalIgnoreCase) &&
+                            string.Equals(sub.ControllerName, curController, StringComparison.OrdinalIgnoreCase) &&
+                            string.Equals(sub.ActionName, curAction, StringComparison.OrdinalIgnoreCase);
+
                             <li>
-                                <a asp-area="@sub.AreaName" asp-controller="@sub.ControllerName" asp-action="@sub.ActionName">
-                                    <i class="@sub.Icon"></i><span>@sub.ItemName</span>
+                                <a class="@(subActive ? "active" : "")"
+                                   asp-area="@sub.AreaName"
+                                   asp-controller="@sub.ControllerName"
+                                   asp-action="@sub.ActionName">
+                                    <i class="@sub.Icon"></i>
+                                    <span>@sub.ItemName</span>
                                 </a>
                             </li>
                         }

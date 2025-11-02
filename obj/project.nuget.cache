@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xa0fJQOVoH8=",
+  "dgSpecHash": "CPeWK5jBB0g=",
   "success": true,
-  "projectFilePath": "D:\\CNPM1\\aznews.csproj",
+  "projectFilePath": "D:\\CNPM\\aznews.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KENN\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\KENN\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

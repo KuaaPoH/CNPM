@@ -1149,6 +1149,7 @@ wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
 wwwroot\scss\Readme.txt
 wwwroot\uploads\83731e33-b92d-4b0d-8e1b-9ea1ab0ed4dc.pdf
+wwwroot\uploads\CƠ SỞ DỮ LIỆU_20251102001821.docx
 wwwroot\uploads\de0901ba-bbba-4153-8ca4-4b0a44d51722.pdf
 wwwroot\vendor\apexcharts\apexcharts.amd.js
 wwwroot\vendor\apexcharts\apexcharts.common.js

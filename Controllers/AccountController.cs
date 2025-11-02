@@ -24,14 +24,17 @@ namespace aznews.Controllers
 
             username = username.Trim();
 
-            // 1) Admin ảo
-            if (username.Equals("admin", StringComparison.OrdinalIgnoreCase)
-                && password == "123456")
+            var admin = await _db.Admins
+           .Include(a => a.VaiTro)
+           .FirstOrDefaultAsync(a => a.TenDangNhap == username && a.MatKhau == password && a.TrangThai);
+
+            if (admin != null)
             {
-                HttpContext.Session.SetInt32("Role", 1);
-                HttpContext.Session.SetString("UserName", "admin");
+                HttpContext.Session.SetString("UserName", admin.TenDangNhap);
+                HttpContext.Session.SetInt32("Role", admin.MaVaiTro);
                 return RedirectToAction("Index", "Home", new { area = "Admin" });
             }
+
 
             // 2) Giảng viên: MaSoGV + MatKhau, TrangThai = 1
             var gv = await _db.GiangViens

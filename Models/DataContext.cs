@@ -16,7 +16,8 @@ namespace aznews.Models
         public DbSet<GiangVien> GiangViens { get; set; }
         public DbSet<SinhVien> SinhViens { get; set; }
 
-        // các bảng đào tạo mà bạn đã tạo
+        public DbSet<Admin> Admins { get; set; }
+
         public DbSet<HocPhan> HocPhans { get; set; }
         public DbSet<LopHocPhan> LopHocPhans { get; set; }
         public DbSet<DangKyLop> DangKyLops { get; set; }
@@ -140,6 +141,18 @@ namespace aznews.Models
                  .HasForeignKey(x => x.MaSinhVien)
                  .OnDelete(DeleteBehavior.Restrict);
             });
+            mb.Entity<Admin>(e =>
+            {
+                e.ToTable("Admin");
+                e.HasIndex(x => x.TenDangNhap).IsUnique();
+                e.Property(x => x.TrangThai).HasDefaultValue(true);
+
+                e.HasOne(x => x.VaiTro)
+                 .WithMany()
+                 .HasForeignKey(x => x.MaVaiTro)
+                 .OnDelete(DeleteBehavior.Restrict);
+            });
+
 
             mb.Entity<Nganh>().ToTable("Nganh");
             mb.Entity<LopHanhChinh>().ToTable("LopHanhChinh");

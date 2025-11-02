@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\CNPM1\\aznews.csproj": {}
+    "D:\\CNPM\\aznews.csproj": {}
   },
   "projects": {
-    "D:\\CNPM1\\aznews.csproj": {
+    "D:\\CNPM\\aznews.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CNPM1\\aznews.csproj",
+        "projectUniqueName": "D:\\CNPM\\aznews.csproj",
         "projectName": "aznews",
-        "projectPath": "D:\\CNPM1\\aznews.csproj",
+        "projectPath": "D:\\CNPM\\aznews.csproj",
         "packagesPath": "C:\\Users\\KENN\\.nuget\\packages\\",
-        "outputPath": "D:\\CNPM1\\obj\\",
+        "outputPath": "D:\\CNPM\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

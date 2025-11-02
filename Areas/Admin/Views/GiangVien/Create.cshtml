@@ -1,0 +1,75 @@
+﻿@model aznews.Areas.Admin.Models.GiangVien
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Thêm giảng viên";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h4 class="fw-bold text-primary mb-3 text-uppercase">Thêm giảng viên</h4>
+
+        <form asp-area="Admin" asp-controller="GiangVien" asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Mã giảng viên</label>
+                    <input asp-for="MaSoGV" class="form-control" />
+                    <span asp-validation-for="MaSoGV" class="text-danger"></span>
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label">Họ tên</label>
+                    <input asp-for="HoTen" class="form-control" />
+                    <span asp-validation-for="HoTen" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Số điện thoại</label>
+                    <input asp-for="SoDienThoai" class="form-control" />
+                    <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Học vị</label>
+                    <input asp-for="HocVi" class="form-control" />
+                    <span asp-validation-for="HocVi" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Chuyên môn</label>
+                    <input asp-for="ChuyenMon" class="form-control" />
+                    <span asp-validation-for="ChuyenMon" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Mật khẩu</label>
+                    <input asp-for="MatKhau" class="form-control" />
+                    <span asp-validation-for="MatKhau" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Trạng thái</label>
+                    <select asp-for="TrangThai" class="form-select">
+                        <option value="true">Hoạt động</option>
+                        <option value="false">Khóa</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i>Lưu
+                </button>
+                <a asp-area="Admin" asp-controller="GiangVien" asp-action="Index" class="btn btn-outline-secondary">
+                    Quay lại
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

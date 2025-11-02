@@ -1,0 +1,139 @@
+﻿@model IEnumerable<aznews.Areas.Admin.Models.SinhVien>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    int pageSize = ViewBag.PageSize ?? 10;
+    string q = ViewBag.Q as string ?? "";
+    int stt = (page - 1) * pageSize + 1;
+
+    var tokens = new List<string>();
+    void AddDots() { if (tokens.Count == 0 || tokens[^1] != "...") tokens.Add("..."); }
+
+    if (totalPages <= 7)
+    {
+        for (int i = 1; i <= totalPages; i++) tokens.Add(i.ToString());
+    }
+    else
+    {
+        tokens.Add("1");
+        if (page > 4) AddDots();
+        int start = Math.Max(2, page - 1);
+        int end = Math.Min(totalPages - 1, page + 1);
+        for (int i = start; i <= end; i++) tokens.Add(i.ToString());
+        if (page < totalPages - 3) AddDots();
+        tokens.Add(totalPages.ToString());
+    }
+}
+
+<section class="section">
+    <div class="card">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between mb-3">
+                <h5 class="fw-bold m-0">Quản lý sinh viên</h5>
+                <a asp-area="Admin" asp-controller="SinhVien" asp-action="Create" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-lg"></i> Thêm sinh viên
+                </a>
+            </div>
+
+            <form class="mb-3 d-flex gap-2" method="get">
+                <input class="form-control" name="q" value="@q" placeholder="MSSV / Họ tên / Email..." />
+                <button class="btn btn-outline-secondary">Tìm</button>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã SV</th>
+                            <th>Họ tên</th>
+                            <th>Giới tính</th>
+                            <th>Email</th>
+                            <th>Điện thoại</th>
+                            <th>Trạng thái</th>
+                            <th width="150">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var sv in Model)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td>@sv.MaSoSV</td>
+                                <td>@sv.HoTen</td>
+                                <td>@sv.GioiTinh</td>
+                                <td>@sv.Email</td>
+                                <td>@sv.SoDienThoai</td>
+                                <td>
+                                    @if (sv.TrangThai)
+                                    {
+                                        <span class="badge bg-success">Hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Khóa</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@sv.MaSinhVien"
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@sv.MaSinhVien" method="post"
+                                          class="d-inline" onsubmit="return confirm('Xóa sinh viên này?');">
+                                        <button class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav class="d-flex justify-content-center mt-3">
+                    <ul class="pagination pager-ellipses">
+                        <li class="page-item @(page == 1 ? "disabled" : "")">
+                            <a class="page-link" asp-route-page="@(page - 1)" asp-route-q="@q">&lt;</a>
+                        </li>
+                        @foreach (var t in tokens)
+                        {
+                            if (t == "...")
+                            {
+                                <li class="page-item disabled"><span class="page-link">…</span></li>
+                            }
+                            else
+                            {
+                                var p = int.Parse(t);
+                                <li class="page-item @(p == page ? "active" : "")">
+                                    <a class="page-link" asp-route-page="@p" asp-route-q="@q">@p</a>
+                                </li>
+                            }
+                        }
+                        <li class="page-item @(page == totalPages ? "disabled" : "")">
+                            <a class="page-link" asp-route-page="@(page + 1)" asp-route-q="@q">&gt;</a>
+                        </li>
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .pager-ellipses .page-link {
+        color: #111
+    }
+
+    .pager-ellipses .page-item.active .page-link {
+        background: #111;
+        border-color: #111;
+        color: #fff
+    }
+</style>

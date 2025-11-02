@@ -1,0 +1,149 @@
+﻿@model IEnumerable<aznews.Areas.Admin.Models.GiangVien>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    var curPage = ViewBag.Page ?? 1;
+    var totalPages = ViewBag.TotalPages ?? 1;
+    var q = ViewBag.Q as string ?? "";
+    int stt = ((int)curPage - 1) * (ViewBag.PageSize ?? 10) + 1;
+
+    // build tokens giống bạn đang dùng
+    var tokens = new List<string>();
+    void AddDots() { if (tokens.Count == 0 || tokens[^1] != "...") tokens.Add("..."); }
+
+    if (totalPages <= 7)
+    {
+        for (int i = 1; i <= totalPages; i++) tokens.Add(i.ToString());
+    }
+    else
+    {
+        tokens.Add("1");
+        if (curPage > 4) AddDots();
+        int start = Math.Max(2, curPage - 1);
+        int end = Math.Min(totalPages - 1, curPage + 1);
+        for (int i = start; i <= end; i++) tokens.Add(i.ToString());
+        if (curPage < totalPages - 3) AddDots();
+        tokens.Add(totalPages.ToString());
+    }
+}
+
+<section class="section">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between mb-3">
+                <h4 class="fw-bold text-primary mb-0 text-uppercase">Quản lý giảng viên</h4>
+                <a asp-area="Admin" asp-controller="GiangVien" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-1"></i>Thêm giảng viên
+                </a>
+            </div>
+
+            <form method="get" class="input-group mb-3">
+                <input type="text" name="q" value="@q" class="form-control" placeholder="Tìm mã GV / họ tên / email...">
+                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Mã GV</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>SĐT</th>
+                            <th>Chuyên môn</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var gv in Model)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td class="fw-semibold">@gv.MaSoGV</td>
+                                <td class="text-start">@gv.HoTen</td>
+                                <td>@gv.Email</td>
+                                <td>@gv.SoDienThoai</td>
+                                <td>@gv.ChuyenMon</td>
+                                <td>
+                                    @if (gv.TrangThai)
+                                    {
+                                        <span class="badge bg-success">Hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Khóa</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@gv.MaGiangVien" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <form asp-action="Delete" method="post" class="d-inline"
+                                          onsubmit="return confirm('Xóa giảng viên @gv.HoTen ?');">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@gv.MaGiangVien" />
+                                        <button class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav class="d-flex justify-content-center mt-3">
+                    <ul class="pagination pager-ellipses">
+                        <li class="page-item @(curPage == 1 ? "disabled" : "")">
+                            <a class="page-link"
+                               asp-route-page="@(curPage - 1)"
+                               asp-route-q="@q">&lt;</a>
+                        </li>
+                        @foreach (var t in tokens)
+                        {
+                            if (t == "...")
+                            {
+                                <li class="page-item disabled"><span class="page-link">…</span></li>
+                            }
+                            else
+                            {
+                                var p = int.Parse(t);
+                                <li class="page-item @(p == curPage ? "active" : "")">
+                                    <a class="page-link"
+                                       asp-route-page="@p"
+                                       asp-route-q="@q">@p</a>
+                                </li>
+                            }
+                        }
+                        <li class="page-item @(curPage == totalPages ? "disabled" : "")">
+                            <a class="page-link"
+                               asp-route-page="@(curPage + 1)"
+                               asp-route-q="@q">&gt;</a>
+                        </li>
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .pager-ellipses .page-link {
+        border-radius: 8px;
+        min-width: 36px;
+        text-align: center;
+        color: #111 !important;
+    }
+
+    .pager-ellipses .page-item.active .page-link {
+        color: #fff !important;
+        background: #111;
+        border-color: #111;
+    }
+</style>

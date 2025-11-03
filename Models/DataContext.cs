@@ -9,7 +9,6 @@ namespace aznews.Models
 
         public DbSet<AdminMenu> AdminMenus { get; set; }
         public DbSet<ThongBao> ThongBaos { get; set; }
-        public DbSet<NguoiDung> NguoiDungs { get; set; }
         public DbSet<VaiTro> VaiTros { get; set; }
         public DbSet<KhoaVien> KhoaViens { get; set; }
         public DbSet<Nganh> Nganhs { get; set; }

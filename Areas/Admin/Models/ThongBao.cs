@@ -19,7 +19,7 @@ namespace aznews.Areas.Admin.Models
         public string? TepDinhKem { get; set; }
         public int MaND { get; set; }
         [ForeignKey("MaND")]
-        public NguoiDung? NguoiDung { get; set; }
+        public MaVaiTro? MaVaitro { get; set; }
         public bool TrangThai { get; set; } = true;
     }
 }

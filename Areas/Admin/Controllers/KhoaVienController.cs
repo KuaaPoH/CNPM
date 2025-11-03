@@ -70,18 +70,45 @@ namespace aznews.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(KhoaVien model)
         {
-            if (!ModelState.IsValid) return View(model);
+            var ten = model.TenKhoaVien?.Trim();
+            var diachi = model.DiaChi?.Trim();
+            var email = model.Email?.Trim();
+            var sdt = model.DienThoai?.Trim();
 
-            if (await _context.KhoaViens.AnyAsync(k => k.TenKhoaVien == model.TenKhoaVien))
+            if (string.IsNullOrWhiteSpace(ten))
+                ModelState.AddModelError(nameof(model.TenKhoaVien), "Tên khoa viện không được để trống.");
+
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Tên khoa viện đã tồn tại.");
-                return View(model);
+ 
+                bool nameExist = await _context.KhoaViens
+                    .AnyAsync(x => x.TenKhoaVien != null && x.TenKhoaVien.ToLower() == ten!.ToLower());
+
+                if (nameExist)
+                    ModelState.AddModelError(nameof(model.TenKhoaVien), "Tên khoa viện đã tồn tại.");
+
+                if (!string.IsNullOrEmpty(email))
+                {
+                    bool emailExist = await _context.KhoaViens
+                        .AnyAsync(x => x.Email != null && x.Email.ToLower() == email.ToLower());
+
+                    if (emailExist)
+                        ModelState.AddModelError(nameof(model.Email), "Email đã tồn tại.");
+                }
             }
+
+            if (!ModelState.IsValid)
+                return View(model);
+            model.TenKhoaVien = ten;
+            model.DiaChi = diachi;
+            model.Email = email;
+            model.DienThoai = sdt;
 
             _context.KhoaViens.Add(model);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

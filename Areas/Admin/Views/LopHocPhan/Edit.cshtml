@@ -1,0 +1,51 @@
+﻿@using aznews.Areas.Admin.Models
+@model LopHocPhan
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Sửa lớp học phần";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h4 class="fw-bold text-primary mb-3">Sửa lớp học phần</h4>
+
+        <form asp-action="Edit" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="MaLHP" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-6">
+                <label class="form-label">Học phần</label>
+                <select class="form-select" asp-for="MaHP" asp-items="ViewBag.HocPhanList"></select>
+                <span asp-validation-for="MaHP" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Giảng viên</label>
+                <select class="form-select" asp-for="MaGiangVien" asp-items="ViewBag.GiangVienList"></select>
+                <span asp-validation-for="MaGiangVien" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Học kỳ</label>
+                <select class="form-select" asp-for="HocKy" asp-items="ViewBag.HocKyList"></select>
+                <span asp-validation-for="HocKy" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Năm học</label>
+                <input class="form-control" asp-for="NamHoc" />
+                <span asp-validation-for="NamHoc" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+                <button class="btn btn-primary"><i class="bi bi-check2 me-1"></i>Lưu</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

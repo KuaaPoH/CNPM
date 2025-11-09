@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\CNPM\\aznews.csproj": {}
+    "C:\\Users\\asus\\Documents\\ĐẠI HỌC\\NĂM 4\\HỌC KỲ 1\\CÔNG NGHỆ PHẦN MỀM\\ĐỒ ÁN\\CHUONGTRINH\\CNPM\\aznews.csproj": {}
   },
   "projects": {
-    "D:\\CNPM\\aznews.csproj": {
+    "C:\\Users\\asus\\Documents\\ĐẠI HỌC\\NĂM 4\\HỌC KỲ 1\\CÔNG NGHỆ PHẦN MỀM\\ĐỒ ÁN\\CHUONGTRINH\\CNPM\\aznews.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CNPM\\aznews.csproj",
+        "projectUniqueName": "C:\\Users\\asus\\Documents\\ĐẠI HỌC\\NĂM 4\\HỌC KỲ 1\\CÔNG NGHỆ PHẦN MỀM\\ĐỒ ÁN\\CHUONGTRINH\\CNPM\\aznews.csproj",
         "projectName": "aznews",
-        "projectPath": "D:\\CNPM\\aznews.csproj",
-        "packagesPath": "C:\\Users\\KENN\\.nuget\\packages\\",
-        "outputPath": "D:\\CNPM\\obj\\",
+        "projectPath": "C:\\Users\\asus\\Documents\\ĐẠI HỌC\\NĂM 4\\HỌC KỲ 1\\CÔNG NGHỆ PHẦN MỀM\\ĐỒ ÁN\\CHUONGTRINH\\CNPM\\aznews.csproj",
+        "packagesPath": "C:\\Users\\asus\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\asus\\Documents\\ĐẠI HỌC\\NĂM 4\\HỌC KỲ 1\\CÔNG NGHỆ PHẦN MỀM\\ĐỒ ÁN\\CHUONGTRINH\\CNPM\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\KENN\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -43,8 +39,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.300"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -104,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.415/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

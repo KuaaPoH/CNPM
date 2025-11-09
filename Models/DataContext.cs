@@ -87,6 +87,8 @@ namespace aznews.Models
             {
                 e.ToTable("HocPhan");
                 e.Property(x => x.TenHP).HasMaxLength(100).IsRequired();
+                e.Property(x => x.SoTinChi).IsRequired();
+                e.HasIndex(x => x.TenHP).IsUnique();
             });
 
             // LopHocPhan
@@ -105,6 +107,7 @@ namespace aznews.Models
                  .WithMany()
                  .HasForeignKey(x => x.MaGiangVien)
                  .OnDelete(DeleteBehavior.Restrict);
+                 e.HasIndex(x => new { x.MaHP, x.MaGiangVien, x.HocKy, x.NamHoc }).IsUnique();
             });
 
             // DangKyLop

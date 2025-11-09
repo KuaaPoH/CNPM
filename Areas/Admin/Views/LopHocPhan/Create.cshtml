@@ -1,0 +1,56 @@
+﻿@using aznews.Areas.Admin.Models
+@model LopHocPhan
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Mở lớp học phần";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h4 class="fw-bold text-primary mb-3">Mở lớp học phần</h4>
+
+        <form asp-action="Create" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-6">
+                <label class="form-label">Học phần</label>
+                <select class="form-select" asp-for="MaHP" asp-items="ViewBag.HocPhanList">
+                    <option value="">-- Chọn học phần --</option>
+                </select>
+                <span asp-validation-for="MaHP" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Giảng viên</label>
+                <select class="form-select" asp-for="MaGiangVien" asp-items="ViewBag.GiangVienList">
+                    <option value="">-- Chọn giảng viên --</option>
+                </select>
+                <span asp-validation-for="MaGiangVien" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Học kỳ</label>
+                <select class="form-select" asp-for="HocKy" asp-items="ViewBag.HocKyList">
+                    <option value="">-- Chọn --</option>
+                </select>
+                <span asp-validation-for="HocKy" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Năm học</label>
+                <input class="form-control" asp-for="NamHoc" placeholder="VD: 2024-2025" />
+                <span asp-validation-for="NamHoc" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+                <button class="btn btn-primary"><i class="bi bi-check2 me-1"></i>Lưu</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Huỷ</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -3,146 +3,219 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Quản lý lớp học phần";
-    int cur = ViewBag.Page ?? 1;
-    int size = ViewBag.PageSize ?? 10;
+    int page = ViewBag.Page ?? 1;
+    int pageSize = ViewBag.PageSize ?? 10;
     int totalPages = ViewBag.TotalPages ?? 1;
     string q = ViewBag.Q as string ?? "";
-    string hk = ViewBag.HK as string ?? "";
-    string nam = ViewBag.NAM as string ?? "";
-    int stt = (cur - 1) * size + 1;
+
+    int stt = (page - 1) * pageSize + 1;
 
     var tokens = new List<string>();
-    void dots() { if (tokens.Count == 0 || tokens[^1] != "...") tokens.Add("..."); }
+    void AddDots() { if (tokens.Count == 0 || tokens[^1] != "...") tokens.Add("..."); }
     if (totalPages <= 7) { for (int p = 1; p <= totalPages; p++) tokens.Add(p.ToString()); }
     else
     {
         tokens.Add("1");
-        if (cur > 4) dots();
-        int start = Math.Max(2, cur - 1);
-        int end = Math.Min(totalPages - 1, cur + 1);
+        if (page > 4) AddDots();
+        int start = Math.Max(2, page - 1);
+        int end = Math.Min(totalPages - 1, page + 1);
         for (int p = start; p <= end; p++) tokens.Add(p.ToString());
-        if (cur < totalPages - 3) dots();
+        if (page < totalPages - 3) AddDots();
         tokens.Add(totalPages.ToString());
     }
 
-    var hkList = ViewBag.HocKys as List<string> ?? new List<string>();
-    var namList = ViewBag.NamHocs as List<string> ?? new List<string>();
+    string LoaiText(LopLoai? loai) => loai switch
+    {
+        LopLoai.LT => "LT",
+        LopLoai.TH => "TH",
+        LopLoai.DO_AN => "Đồ án",
+        _ => "-"
+    };
+
+    var qHK = (string?)Context.Request.Query["hk"];
+    var qNam = (string?)Context.Request.Query["nam"];
+    var qLoai = (string?)Context.Request.Query["loai"];
 }
 
 <section class="section">
-    <div class="card shadow-sm">
-        <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="mb-0 text-primary fw-bold">Quản lý lớp học phần</h4>
-                <a asp-area="Admin" asp-controller="LopHocPhan" asp-action="Create" class="btn btn-primary">
-                    <i class="bi bi-plus-lg me-1"></i> Mở lớp học phần
-                </a>
-            </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold text-primary text-uppercase mb-0">Quản lý lớp học phần</h4>
+                        <a asp-area="Admin" asp-controller="LopHocPhan" asp-action="Create" class="btn btn-primary">
+                            <i class="bi bi-plus-lg me-1"></i> Thêm mới
+                        </a>
+                    </div>
 
-            <form method="get" class="row g-2 align-items-end mb-3">
-                <div class="col-md-4">
-                    <label class="form-label">Tìm kiếm</label>
-                    <input class="form-control" name="q" value="@q" placeholder="Tên học phần / tên giảng viên..." />
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Học kỳ</label>
-                    <select class="form-select" name="hk">
-                        <option value="">Tất cả</option>
-                        @foreach (var x in hkList)
-                        {
-                            <option value="@x" selected="@(x == hk)">@x</option>
-                        }
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Năm học</label>
-                    <select class="form-select" name="nam">
-                        <option value="">Tất cả</option>
-                        @foreach (var x in namList)
-                        {
-                            <option value="@x" selected="@(x == nam)">@x</option>
-                        }
-                    </select>
-                </div>
-                <div class="col-md-2 d-grid">
-                    <button class="btn btn-outline-secondary"><i class="bi bi-search me-1"></i> Lọc</button>
-                </div>
-                <input type="hidden" name="page" value="1" />
-            </form>
+                    <form asp-area="Admin" asp-controller="LopHocPhan" asp-action="Index" method="get" class="row g-2 align-items-center mb-3">
+                        <div class="col-auto">
+                            <input name="q" value="@q" class="form-control form-control-sm search-compact" placeholder="Tìm tên HP / GV..." />
+                        </div>
+                        <div class="col-auto">
+                            <select name="hk" class="form-select form-select-sm" asp-items="@(ViewBag.HocKyList as SelectList)">
+                                <option value="">-- Học kỳ --</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <select name="nam" class="form-select form-select-sm" asp-items="@(ViewBag.NamHocList as SelectList)">
+                                <option value="">-- Năm học --</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <select name="loai" class="form-select form-select-sm" asp-items="@(ViewBag.LoaiList as SelectList)">
+                                <option value="">-- Loại lớp --</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-outline-secondary btn-sm" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                        <input type="hidden" name="page" value="1" />
+                    </form>
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle text-center">
-                    <thead class="table-light">
-                        <tr>
-                            <th style="width:6%">STT</th>
-                            <th style="width:10%">Mã LHP</th>
-                            <th>Học phần</th>
-                            <th>Giảng viên</th>
-                            <th style="width:10%">Học kỳ</th>
-                            <th style="width:12%">Năm học</th>
-                            <th style="width:18%">Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var x in Model)
-                        {
-                            <tr>
-                                <td>@stt</td>
-                                <td>@x.MaLHP</td>
-                                <td class="text-start">@x.HocPhan?.TenHP (@x.HocPhan?.SoTinChi TC)</td>
-                                <td class="text-start">@x.GiangVien?.MaSoGV - @x.GiangVien?.HoTen</td>
-                                <td>@x.HocKy</td>
-                                <td>@x.NamHoc</td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <a asp-action="Edit" asp-route-id="@x.MaLHP" class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <form asp-action="Delete" method="post" class="d-inline">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="id" value="@x.MaLHP" />
-                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Xoá lớp học phần này?');">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            stt++;
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width:5%">#</th>
+                                    <th style="width:24%">Học phần</th>
+                                    <th style="width:16%">Giảng viên</th>
+                                    <th style="width:8%">Loại</th>
+                                    <th style="width:10%">Nhóm</th>
+                                    <th style="width:8%">Học kỳ</th>
+                                    <th style="width:10%">Năm học</th>
+                                    <th style="width:9%">Trạng thái</th>
+                                    <th style="width:10%">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var x in Model)
+                                {
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td class="text-start">
+                                            @x.HocPhan?.TenHP
+                                            @if (!string.IsNullOrEmpty(x.HocPhan?.MaSoHP))
+                                            {
+                                                <small class="text-muted">(@x.HocPhan.MaSoHP)</small>
+                                            }
+                                        </td>
+                                        <td class="text-start">@x.GiangVien?.HoTen</td>
+                                        <td>@LoaiText(x.LoaiLop)</td>
+                                        <td>@(x.TenNhom ?? "-")</td>
+                                        <td>@x.HocKy</td>
+                                        <td>@x.NamHoc</td>
+                                        <td>
+                                            @if (x.TrangThai)
+                                            {
+                                                <span class="badge bg-success">Hiển thị</span>
+                                            }
+                                            else
+                                            {
 
-            @if (totalPages > 1)
-            {
-                <nav class="d-flex justify-content-center">
-                    <ul class="pagination">
-                        <li class="page-item @(cur == 1 ? "disabled" : "")">
-                            <a class="page-link" asp-route-page="@(cur - 1)" asp-route-q="@q" asp-route-hk="@hk" asp-route-nam="@nam">&laquo;</a>
-                        </li>
-                        @foreach (var t in tokens)
-                        {
-                            if (t == "...")
-                            {
-                                <li class="page-item disabled"><span class="page-link">…</span></li>
-                                ;
-                            }
-                            else
-                            {
-                                var p = int.Parse(t);
-                                <li class="page-item @(p == cur ? "active" : "")">
-                                    <a class="page-link" asp-route-page="@p" asp-route-q="@q" asp-route-hk="@hk" asp-route-nam="@nam">@p</a>
+                                                <span class="badge bg-secondary">Ẩn</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <a asp-action="Edit" asp-route-id="@x.MaLHP" class="btn btn-sm btn-outline-primary" title="Sửa">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <form asp-action="Delete" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@x.MaLHP" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa"
+                                                            onclick="return confirm('Xóa lớp học phần này?');">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    stt++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if (totalPages > 1)
+                    {
+                        <nav class="d-flex justify-content-center mt-3">
+                            <ul class="pagination pager-ellipses">
+                                <li class="page-item @(page == 1 ? "disabled" : "")">
+                                    <a class="page-link"
+                                       asp-route-page="@(page - 1)"
+                                       asp-route-q="@q"
+                                       asp-route-hk="@qHK"
+                                       asp-route-nam="@qNam"
+                                       asp-route-loai="@qLoai">&lt;</a>
                                 </li>
-                            }
-                        }
-                        <li class="page-item @(cur == totalPages ? "disabled" : "")">
-                            <a class="page-link" asp-route-page="@(cur + 1)" asp-route-q="@q" asp-route-hk="@hk" asp-route-nam="@nam">&raquo;</a>
-                        </li>
-                    </ul>
-                </nav>
-            }
+                                @foreach (var t in tokens)
+                                {
+                                    if (t == "...")
+                                    {
+                                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                                        ;
+                                    }
+                                    else
+                                    {
+                                        var p = int.Parse(t);
+                                        <li class="page-item @(p == page ? "active" : "")">
+                                            <a class="page-link"
+                                               asp-route-page="@p"
+                                               asp-route-q="@q"
+                                               asp-route-hk="@qHK"
+                                               asp-route-nam="@qNam"
+                                               asp-route-loai="@qLoai">@p</a>
+                                        </li>
+                                    }
+                                }
+                                <li class="page-item @(page == totalPages ? "disabled" : "")">
+                                    <a class="page-link"
+                                       asp-route-page="@(page + 1)"
+                                       asp-route-q="@q"
+                                       asp-route-hk="@qHK"
+                                       asp-route-nam="@qNam"
+                                       asp-route-loai="@qLoai">&gt;</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </section>
+
+<style>
+    .search-compact {
+        width: 220px;
+    }
+
+    .pager-ellipses .page-link {
+        border-radius: 8px;
+        min-width: 36px;
+        text-align: center;
+    }
+
+    .pager-ellipses .page-item + .page-item {
+        margin-left: .25rem;
+    }
+
+    .pager-ellipses .page-item.active .page-link {
+        color: #fff;
+        background: #111;
+        border-color: #111;
+    }
+
+    .pager-ellipses .page-item.disabled .page-link {
+        color: #adb5bd !important;
+    }
+
+    .pager-ellipses .page-link {
+        color: #111 !important;
+    }
+</style>

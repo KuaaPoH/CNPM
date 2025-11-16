@@ -1,5 +1,4 @@
-﻿@using aznews.Areas.Admin.Models
-@model LopHocPhan
+﻿@model aznews.Areas.Admin.Models.LopHocPhan
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Sửa lớp học phần";
@@ -7,40 +6,76 @@
 
 <div class="card shadow-sm">
     <div class="card-body p-4">
-        <h4 class="fw-bold text-primary mb-3">Sửa lớp học phần</h4>
+        <h5 class="fw-bold text-primary text-uppercase mb-3">Sửa lớp học phần</h5>
 
         <form asp-action="Edit" method="post" class="row g-3">
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="MaLHP" />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="col-md-6">
                 <label class="form-label">Học phần</label>
-                <select class="form-select" asp-for="MaHP" asp-items="ViewBag.HocPhanList"></select>
+                <select asp-for="MaHP" class="form-select" asp-items="@(ViewBag.HocPhanList as SelectList)">
+                    <option value="">-- Chọn học phần --</option>
+                </select>
                 <span asp-validation-for="MaHP" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Giảng viên</label>
-                <select class="form-select" asp-for="MaGiangVien" asp-items="ViewBag.GiangVienList"></select>
+                <select asp-for="MaGiangVien" class="form-select" asp-items="@(ViewBag.GiangVienList as SelectList)">
+                    <option value="">-- Chọn giảng viên --</option>
+                </select>
                 <span asp-validation-for="MaGiangVien" class="text-danger"></span>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
+                <label class="form-label">Loại lớp</label>
+                <select asp-for="LoaiLop" class="form-select" asp-items="@(ViewBag.LoaiList as SelectList)">
+                    <option value="">-- Chọn loại --</option>
+                </select>
+                <span asp-validation-for="LoaiLop" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Nhóm (nếu có)</label>
+                <input asp-for="TenNhom" class="form-control" />
+                <span asp-validation-for="TenNhom" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Lớp cha (nếu là lớp con)</label>
+                <select asp-for="MaLopCha" class="form-select" asp-items="@(ViewBag.LopChaList as SelectList)">
+                    <option value="">-- Không chọn --</option>
+                </select>
+                <span asp-validation-for="MaLopCha" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
                 <label class="form-label">Học kỳ</label>
-                <select class="form-select" asp-for="HocKy" asp-items="ViewBag.HocKyList"></select>
+                <select asp-for="HocKy" class="form-select" asp-items="@(ViewBag.HocKyList as SelectList)">
+                    <option value="">-- Chọn học kỳ --</option>
+                </select>
                 <span asp-validation-for="HocKy" class="text-danger"></span>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label">Năm học</label>
-                <input class="form-control" asp-for="NamHoc" />
+                <select asp-for="NamHoc" class="form-select" asp-items="@(ViewBag.NamHocList as SelectList)">
+                    <option value="">-- Chọn năm học --</option>
+                </select>
                 <span asp-validation-for="NamHoc" class="text-danger"></span>
             </div>
 
-            <div class="col-12 d-flex gap-2">
-                <button class="btn btn-primary"><i class="bi bi-check2 me-1"></i>Lưu</button>
-                <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+            <div class="col-md-4 d-flex align-items-center">
+                <div class="form-check mt-3">
+                    <input class="form-check-input" asp-for="TrangThai" />
+                    <label class="form-check-label" asp-for="TrangThai">Hiển thị</label>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-primary"><i class="bi bi-save me-1"></i>Lưu</button>
+                <a asp-action="Index" class="btn btn-light border">Quay lại</a>
             </div>
         </form>
     </div>

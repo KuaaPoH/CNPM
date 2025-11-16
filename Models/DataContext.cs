@@ -87,17 +87,32 @@ namespace aznews.Models
             {
                 e.ToTable("HocPhan");
                 e.Property(x => x.TenHP).HasMaxLength(100).IsRequired();
-                e.Property(x => x.SoTinChi).IsRequired();
-                e.HasIndex(x => x.TenHP).IsUnique();
+                e.Property(x => x.MaSoHP).HasMaxLength(10).IsRequired();
+                e.Property(x => x.PhanTiet).HasMaxLength(20).IsRequired();
+
+                e.HasIndex(x => x.MaSoHP).IsUnique();
+                e.Property(x => x.TrangThai).HasDefaultValue(true);
             });
+
+
 
             // LopHocPhan
             mb.Entity<LopHocPhan>(e =>
             {
                 e.ToTable("LopHocPhan");
+
+                e.HasKey(x => x.MaLHP);
+
                 e.Property(x => x.HocKy).HasMaxLength(20).IsRequired();
                 e.Property(x => x.NamHoc).HasMaxLength(20).IsRequired();
 
+                // Loại & nhóm
+                e.Property(x => x.LoaiLop).HasConversion<byte?>();  // enum? -> tinyint
+                e.Property(x => x.TenNhom).HasMaxLength(20);
+
+                e.Property(x => x.TrangThai).HasDefaultValue(true);
+
+                // Quan hệ
                 e.HasOne(x => x.HocPhan)
                  .WithMany()
                  .HasForeignKey(x => x.MaHP)
@@ -107,8 +122,19 @@ namespace aznews.Models
                  .WithMany()
                  .HasForeignKey(x => x.MaGiangVien)
                  .OnDelete(DeleteBehavior.Restrict);
-                 e.HasIndex(x => new { x.MaHP, x.MaGiangVien, x.HocKy, x.NamHoc }).IsUnique();
+
+                // tự tham chiếu
+                e.HasOne(x => x.LopCha)
+                 .WithMany(p => p.LopCon!)
+                 .HasForeignKey(x => x.MaLopCha)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                // unique tránh trùng
+                e.HasIndex(x => new { x.MaHP, x.MaGiangVien, x.HocKy, x.NamHoc, x.LoaiLop, x.TenNhom })
+                 .IsUnique();
             });
+
+
 
             // DangKyLop
             mb.Entity<DangKyLop>(e =>

@@ -1,36 +1,58 @@
-﻿@using aznews.Areas.Admin.Models
-@model HocPhan
+﻿@model aznews.Areas.Admin.Models.HocPhan
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    ViewData["Title"] = "Thêm học phần";
-}
-<div class="card shadow-sm">
-    <div class="card-body p-4">
-        <h4 class="fw-bold text-primary mb-3">Thêm học phần</h4>
 
-        <form asp-action="Create" method="post" class="row g-3">
-            @Html.AntiForgeryToken()
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold text-primary text-uppercase mb-4">Thêm học phần</h4>
 
-            <div class="col-md-8">
-                <label asp-for="TenHP" class="form-label">Tên học phần</label>
-                <input asp-for="TenHP" class="form-control" />
-                <span asp-validation-for="TenHP" class="text-danger"></span>
+                    <form asp-area="Admin" asp-controller="HocPhan" asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label class="form-label">Mã số học phần</label>
+                            <input asp-for="MaSoHP" class="form-control" placeholder="VD: INF001" />
+                            <span asp-validation-for="MaSoHP" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tên học phần</label>
+                            <input asp-for="TenHP" class="form-control" />
+                            <span asp-validation-for="TenHP" class="text-danger"></span>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Số tín chỉ</label>
+                                <input asp-for="SoTinChi" type="number" min="1" class="form-control" />
+                                <span asp-validation-for="SoTinChi" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">Phân tiết (LT/TH/DA)</label>
+                                <input asp-for="PhanTiet" class="form-control" placeholder="Ví dụ: 30/0/15" />
+                                <div class="form-text">Định dạng: <b>Lý thuyết/Thực hành/Đồ án</b></div>
+                                <span asp-validation-for="PhanTiet" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-check form-switch my-3">
+                            <input class="form-check-input" type="checkbox" asp-for="TrangThai" checked />
+                            <label class="form-check-label" for="TrangThai">Hoạt động</label>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary" type="submit"><i class="bi bi-save me-1"></i>Lưu</button>
+                            <a asp-area="Admin" asp-controller="HocPhan" asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+                        </div>
+                    </form>
+
+                </div>
             </div>
-
-            <div class="col-md-4">
-                <label asp-for="SoTinChi" class="form-label">Số tín chỉ</label>
-                <input asp-for="SoTinChi" class="form-control" type="number" min="1" />
-                <span asp-validation-for="SoTinChi" class="text-danger"></span>
-            </div>
-
-            <div class="col-12 d-flex gap-2">
-                <button class="btn btn-primary"><i class="bi bi-check2 me-1"></i>Lưu</button>
-                <a asp-action="Index" class="btn btn-outline-secondary">Huỷ</a>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+</section>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

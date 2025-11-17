@@ -1,45 +1,34 @@
-﻿@model aznews.Areas.Admin.Models.SinhVien
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using aznews.Areas.Admin.Models
+@model SinhVien
 @{
     ViewData["Title"] = "Thêm sinh viên";
 }
 
 <section class="section">
     <div class="row">
-        <div class="col-lg-10 mx-auto">
+        <div class="col-lg-8 mx-auto">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="fw-bold mb-0 text-primary">Thêm sinh viên</h4>
-                        <a asp-area="Admin" asp-controller="SinhVien" asp-action="Index" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left"></i> Quay lại
-                        </a>
-                    </div>
+                    <h4 class="fw-bold text-primary text-uppercase mb-4">Thêm sinh viên</h4>
 
-                    <form asp-action="Create" asp-antiforgery="true" enctype="multipart/form-data">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-
-                        <input type="hidden" asp-for="MaVaiTro" value="3" />  @* 3 = Sinh viên *@
+                    <form asp-area="Admin" asp-controller="SinhVien" asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <label asp-for="MaSoSV" class="form-label">Mã SV</label>
+                                <label class="form-label">Mã sinh viên</label>
                                 <input asp-for="MaSoSV" class="form-control" />
                                 <span asp-validation-for="MaSoSV" class="text-danger"></span>
                             </div>
                             <div class="col-md-8">
-                                <label asp-for="HoTen" class="form-label">Họ tên</label>
+                                <label class="form-label">Họ tên</label>
                                 <input asp-for="HoTen" class="form-control" />
                                 <span asp-validation-for="HoTen" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="NgaySinh" class="form-label">Ngày sinh</label>
-                                <input asp-for="NgaySinh" type="date" class="form-control" />
-                                <span asp-validation-for="NgaySinh" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4">
-                                <label asp-for="GioiTinh" class="form-label">Giới tính</label>
+                                <label class="form-label">Giới tính</label>
                                 <select asp-for="GioiTinh" class="form-select">
                                     <option value="">-- Chọn --</option>
                                     <option>Nam</option>
@@ -49,49 +38,28 @@
                                 <span asp-validation-for="GioiTinh" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
-                                <label asp-for="SoDienThoai" class="form-label">Điện thoại</label>
+                                <label class="form-label">Điện thoại</label>
                                 <input asp-for="SoDienThoai" class="form-control" />
                                 <span asp-validation-for="SoDienThoai" class="text-danger"></span>
                             </div>
-
-                            <div class="col-md-6">
-                                <label asp-for="Email" class="form-label">Email</label>
+                            <div class="col-md-8">
+                                <label class="form-label">Email</label>
                                 <input asp-for="Email" class="form-control" />
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="DiaChi" class="form-label">Địa chỉ</label>
-                                <input asp-for="DiaChi" class="form-control" />
-                                <span asp-validation-for="DiaChi" class="text-danger"></span>
-                            </div>
 
-                            <div class="col-md-6">
-                                <label asp-for="MatKhau" class="form-label">Mật khẩu</label>
-                                <input asp-for="MatKhau" class="form-control" type="password" />
-                                <span asp-validation-for="MatKhau" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Ảnh đại diện (jpg/png)</label>
-                                <input type="file" name="avatar" class="form-control" accept=".jpg,.jpeg,.png" />
-                                @* Controller sẽ lưu file và gán vào AnhDaiDien *@
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label d-block">Trạng thái</label>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" asp-for="TrangThai" checked />
-                                    <label class="form-check-label" for="TrangThai">Hoạt động</label>
-                                </div>
+                            <div class="col-md-12 d-flex align-items-center gap-2 mt-2">
+                                <input class="form-check-input" type="checkbox" asp-for="TrangThai" />
+                                <label class="form-check-label" for="TrangThai">Hiển thị (Hoạt động)</label>
                             </div>
                         </div>
 
                         <div class="mt-4 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check2-circle"></i> Lưu
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-save me-1"></i> Lưu
                             </button>
-                            <a asp-area="Admin" asp-controller="SinhVien" asp-action="Index" class="btn btn-light border">
-                                Huỷ
+                            <a asp-area="Admin" asp-controller="SinhVien" asp-action="Index" class="btn btn-outline-secondary">
+                                Quay lại
                             </a>
                         </div>
                     </form>

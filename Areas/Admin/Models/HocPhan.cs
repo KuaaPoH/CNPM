@@ -12,7 +12,8 @@ namespace aznews.Areas.Admin.Models
         [Required, StringLength(10)]
         [Column("MaSoHP")]                  // <-- map đúng tên cột hiện có
         [Display(Name = "Mã học phần")]
-        public string MaSoHP { get; set; } = "";   // ví dụ INF001
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public string? MaSoHP { get; private set; }
 
         [Required, StringLength(100)]
         [Display(Name = "Tên học phần")]

@@ -80,7 +80,7 @@
                         <table class="table table-bordered table-hover align-middle text-center">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width:5%">#</th>
+                                    <th style="width:5%">STT</th>
                                     <th style="width:24%">Học phần</th>
                                     <th style="width:16%">Giảng viên</th>
                                     <th style="width:8%">Loại</th>
@@ -191,10 +191,6 @@
 </section>
 
 <style>
-    .search-compact {
-        width: 220px;
-    }
-
     .pager-ellipses .page-link {
         border-radius: 8px;
         min-width: 36px;
@@ -207,6 +203,26 @@
 
     .pager-ellipses .page-item.active .page-link {
         color: #fff;
+        background: #111; 
+        border-color: #111;
+    }
+
+    .pager-ellipses .page-item.disabled .page-link {
+        color: #adb5bd;
+        pointer-events: none;
+        background-color: #fff;
+    }
+   
+    .pager-ellipses .page-link {
+        color: #111 !important; 
+        --bs-pagination-color: #111;
+        --bs-pagination-hover-color: #111;
+        --bs-pagination-focus-color: #111;
+    }
+
+ 
+    .pager-ellipses .page-item.active .page-link {
+        color: #fff !important;
         background: #111;
         border-color: #111;
     }
@@ -215,7 +231,10 @@
         color: #adb5bd !important;
     }
 
-    .pager-ellipses .page-link {
-        color: #111 !important;
+    .pager-ellipses .page-item:not(.active):not(.disabled) .page-link:hover {
+        background-color: #f8f9fa;
+        border-color: #e5e7eb;
     }
+
+</style>
 </style>

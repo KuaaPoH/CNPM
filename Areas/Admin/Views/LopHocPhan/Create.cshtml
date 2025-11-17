@@ -55,12 +55,13 @@
 
                             <!-- Năm học -->
                             <div class="col-md-4">
-                                <label class="form-label">Năm học</label>
-                                <select class="form-select" asp-for="NamHoc" asp-items="ViewBag.NamHocList" required>
+                                <label asp-for="NamHoc" class="form-label">Năm học</label>
+                                <select asp-for="NamHoc" asp-items="ViewBag.NamHocList" class="form-select">
                                     <option value="">-- Chọn năm học --</option>
                                 </select>
                                 <span asp-validation-for="NamHoc" class="text-danger"></span>
                             </div>
+
 
                             <!-- Trạng thái -->
                             <div class="col-md-4 d-flex align-items-center">
@@ -100,18 +101,13 @@
                             <!-- Lớp cha (tuỳ chọn) -->
                             <div class="col-md-6">
                                 <label class="form-label">Lớp cha (nếu có)</label>
-                                <select class="form-select" asp-for="MaLopCha" asp-items="ViewBag.LopChaList">
+                                <select asp-for="MaLopCha" asp-items="ViewBag.LopChaList" class="form-select">
                                     <option value="">-- Không chọn --</option>
                                 </select>
+
                                 <span asp-validation-for="MaLopCha" class="text-danger"></span>
                             </div>
-
-                            <!-- Ghi chú (nếu bạn có trường này trong model thì mở ra) -->
-                            @*<div class="col-md-6">
-                                <label class="form-label">Ghi chú</label>
-                                <input asp-for="GhiChu" class="form-control" />
-                                <span asp-validation-for="GhiChu" class="text-danger"></span>
-                            </div>*@
+                            
 
                         </div>
 

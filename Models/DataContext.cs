@@ -90,7 +90,11 @@ namespace aznews.Models
                 e.Property(x => x.MaSoHP).HasMaxLength(10).IsRequired();
                 e.Property(x => x.PhanTiet).HasMaxLength(20).IsRequired();
 
-                e.HasIndex(x => x.MaSoHP).IsUnique();
+                e.Property(x => x.MaSoHP)
+                 .HasMaxLength(10)
+                 .HasComputedColumnSql(
+         "('INF' + RIGHT('000' + CONVERT(varchar(10), [MaHP]), 3))",
+         stored: true);
                 e.Property(x => x.TrangThai).HasDefaultValue(true);
             });
 

@@ -254,26 +254,53 @@ namespace aznews.Areas.Admin.Controllers
                 .ToListAsync();
 
             var lopChas = await _db.LopHocPhans.AsNoTracking()
-                .OrderByDescending(x => x.NamHoc).ThenBy(x => x.HocKy)
-                .Select(x => new { x.MaLHP, Ten = $"{x.MaLHP}: {x.MaHP}-{x.HocKy}-{x.NamHoc} ({x.TenNhom})" })
+                .Include(x => x.HocPhan)
+                .OrderByDescending(x => x.NamHoc)
+                .ThenBy(x => x.HocKy)
+                .ThenBy(x => x.HocPhan.TenHP)
+                .ThenBy(x => x.TenNhom)
+                .Select(x => new
+                {
+                    x.MaLHP,
+                    Ten = $"{x.HocPhan.TenHP} - {x.HocKy} - {x.NamHoc} ({x.TenNhom})"
+                })
                 .ToListAsync();
 
-            var namHocs = BuildAcademicYears()
-                .Union(await _db.LopHocPhans.Select(x => x.NamHoc).Distinct().ToListAsync())
-                .Distinct().OrderByDescending(x => x).ToList();
+        
+            var fromDb = await _db.LopHocPhans.AsNoTracking()
+                            .Select(x => x.NamHoc)
+                            .Where(s => !string.IsNullOrEmpty(s))
+                            .Distinct()
+                            .ToListAsync();
 
+            if (fromDb.Count == 0)
+            {
+                int y = DateTime.Now.Year;
+                fromDb = Enumerable.Range(y - 1, 4)
+                         .Select(n => $"{n}-{n + 1}")
+                         .ToList();
+            }
+            else
+            {
+               
+                int y = DateTime.Now.Year;
+                var extra = Enumerable.Range(y - 1, 4).Select(n => $"{n}-{n + 1}");
+                fromDb = fromDb.Union(extra).OrderByDescending(s => s).ToList();
+            }
+
+            ViewBag.NamHocList = new SelectList(fromDb);
             ViewBag.HocPhanList = new SelectList(hps, "MaHP", "Ten");
             ViewBag.GiangVienList = new SelectList(gvs, "MaGiangVien", "Ten");
             ViewBag.LopChaList = new SelectList(lopChas, "MaLHP", "Ten");
             ViewBag.HocKyList = new SelectList(new[] { "HK1", "HK2", "Hè" });
-            ViewBag.NamHocList = new SelectList(namHocs);
-
             ViewBag.LoaiList = new SelectList(new[]
             {
-                new { Id = (byte)LopLoai.LT,    Ten = "Lý thuyết" },
-                new { Id = (byte)LopLoai.TH,    Ten = "Thực hành" },
-                new { Id = (byte)LopLoai.DO_AN, Ten = "Đồ án" }
-            }, "Id", "Ten");
+        new { Id = (byte)LopLoai.LT,    Ten = "Lý thuyết" },
+        new { Id = (byte)LopLoai.TH,    Ten = "Thực hành" },
+        new { Id = (byte)LopLoai.DO_AN, Ten = "Đồ án" }
+    }, "Id", "Ten");
         }
+
+
     }
 }

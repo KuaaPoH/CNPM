@@ -13,10 +13,10 @@
                         <input type="hidden" asp-for="MaHP" />
 
                         <div class="mb-3">
-                            <label class="form-label">Mã số học phần</label>
-                            <input asp-for="MaSoHP" class="form-control" />
-                            <span asp-validation-for="MaSoHP" class="text-danger"></span>
+                            <label class="form-label">Mã số HP</label>
+                            <input class="form-control" value="@Model.MaSoHP" disabled />
                         </div>
+
 
                         <div class="mb-3">
                             <label class="form-label">Tên học phần</label>

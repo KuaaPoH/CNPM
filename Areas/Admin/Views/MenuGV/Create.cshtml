@@ -1,0 +1,149 @@
+@using aznews.Areas.Admin.Models
+@model AdminMenu
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="pagetitle">
+                    <div class="mt-3 ms-4 mb-3">
+                        <h4 class="fw-bold text-primary text-uppercase">THÊM MENU GIẢNG VIÊN</h4>
+                    </div>
+                </div>
+
+                <div class="card-body title-spacing">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- Tên Menu -->
+                                <div class="mb-3">
+                                    <label asp-for="ItemName" class="form-label">Tên Menu:</label>
+                                    <input asp-for="ItemName" class="form-control" placeholder="VD: Quản lý lớp học phần..." />
+                                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                                </div>
+
+                                <!-- Cấp Menu -->
+                                <div class="mb-3">
+                                    <label asp-for="ItemLevel" class="form-label">Cấp Menu:</label>
+                                    <select asp-for="ItemLevel" class="form-select">
+                                        <option value="1">Cấp 1 (Menu chính)</option>
+                                        <option value="2">Cấp 2 (Menu con)</option>
+                                        <option value="3">Cấp 3</option>
+                                    </select>
+                                    <span asp-validation-for="ItemLevel" class="text-danger"></span>
+                                </div>
+
+                                <!-- Parent Menu -->
+                                <div class="mb-3" id="parentMenuContainer" style="display: none;">
+                                    <label class="form-label">Menu Cha:</label>
+                                    <select asp-for="ParentLevel" class="form-select" asp-items="@ViewBag.ParentMenus">
+                                        <option value="">-- Chọn menu cha --</option>
+                                    </select>
+                                    <span asp-validation-for="ParentLevel" class="text-danger"></span>
+                                </div>
+
+                                <!-- Controller -->
+                                <div class="mb-3">
+                                    <label asp-for="ControllerName" class="form-label">Điều khiển:</label>
+                                    <input asp-for="ControllerName" class="form-control" placeholder="VD: LopHocPhan" />
+                                    <span asp-validation-for="ControllerName" class="text-danger"></span>
+                                </div>
+
+                                <!-- IdName -->
+                                <div class="mb-3">
+                                    <label asp-for="IdName" class="form-label">Tên định danh (IdName):</label>
+                                    <input asp-for="IdName" class="form-control" placeholder="VD: quanly_lop, thongtin_sinhvien..." />
+                                    <small class="text-muted">Chỉ chữ thường, gạch dưới, không dấu, không khoảng trắng</small>
+                                    <span asp-validation-for="IdName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <!-- Action -->
+                                <div class="mb-3">
+                                    <label asp-for="ActionName" class="form-label">Hành động:</label>
+                                    <input asp-for="ActionName" class="form-control" placeholder="VD: Index" />
+                                    <span asp-validation-for="ActionName" class="text-danger"></span>
+                                </div>
+
+                                <!-- Icon -->
+                                <div class="mb-3">
+                                    <label asp-for="Icon" class="form-label">Biểu tượng (Icon):</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i id="iconPreview" class="bi bi-question"></i>
+                                        </span>
+                                        <input asp-for="Icon" id="iconInput" class="form-control" placeholder="VD: bi bi-book" />
+                                    </div>
+                                    <small class="text-muted">
+                                        Dùng icon: <a href="https://icons.getbootstrap.com" target="_blank">Bootstrap Icons</a>
+                                    </small>
+                                    <span asp-validation-for="Icon" class="text-danger"></span>
+                                </div>
+
+                                <!-- Thứ tự -->
+                                <div class="mb-3">
+                                    <label asp-for="ItemOrder" class="form-label">Thứ tự hiển thị:</label>
+                                    <input asp-for="ItemOrder" type="number" min="1" class="form-control" value="1" />
+                                    <span asp-validation-for="ItemOrder" class="text-danger"></span>
+                                </div>
+
+                                <!-- Trạng thái -->
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
+                                        <label asp-for="IsActive" class="form-check-label">Hiển thị menu</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-save me-1"></i> Lưu
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary px-4">
+                                <i class="bi bi-arrow-left me-1"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        const levelSelect = document.getElementById("ItemLevel");
+        const parentContainer = document.getElementById("parentMenuContainer");
+        const parentSelect = parentContainer.querySelector("select");
+
+        function toggleParentMenu() {
+            const level = parseInt(levelSelect.value);
+            if (level > 1) {
+                parentContainer.style.display = "block";
+            } else {
+                parentContainer.style.display = "none";
+                if (parentSelect) parentSelect.value = "";
+            }
+        }
+
+        levelSelect.addEventListener("change", toggleParentMenu);
+        toggleParentMenu();
+
+        const iconInput = document.getElementById("iconInput");
+        const iconPreview = document.getElementById("iconPreview");
+
+        iconInput.addEventListener("input", () => {
+            const value = iconInput.value.trim();
+            iconPreview.className = value ? value : "bi bi-question";
+        });
+    </script>
+}
+

@@ -1,0 +1,129 @@
+@model aznews.Areas.Admin.Models.AdminMenu
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Sửa menu giảng viên";
+}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold text-primary text-uppercase mb-0">Sửa menu giảng viên</h4>
+                        
+                    </div>
+
+                    <form asp-area="Admin" asp-controller="MenuGV" asp-action="Edit" method="post" class="row g-3">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="AdminMenuID" />
+
+                        <div class="col-12">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </div>
+
+                        <!-- Tên menu -->
+                        <div class="col-md-6">
+                            <label asp-for="ItemName" class="form-label">Tên Menu:</label>
+                            <input asp-for="ItemName" class="form-control" placeholder="Nhập tên menu" />
+                            <span asp-validation-for="ItemName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Hành động (Action) -->
+                        <div class="col-md-6">
+                            <label asp-for="ActionName" class="form-label">Hành động:</label>
+                            <input asp-for="ActionName" class="form-control" placeholder="Ví dụ: Index, Create, Edit..." />
+                            <span asp-validation-for="ActionName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Cấp menu (ParentLevel) -->
+                        <div class="col-md-6">
+                            <label class="form-label">Cấp Menu:</label>
+                            <select asp-for="ParentLevel" class="form-select" asp-items="ViewBag.ParentOptions">
+                                <option value="">-- Chọn cấp/cha --</option>
+                            </select>
+                            <span class="form-text">Chọn <em>cấp cha</em> cho menu (để trống nếu là mục gốc).</span>
+                            <span asp-validation-for="ParentLevel" class="text-danger"></span>
+                        </div>
+
+                        <!-- Biểu tượng (Icon) + preview + link -->
+                        <div class="col-md-6">
+                            <label asp-for="Icon" class="form-label">Biểu tượng (Icon):</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i id="iconPreview" class="@Model?.Icon"></i>
+                                </span>
+                                <input asp-for="Icon" class="form-control" id="iconInput" placeholder="Ví dụ: bi bi-house, bi bi-gear, ..." />
+                            </div>
+                            <div class="form-text">
+                                Dùng icon: <a href="https://icons.getbootstrap.com/" target="_blank" rel="noopener">Bootstrap Icons</a>
+                            </div>
+                            <span asp-validation-for="Icon" class="text-danger"></span>
+                        </div>
+
+                        <!-- Bộ điều khiển (Controller) -->
+                        <div class="col-md-6">
+                            <label asp-for="ControllerName" class="form-label">Điều khiển:</label>
+                            <input asp-for="ControllerName" class="form-control" placeholder="Ví dụ: Home, Giangvien, ..." />
+                            <span asp-validation-for="ControllerName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Thứ tự hiển thị (SortOrder) -->
+                        <div class="col-md-6">
+                            <label class="form-label" for="SortOrder">Thứ tự hiển thị:</label>
+                            <input type="number" class="form-control" id="SortOrder" name="SortOrder" value="@(ViewBag.SortOrder ?? (int?)null ??  (int?)Model?.GetType().GetProperty("SortOrder")?.GetValue(Model) ?? 1)" min="0" />
+                            <span class="form-text">Số nhỏ hơn sẽ hiển thị trước. Bạn có thể để 1, 2, 3…</span>
+                        </div>
+
+                        <!-- Tên định danh (IdName) -->
+                        <div class="col-md-6">
+                            <label class="form-label" for="IdName">Tên định danh (IdName):</label>
+                            <input type="text" class="form-control" id="IdName" name="IdName"
+                                   value="@( ViewBag.IdName ?? (string?)Model?.GetType().GetProperty("IdName")?.GetValue(Model) )"
+                                   placeholder="vd: bctk, thongbao, lop-day" />
+                            <span class="form-text">Chỉ chữ thường, gạch dưới, không dấu, không khoảng trắng.</span>
+                        </div>
+
+                        <!-- Hiển thị -->
+                        <div class="col-md-6 d-flex align-items-center mt-4">
+                            <div class="form-check">
+                                <input class="form-check-input" asp-for="IsActive" />
+                                <label class="form-check-label" asp-for="IsActive">Hiển thị menu</label>
+                            </div>
+                        </div>
+
+                        <!-- Nút -->
+                        <div class="col-12 d-flex gap-2 mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Lưu
+                            </button>
+                            <a asp-area="Admin" asp-controller="MenuGV" asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Live preview icon
+        const iconInput = document.getElementById('iconInput');
+        const iconPreview = document.getElementById('iconPreview');
+        if (iconInput && iconPreview) {
+            const apply = () => iconPreview.className = iconInput.value.trim();
+            iconInput.addEventListener('input', apply);
+            // init
+            apply();
+        }
+    </script>
+}
+
+<style>
+    /* giữ style đồng bộ với các trang quản trị */
+    .form-text a { text-decoration: none; }
+</style>

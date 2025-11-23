@@ -3,24 +3,36 @@
   "WorkspaceRootPath": "D:\\CNPM1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\sinhvien\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\sinhvien\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\menugv\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\menugv\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\sinhvien\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\sinhvien\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\menugv\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\menugv\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\sinhvien\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\sinhvien\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\menugv\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\menugv\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\controllers\\menugvcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\controllers\\menugvcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\giangvien\\components\\giangvienmenuviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\giangvien\\components\\giangvienmenuviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\models\\adminmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\models\\adminmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\controllers\\lophocphancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\controllers\\lophocphancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\controllers\\hocphancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\controllers\\hocphancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\sinhvien\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\sinhvien\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\hocphan\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -33,6 +45,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\hocphan\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\hocphan\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\sinhvien\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\sinhvien\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\views\\sinhvien\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\views\\sinhvien\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\controllers\\hocphancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|solutionrelative:areas\\admin\\controllers\\hocphancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A0135D83-6C86-3F78-5F84-93FCF5821B80}|aznews.csproj|d:\\cnpm1\\areas\\admin\\controllers\\khoaviencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -182,50 +206,89 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "HocPhanController.cs",
-              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Controllers\\HocPhanController.cs",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\HocPhanController.cs",
-              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Controllers\\HocPhanController.cs",
-              "RelativeToolTip": "Areas\\Admin\\Controllers\\HocPhanController.cs",
-              "ViewState": "AgIAAFAAAAAAAAAAAAAIwEwAAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-09T16:49:33.295Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\HocPhan\\Edit.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\HocPhan\\Edit.cshtml",
-              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\HocPhan\\Edit.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\HocPhan\\Edit.cshtml",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAwBIAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\MenuGV\\Create.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\MenuGV\\Create.cshtml",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\MenuGV\\Create.cshtml*",
+              "RelativeToolTip": "Areas\\Admin\\Views\\MenuGV\\Create.cshtml*",
+              "ViewState": "AgIAAIsAAAAAAAAAAAAAAIsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-09T17:01:07.844Z",
+              "WhenOpened": "2025-11-23T17:58:08.753Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\HocPhan\\Index.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\HocPhan\\Index.cshtml",
-              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\HocPhan\\Index.cshtml",
-              "RelativeToolTip": "Areas\\Admin\\Views\\HocPhan\\Index.cshtml",
-              "ViewState": "AgIAAD8AAAAAZmZmZmYswFMAAABHAAAAAAAAAA==",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\MenuGV\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\MenuGV\\Index.cshtml",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\MenuGV\\Index.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\MenuGV\\Index.cshtml",
+              "ViewState": "AgIAAOcAAAAAaGZmZmYGwPQAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-09T16:54:17.303Z",
+              "WhenOpened": "2025-11-23T16:05:33.165Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\MenuGV\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\MenuGV\\Edit.cshtml",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\MenuGV\\Edit.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\MenuGV\\Edit.cshtml",
+              "ViewState": "AgIAAHYAAAAANDMzMzMrwH4AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-23T16:04:20.649Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "MenuGVController.cs",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Controllers\\MenuGVController.cs",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\MenuGVController.cs",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Controllers\\MenuGVController.cs",
+              "RelativeToolTip": "Areas\\Admin\\Controllers\\MenuGVController.cs",
+              "ViewState": "AgIAACgAAAAAzMzMzMwuwNUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-23T15:53:43.589Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GiangVienMenuViewComponent.cs",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Components\\GiangVienMenuViewComponent.cs",
+              "RelativeDocumentMoniker": "Areas\\GiangVien\\Components\\GiangVienMenuViewComponent.cs",
+              "ToolTip": "D:\\CNPM1\\Areas\\GiangVien\\Components\\GiangVienMenuViewComponent.cs",
+              "RelativeToolTip": "Areas\\GiangVien\\Components\\GiangVienMenuViewComponent.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAhwBEAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-23T15:54:00.432Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AdminMenu.cs",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\AdminMenu.cs",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Models\\AdminMenu.cs",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Models\\AdminMenu.cs",
+              "RelativeToolTip": "Areas\\Admin\\Models\\AdminMenu.cs",
+              "ViewState": "AgIAAAcAAAAAmJmZmZnJvxIAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-23T15:52:32.994Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "LopHocPhanController.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Controllers\\LopHocPhanController.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\LopHocPhanController.cs",
@@ -238,46 +301,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\SinhVien\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\SinhVien\\Index.cshtml",
               "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\SinhVien\\Index.cshtml",
               "RelativeToolTip": "Areas\\Admin\\Views\\SinhVien\\Index.cshtml",
-              "ViewState": "AgIAALkAAAAAAAAAAAAowMMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAMsAAAAAAAAAAAAowNcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-02T16:57:30.631Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 12,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\SinhVien\\Create.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\SinhVien\\Create.cshtml",
-              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\SinhVien\\Create.cshtml*",
-              "RelativeToolTip": "Areas\\Admin\\Views\\SinhVien\\Create.cshtml*",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\SinhVien\\Create.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\SinhVien\\Create.cshtml",
               "ViewState": "AgIAADIAAAAAAAAAAAAowEsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-02T16:58:01.533Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-02T16:58:01.533Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 11,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\SinhVien\\Edit.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\SinhVien\\Edit.cshtml",
-              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\SinhVien\\Edit.cshtml*",
-              "RelativeToolTip": "Areas\\Admin\\Views\\SinhVien\\Edit.cshtml*",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\SinhVien\\Edit.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\SinhVien\\Edit.cshtml",
               "ViewState": "AgIAAD8AAAAAAAAAAAAowEwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-02T16:58:28.114Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-02T16:58:28.114Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\HocPhan\\Create.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\HocPhan\\Create.cshtml",
@@ -285,12 +346,47 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\HocPhan\\Create.cshtml",
               "ViewState": "AgIAAAIAAAAAAAAAAAAAwBEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-09T17:00:44.921Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-09T17:00:44.921Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\HocPhan\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\HocPhan\\Edit.cshtml",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\HocPhan\\Edit.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\HocPhan\\Edit.cshtml",
+              "ViewState": "AgIAADsAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-09T17:01:07.844Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\HocPhan\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\HocPhan\\Index.cshtml",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Views\\HocPhan\\Index.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\HocPhan\\Index.cshtml",
+              "ViewState": "AgIAAKcAAAAAAAAAAAAAALYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-09T16:54:17.303Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "HocPhanController.cs",
+              "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Controllers\\HocPhanController.cs",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\HocPhanController.cs",
+              "ToolTip": "D:\\CNPM1\\Areas\\Admin\\Controllers\\HocPhanController.cs",
+              "RelativeToolTip": "Areas\\Admin\\Controllers\\HocPhanController.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAIwEwAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-09T16:49:33.295Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "KhoaVienController.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Controllers\\KhoaVienController.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\KhoaVienController.cs",
@@ -298,12 +394,11 @@
               "RelativeToolTip": "Areas\\Admin\\Controllers\\KhoaVienController.cs",
               "ViewState": "AgIAAFkAAADAzMzMzMwiwG4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-03T01:59:14.576Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-03T01:59:14.576Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 15,
               "Title": "DataContext.cs",
               "DocumentMoniker": "D:\\CNPM1\\Models\\DataContext.cs",
               "RelativeDocumentMoniker": "Models\\DataContext.cs",
@@ -311,12 +406,11 @@
               "RelativeToolTip": "Models\\DataContext.cs",
               "ViewState": "AgIAAE0AAAAAZmZmZmYawF0AAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-24T09:59:37.509Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-24T09:59:37.509Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 16,
               "Title": "HocPhan.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\HocPhan.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\HocPhan.cs",
@@ -324,12 +418,11 @@
               "RelativeToolTip": "Areas\\Admin\\Models\\HocPhan.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-24T09:58:20.3Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-24T09:58:20.3Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 17,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\LopHocPhan\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\LopHocPhan\\Index.cshtml",
@@ -337,12 +430,11 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\LopHocPhan\\Index.cshtml",
               "ViewState": "AgIAAMEAAAAAAAAAAAAswNAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-09T17:02:18.813Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-09T17:02:18.813Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 18,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\LopHocPhan\\Create.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\LopHocPhan\\Create.cshtml",
@@ -350,12 +442,11 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\LopHocPhan\\Create.cshtml",
               "ViewState": "AgIAADAAAAAAAAAAAAAAAD8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-09T17:03:02.634Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-09T17:03:02.634Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 19,
               "Title": "LopHocPhan.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\LopHocPhan.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\LopHocPhan.cs",
@@ -363,12 +454,11 @@
               "RelativeToolTip": "Areas\\Admin\\Models\\LopHocPhan.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-24T09:59:08.08Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-24T09:59:08.08Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 20,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\LopHocPhan\\Edit.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\LopHocPhan\\Edit.cshtml",
@@ -376,12 +466,11 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\LopHocPhan\\Edit.cshtml",
               "ViewState": "AgIAAEEAAAAAAAAAAAAkwFYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-09T17:03:25.151Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-09T17:03:25.151Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 21,
               "Title": "GiangVienController.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Controllers\\GiangVienController.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\GiangVienController.cs",
@@ -393,7 +482,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 22,
               "Title": "Loailop.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\Loailop.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\Loailop.cs",
@@ -405,7 +494,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 23,
               "Title": "LopHocPhanBatchVM.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\LopHocPhanBatchVM.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\LopHocPhanBatchVM.cs",
@@ -417,7 +506,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 24,
               "Title": "ErrorViewModel.cs",
               "DocumentMoniker": "D:\\CNPM1\\Models\\ErrorViewModel.cs",
               "RelativeDocumentMoniker": "Models\\ErrorViewModel.cs",
@@ -429,7 +518,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 27,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\CNPM1\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -441,7 +530,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 26,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\GiangVien\\Create.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\GiangVien\\Create.cshtml",
@@ -453,7 +542,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 25,
               "Title": "SinhVienController.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Controllers\\SinhVienController.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\SinhVienController.cs",
@@ -465,7 +554,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 30,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\GiangVien\\Edit.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\GiangVien\\Edit.cshtml",
@@ -477,7 +566,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 28,
               "Title": "Default.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\Shared\\Components\\AdminMenu\\Default.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Shared\\Components\\AdminMenu\\Default.cshtml",
@@ -489,7 +578,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 29,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\GiangVien\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\GiangVien\\Index.cshtml",
@@ -501,7 +590,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 32,
               "Title": "Admin.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\Admin.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\Admin.cs",
@@ -513,7 +602,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 34,
               "Title": "ThongBaoController.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Controllers\\ThongBaoController.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\ThongBaoController.cs",
@@ -525,7 +614,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 33,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Views\\ThongBao\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\ThongBao\\Index.cshtml",
@@ -537,7 +626,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 38,
               "Title": "SinhVien.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\SinhVien.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\SinhVien.cs",
@@ -549,7 +638,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 35,
               "Title": "LopDayController.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Controllers\\LopDayController.cs",
               "RelativeDocumentMoniker": "Areas\\GiangVien\\Controllers\\LopDayController.cs",
@@ -561,7 +650,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 31,
               "Title": "AccountController.cs",
               "DocumentMoniker": "D:\\CNPM1\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
@@ -573,7 +662,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 37,
               "Title": "ThongBao.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\ThongBao.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\ThongBao.cs",
@@ -585,7 +674,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 36,
               "Title": "VaiTro.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\VaiTro.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\VaiTro.cs",
@@ -597,7 +686,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 39,
               "Title": "GiangVien.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\GiangVien.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\GiangVien.cs",
@@ -609,7 +698,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 40,
               "Title": "DiemDanhController.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Controllers\\DiemDanhController.cs",
               "RelativeDocumentMoniker": "Areas\\GiangVien\\Controllers\\DiemDanhController.cs",
@@ -621,7 +710,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 41,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Views\\DiemDanh\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\GiangVien\\Views\\DiemDanh\\Index.cshtml",
@@ -633,7 +722,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 47,
               "Title": "DangKyLop.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\DangKyLop.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\DangKyLop.cs",
@@ -645,7 +734,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 44,
               "Title": "DiemDanh.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\Admin\\Models\\DiemDanh.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\DiemDanh.cs",
@@ -657,7 +746,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 45,
               "Title": "DanhSach.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Views\\SinhVien\\DanhSach.cshtml",
               "RelativeDocumentMoniker": "Areas\\GiangVien\\Views\\SinhVien\\DanhSach.cshtml",
@@ -669,7 +758,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 43,
               "Title": "AttendanceVM.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Models\\AttendanceVM.cs",
               "RelativeDocumentMoniker": "Areas\\GiangVien\\Models\\AttendanceVM.cs",
@@ -681,7 +770,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 42,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Views\\LopDay\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\GiangVien\\Views\\LopDay\\Index.cshtml",
@@ -693,7 +782,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 46,
               "Title": "SinhVienController.cs",
               "DocumentMoniker": "D:\\CNPM1\\Areas\\GiangVien\\Controllers\\SinhVienController.cs",
               "RelativeDocumentMoniker": "Areas\\GiangVien\\Controllers\\SinhVienController.cs",
@@ -705,7 +794,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 48,
               "Title": "Login.cshtml",
               "DocumentMoniker": "D:\\CNPM1\\Views\\Account\\Login.cshtml",
               "RelativeDocumentMoniker": "Views\\Account\\Login.cshtml",

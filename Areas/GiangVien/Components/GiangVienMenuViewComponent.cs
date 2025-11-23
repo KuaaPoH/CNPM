@@ -17,7 +17,7 @@ namespace aznews.Areas.GiangVien.Components
         {
             // Lấy menu dành cho giảng viên (MaVaiTro = 2), đang active
             var items = await _db.AdminMenus
-                .Where(m => (m.IsActive ?? false) && m.MaVaiTro == 2)
+                .Where(m => (m.IsActive) && m.MaVaiTro == 2)
                 .OrderBy(m => m.ItemLevel)
                 .ThenBy(m => m.ParentLevel)
                 .ThenBy(m => m.ItemOrder)

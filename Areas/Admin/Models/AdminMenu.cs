@@ -12,11 +12,11 @@ namespace aznews.Areas.Admin.Models
     {
         [Key]
         public long AdminMenuID { get; set; }
-        public string? ItemName { get; set; }
+        public string ItemName { get; set; }
         public int ItemLevel { get; set; }
         public int ParentLevel { get; set; }
         public int ItemOrder { get; set; }
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
         public string? ItemTarget { get; set; }
         public string? AreaName { get; set; }
         public string? ControllerName { get; set; }

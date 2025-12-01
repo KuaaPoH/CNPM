@@ -52,7 +52,7 @@
             <div class="card shadow-sm">
                 <div class="card-body p-4">
 
-                    <!-- Tiêu đề + nút thêm -->
+                  
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="fw-bold text-primary mb-0 text-uppercase">Quản lý menu giảng viên</h4>
                         <a asp-area="Admin" asp-controller="MenuGV" asp-action="Create" class="btn btn-primary">
@@ -60,7 +60,7 @@
                         </a>
                     </div>
 
-                    <!-- Thanh tìm kiếm gọn ngay dưới tiêu đề -->
+                  
                     <form asp-area="Admin" asp-controller="MenuGV" asp-action="Index" method="get" id="searchForm" class="input-group search-compact mb-4">
                         <input type="text" name="q" value="@q" class="form-control" placeholder="Tìm theo tên menu…">
                         <button class="btn btn-outline-secondary" type="submit">
@@ -69,25 +69,26 @@
                         <input type="hidden" name="page" value="1" />
                     </form>
 
-                    <!-- Bảng dữ liệu -->
+                  
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover align-middle text-center">
                             <thead class="table-light">
                                 <tr>
+                                
                                     <th style="width:6%">STT</th>
-                                    <th class="text-start" style="width:24%">Tên menu</th>
+                                    <th class="text-center" style="width:20%">Tên menu</th>
                                     <th style="width:8%">Cấp</th>
-                                    <th class="text-start" style="width:18%">Cấp cha</th>
-                                    <th class="text-start" style="width:22%">Bộ điều khiển</th>
+                                    <th class="text-center" style="width:18%">Cấp cha</th>
+                                    <th class="text-center" style="width:22%">Bộ điều khiển</th>
                                     <th style="width:10%">Hoạt động</th>
-                                    <th style="width:6%">Biểu tượng</th>
+                                    <th style="width:10%">Biểu tượng</th>
                                     <th style="width:16%">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var m in Model.OrderBy(x => x.ParentLevel).ThenBy(x => x.ItemName))
                                 {
-                                    // Tên cấp cha: nếu ParentLevel == 0 hoặc không tìm thấy, hiện "—"
+                                    
                                     string parentName = (m.ParentLevel != 0 && mapParent.ContainsKey(m.ParentLevel))
                                     ? mapParent[m.ParentLevel]
                                     : "—";
@@ -125,7 +126,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center gap-2">
 
-                                                <!-- Nút mắt bật/tắt trạng thái, giữ nguyên q & page -->
+                                               
                                                 <form asp-area="Admin" asp-controller="MenuGV" asp-action="Toggle" method="post" class="d-inline">
                                                     @Html.AntiForgeryToken()
                                                     <input type="hidden" name="id" value="@m.AdminMenuID" />
@@ -138,13 +139,13 @@
                                                     </button>
                                                 </form>
 
-                                                <!-- Sửa -->
+                                                
                                                 <a asp-area="Admin" asp-controller="MenuGV" asp-action="Edit" asp-route-id="@m.AdminMenuID"
                                                    class="btn btn-sm btn-outline-primary" title="Sửa">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
 
-                                                <!-- Xóa -->
+                                                
                                                 <form asp-area="Admin" asp-controller="MenuGV" asp-action="Delete" method="post" class="d-inline"
                                                       onsubmit="return confirm('Xóa menu: @m.ItemName ?');">
                                                     @Html.AntiForgeryToken()

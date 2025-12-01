@@ -22,7 +22,7 @@ namespace aznews.Areas.Admin.Controllers
 
             var query = _db.AdminMenus
                            .AsNoTracking()
-                           .Where(x => x.MaVaiTro == 2); // menu dành cho Giảng viên
+                           .Where(x => x.MaVaiTro == 2); 
 
             if (!string.IsNullOrWhiteSpace(q))
             {
@@ -38,7 +38,6 @@ namespace aznews.Areas.Admin.Controllers
             var totalPages = Math.Max(1, (int)Math.Ceiling(total / (double)pageSize));
             page = Math.Clamp(page, 1, totalPages);
 
-            // Sắp xếp đơn giản theo ParentLevel -> ItemLevel -> ItemName
             var list = await query
                 .OrderBy(x => x.ParentLevel)
                 .ThenBy(x => x.ItemLevel)
@@ -55,7 +54,7 @@ namespace aznews.Areas.Admin.Controllers
             return View(list);
         }
 
-        // GET: /Admin/MenuGV/Create
+  
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -72,7 +71,7 @@ namespace aznews.Areas.Admin.Controllers
             });
         }
 
-        // POST: /Admin/MenuGV/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AdminMenu model)
@@ -103,7 +102,7 @@ namespace aznews.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: /Admin/MenuGV/Edit/5
+        
         [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
@@ -114,7 +113,7 @@ namespace aznews.Areas.Admin.Controllers
             return View(item);
         }
 
-        // POST: /Admin/MenuGV/Edit
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AdminMenu model, string? q, int page = 1)
@@ -152,7 +151,7 @@ namespace aznews.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index), new { q, page });
         }
 
-        // POST: /Admin/MenuGV/Delete
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(long id, string? q, int page = 1)
@@ -160,8 +159,7 @@ namespace aznews.Areas.Admin.Controllers
             var item = await _db.AdminMenus.FindAsync(id);
             if (item == null || item.MaVaiTro != 2) return NotFound();
 
-            // Nếu có con trỏ đến nó như là cha của mục khác, có thể cân nhắc chặn xoá.
-            // Ở đây đơn giản xoá luôn. Bạn có thể thêm xác thực theo nhu cầu.
+            
             _db.AdminMenus.Remove(item);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index), new { q, page });
@@ -182,9 +180,6 @@ namespace aznews.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index), new { q, page });
         }
 
-        /// <summary>
-        /// Tạo ViewBag.ParentOptions: danh sách menu (cùng vai trò = 2) để chọn làm cấp cha.
-        /// </summary>
         private async Task BuildParentOptions(long? excludeId = null)
         {
             var parents = await _db.AdminMenus
@@ -199,8 +194,6 @@ namespace aznews.Areas.Admin.Controllers
                     Ten = x.ItemName
                 })
                 .ToListAsync();
-
-            // Thêm option "— Không có —" (0)
             var selectItems = parents
                 .Select(p => new SelectListItem { Value = p.AdminMenuID.ToString(), Text = p.Ten ?? $"#{p.AdminMenuID}" })
                 .ToList();

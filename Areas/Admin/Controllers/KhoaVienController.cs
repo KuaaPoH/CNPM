@@ -36,26 +36,26 @@ namespace aznews.Areas.Admin.Controllers
                     (x.DienThoai != null && x.DienThoai.ToLower().Contains(k)));
             }
 
-            // Đếm & tính trang
+            
             int total = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(total / (double)pageSize);
             if (totalPages == 0) totalPages = 1;
             if (page < 1) page = 1;
             if (page > totalPages) page = totalPages;
 
-            // Lấy dữ liệu trang hiện tại
+            
             var tblist = await query
                 .OrderBy(x => x.MaKhoaVien)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            // Gửi sang View
+            
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = totalPages;
             ViewBag.Total = total;
-            ViewData["SearchString"] = searchString; // để giữ giá trị ô tìm kiếm
+            ViewData["SearchString"] = searchString; 
 
             return View(tblist);
         }

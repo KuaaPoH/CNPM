@@ -19,7 +19,7 @@ namespace aznews.Areas.Admin.Controllers
             _context = context;
         }
 
-        // ------------------ INDEX ------------------
+        
         public async Task<IActionResult> Index(string? searchString, int page = 1)
         {
             const int pageSize = 10;
@@ -60,7 +60,7 @@ namespace aznews.Areas.Admin.Controllers
             return View(list);
         }
 
-        // ------------------ CREATE ------------------
+        
         [HttpGet]
         public IActionResult Create()
         {
@@ -78,7 +78,7 @@ namespace aznews.Areas.Admin.Controllers
                 return View(model);
             }
 
-            // Kiểm tra trùng tên lớp
+        
             if (await _context.LopHanhChinhs.AnyAsync(l => l.TenLopHC == model.TenLopHC))
             {
                 ModelState.AddModelError("", "Tên lớp hành chính đã tồn tại.");
@@ -91,7 +91,6 @@ namespace aznews.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ------------------ EDIT ------------------
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -127,7 +126,6 @@ namespace aznews.Areas.Admin.Controllers
             }
         }
 
-        // ------------------ DELETE ------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

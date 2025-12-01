@@ -15,14 +15,14 @@ namespace aznews.Areas.Admin.Controllers
         private readonly DataContext _db;
         public MenuSVController(DataContext db) => _db = db;
 
-        // GET: /Admin/MenuSV
+        
         public async Task<IActionResult> Index(string? q, int page = 1)
         {
             const int pageSize = 10;
 
             var query = _db.AdminMenus
                            .AsNoTracking()
-                           .Where(x => x.MaVaiTro == 3); // menu dành cho Sinh viên
+                           .Where(x => x.MaVaiTro == 3);
 
             if (!string.IsNullOrWhiteSpace(q))
             {
@@ -55,7 +55,6 @@ namespace aznews.Areas.Admin.Controllers
             return View(list);
         }
 
-        // GET: /Admin/MenuSV/Create
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -73,7 +72,7 @@ namespace aznews.Areas.Admin.Controllers
             });
         }
 
-        // POST: /Admin/MenuSV/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AdminMenu model)
@@ -104,7 +103,7 @@ namespace aznews.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: /Admin/MenuSV/Edit/5
+        
         [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
@@ -115,7 +114,6 @@ namespace aznews.Areas.Admin.Controllers
             return View(item);
         }
 
-        // POST: /Admin/MenuSV/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AdminMenu model, string? q, int page = 1)
@@ -123,7 +121,6 @@ namespace aznews.Areas.Admin.Controllers
             var item = await _db.AdminMenus.FindAsync(model.AdminMenuID);
             if (item == null || item.MaVaiTro != 3) return NotFound();
 
-            // Chuẩn hoá
             item.ItemName = (model.ItemName ?? "").Trim();
             item.ItemLevel = model.ItemLevel;
             item.ParentLevel = model.ParentLevel;
@@ -154,7 +151,7 @@ namespace aznews.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index), new { q, page });
         }
 
-        // POST: /Admin/MenuSV/Delete
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(long id, string? q, int page = 1)
@@ -167,7 +164,6 @@ namespace aznews.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index), new { q, page });
         }
 
-        // POST: /Admin/MenuSV/Toggle
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Toggle(long id, string? q, int page = 1)
@@ -182,9 +178,6 @@ namespace aznews.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index), new { q, page });
         }
 
-        /// <summary>
-        /// Danh sách menu cha (vai trò = 3). Loại bỏ chính bản thân khi Edit.
-        /// </summary>
         private async Task BuildParentOptions(long? excludeId = null)
         {
             var parents = await _db.AdminMenus

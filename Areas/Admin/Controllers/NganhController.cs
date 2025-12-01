@@ -18,14 +18,12 @@ namespace aznews.Areas.Admin.Controllers
         {
             _context = context;
         }
-
-        // ------------------ INDEX ------------------
         public async Task<IActionResult> Index(string? searchString, int page = 1)
         {
             const int pageSize = 10;
 
             var query = _context.Nganhs
-                                .Include(n => n.KhoaVien) // nạp thông tin khoa viện
+                                .Include(n => n.KhoaVien)
                                 .AsNoTracking()
                                 .AsQueryable();
 
@@ -58,7 +56,7 @@ namespace aznews.Areas.Admin.Controllers
             return View(list);
         }
 
-        // ------------------ CREATE ------------------
+        
         [HttpGet]
         public IActionResult Create()
         {
@@ -88,7 +86,7 @@ namespace aznews.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ------------------ EDIT ------------------
+        
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -124,7 +122,7 @@ namespace aznews.Areas.Admin.Controllers
             }
         }
 
-        // ------------------ DELETE ------------------
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

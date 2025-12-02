@@ -22,7 +22,8 @@ namespace aznews.Models
         public DbSet<LopHocPhan> LopHocPhans { get; set; }
         public DbSet<DangKyLop> DangKyLops { get; set; }
         public DbSet<DiemDanh> DiemDanhs { get; set; }
-
+        public DbSet<DiemLop> DiemLops { get; set; }
+        public DbSet<DiemLopAudit> DiemLopAudits { get; set; }
         protected override void OnModelCreating(ModelBuilder mb)
         {
             base.OnModelCreating(mb);
@@ -34,6 +35,24 @@ namespace aznews.Models
                 e.Property(x => x.TenVaiTro).HasMaxLength(50).IsRequired();
                 e.HasIndex(x => x.TenVaiTro).IsUnique();
             });
+            // DiemLop
+            mb.Entity<DiemLop>(e =>
+            {
+                e.ToTable("DiemLop");
+                e.Property(x => x.DiemQT).HasPrecision(4, 2);
+                e.Property(x => x.DiemThi).HasPrecision(4, 2);
+                e.Property(x => x.DiemTong).HasPrecision(4, 2);
+
+                // Unique per lớp & sinh viên
+                e.HasIndex(x => new { x.MaLHP, x.MaSinhVien }).IsUnique();
+
+                // Nếu DiemTong là computed column trong SQL:
+                e.Property(x => x.DiemTong)
+                 .HasComputedColumnSql(
+                  "CASE WHEN DiemQT IS NULL OR DiemThi IS NULL THEN NULL ELSE ROUND((DiemQT + DiemThi)/2.0, 2) END",
+                  stored: true);
+            });
+
 
             // AdminMenu
             mb.Entity<AdminMenu>(e =>
@@ -136,6 +155,25 @@ namespace aznews.Models
                 // unique tránh trùng
                 e.HasIndex(x => new { x.MaHP, x.MaGiangVien, x.HocKy, x.NamHoc, x.LoaiLop, x.TenNhom })
                  .IsUnique();
+                // ===== MỚI: map enum -> tinyint + default 0
+                e.Property(x => x.DiemStatus)
+                 .HasConversion<byte>();
+                 
+
+                // Ghi chú tối đa 500
+                e.Property(x => x.DiemNote)
+                 .HasMaxLength(500);
+
+                // Người gửi/duyệt tối đa 50
+                e.Property(x => x.SubmittedBy)
+                 .HasMaxLength(50);
+                e.Property(x => x.ApprovedBy)
+                 .HasMaxLength(50);
+
+                // Concurrency token cho ROWVERSION
+                e.Property(x => x.RowVersion)
+                 .IsRowVersion()
+                 .IsConcurrencyToken();
             });
 
 
@@ -155,6 +193,18 @@ namespace aznews.Models
                  .WithMany()
                  .HasForeignKey(x => x.MaSinhVien)
                  .OnDelete(DeleteBehavior.Restrict);
+            });
+            mb.Entity<DiemLopAudit>(e =>
+            {
+                e.ToTable("DiemLopAudit");
+                e.HasKey(x => x.AuditId);
+                e.Property(x => x.OldQT).HasPrecision(4, 2);
+                e.Property(x => x.OldThi).HasPrecision(4, 2);
+                e.Property(x => x.NewQT).HasPrecision(4, 2);
+                e.Property(x => x.NewThi).HasPrecision(4, 2);
+                e.Property(x => x.ActionType).HasMaxLength(50).IsRequired();
+                e.Property(x => x.Reason).HasMaxLength(500);
+                e.Property(x => x.ChangedBy).HasMaxLength(50).IsRequired();
             });
 
             // DiemDanh

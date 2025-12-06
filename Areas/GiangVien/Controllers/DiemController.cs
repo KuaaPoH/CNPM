@@ -118,6 +118,8 @@ namespace aznews.Areas.GiangVien.Controllers
                     TenHP = x.HocPhan.TenHP ?? "",
                     HocKy = x.HocKy,
                     NamHoc = x.NamHoc,
+                    LoaiLop = (int?)x.LoaiLop,   // nếu cột là int (1/2/3)
+                    TenNhom = x.TenNhom,         // có thể là "1" hoặc "LT1"
                     RouteText = "",                 // nếu không dùng có thể bỏ field này
                     TrangThai = x.DiemStatus
                 })
@@ -186,6 +188,7 @@ namespace aznews.Areas.GiangVien.Controllers
             // Lấy thông tin GV để ghi audit "by"
             var gv = await _db.GiangViens.FindAsync(gvId.Value);
             var by = gv?.HoTen ?? $"GV#{gvId.Value}";
+            var now = DateTime.Now;
 
             var lhp = await _db.LopHocPhans
                 .FirstOrDefaultAsync(x => x.MaLHP == maLHP && x.MaGiangVien == gvId.Value);
@@ -213,6 +216,8 @@ namespace aznews.Areas.GiangVien.Controllers
                         MaSinhVien = r.MaSinhVien,
                         DiemQT = r.DiemQT,
                         DiemThi = r.DiemThi,
+                        UpdatedAt = now,            
+                        UpdatedBy = by,
                         IsActive = true
                     });
                 }
@@ -220,6 +225,8 @@ namespace aznews.Areas.GiangVien.Controllers
                 {
                     diem.DiemQT = r.DiemQT;
                     diem.DiemThi = r.DiemThi;
+                    diem.UpdatedAt = now;           
+                    diem.UpdatedBy = by;
                     _db.DiemLops.Update(diem);
                 }
             }
@@ -243,7 +250,7 @@ namespace aznews.Areas.GiangVien.Controllers
 
             var gv = await _db.GiangViens.FindAsync(gvId.Value);
             var by = gv?.HoTen ?? $"GV#{gvId.Value}";
-
+            var now = DateTime.Now;
             if (file == null || file.Length == 0)
             {
                 TempData["Error"] = "Vui lòng chọn tệp CSV.";
@@ -261,58 +268,74 @@ namespace aznews.Areas.GiangVien.Controllers
             }
 
             int imported = 0;
-            using (var stream = file.OpenReadStream())
-            using (var reader = new StreamReader(stream, Encoding.UTF8, true))
+            using var stream = file.OpenReadStream();
+            using var reader = new StreamReader(stream, Encoding.UTF8, true);
+
+            string? line;
+            bool headerSkipped = false;
+
+            while ((line = await reader.ReadLineAsync()) != null)
             {
-                string? line;
-                bool headerSkipped = false;
-                while ((line = await reader.ReadLineAsync()) != null)
+                if (!headerSkipped) { headerSkipped = true; continue; }
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                var parts = line.Split(',');
+                if (parts.Length < 3) continue;
+
+                // ---- Cột 1: MaSinhVien (số) hoặc MaSoSV (chuỗi) ----
+                int maSV;
+                var cell = parts[0].Trim();
+
+                if (!int.TryParse(cell, out maSV))
                 {
-                    if (!headerSkipped) { headerSkipped = true; continue; }
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-
-                    var parts = line.Split(',');
-                    if (parts.Length < 3) continue;
-
-                    // CSV của bạn dùng MaSinhVien (số), nếu dùng MaSoSV thì join SinhVien để đổi ra MaSinhVien
-                    if (!int.TryParse(parts[0].Trim(), out var maSv)) continue;
-
-                    var diemQt = TryParseDecimalOrNull(parts[1]);
-                    var diemThi = TryParseDecimalOrNull(parts[2]);
-                    if (diemQt.HasValue && (diemQt < 0 || diemQt > 10)) diemQt = null;
-                    if (diemThi.HasValue && (diemThi < 0 || diemThi > 10)) diemThi = null;
-
-                    var diem = await _db.DiemLops
-                        .FirstOrDefaultAsync(x => x.MaLHP == maLHP && x.MaSinhVien == maSv);
-
-                    if (diem == null)
-                    {
-                        _db.DiemLops.Add(new Areas.Admin.Models.DiemLop
-                        {
-                            MaLHP = maLHP,
-                            MaSinhVien = maSv,
-                            DiemQT = diemQt,
-                            DiemThi = diemThi,
-                            IsActive = true
-                        });
-                    }
-                    else
-                    {
-                        diem.DiemQT = diemQt;
-                        diem.DiemThi = diemThi;
-                        _db.DiemLops.Update(diem);
-                    }
-                    imported++;
+                    // Không phải số -> coi là MaSoSV, tra lấy MaSinhVien
+                    var sv = await _db.SinhViens
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(x => x.MaSoSV == cell);
+                    if (sv == null) continue;            // không có SV này -> bỏ qua dòng
+                    maSV = sv.MaSinhVien;
                 }
+
+                // ---- Cột điểm: chấp nhận "." hoặc ","; rỗng -> null; range 0..10 ----
+                decimal? diemQt = TryParseDecimalOrNull(parts[1]);
+                decimal? diemThi = TryParseDecimalOrNull(parts[2]);
+                if (diemQt is < 0 or > 10) diemQt = null;
+                if (diemThi is < 0 or > 10) diemThi = null;
+
+                var diem = await _db.DiemLops
+                    .FirstOrDefaultAsync(x => x.MaLHP == maLHP && x.MaSinhVien == maSV);
+
+                if (diem == null)
+                {
+                    _db.DiemLops.Add(new aznews.Areas.Admin.Models.DiemLop
+                    {
+                        MaLHP = maLHP,
+                        MaSinhVien = maSV,
+                        DiemQT = diemQt,
+                        DiemThi = diemThi,
+                        UpdatedAt = now,            // <-- thêm
+                        UpdatedBy = by,
+                        IsActive = true
+                    });
+                }
+                else
+                {
+                    diem.DiemQT = diemQt;
+                    diem.DiemThi = diemThi;
+                    diem.UpdatedAt = now;           // <-- thêm
+                    diem.UpdatedBy = by;
+                    _db.DiemLops.Update(diem);
+                }
+
+                imported++;
             }
 
             await _db.SaveChangesAsync();
-
-            await SnapshotAuditAsync(maLHP, "Import", by);
-
+            await SnapshotAuditAsync(maLHP, "Import", by);  
             TempData["Success"] = $"Import thành công {imported} dòng.";
             return RedirectToAction(nameof(Manage), new { id = maLHP });
         }
+
 
 
 

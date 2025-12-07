@@ -1,0 +1,120 @@
+﻿@using aznews.Areas.Admin.Models.Diem
+@model DiemManageVM
+
+@{
+    ViewData["Title"] = "DUYỆT ĐIỂM HỌC PHẦN";
+
+    // Dùng đúng enum DiemTrangThai (nằm trong namespace .Diem)
+    Func<DiemTrangThai, (string cls, string txt)> badge = s =>
+    {
+        switch (s)
+        {
+            case DiemTrangThai.Submitted: return ("bg-warning text-dark", "Đã gửi duyệt");
+            case DiemTrangThai.Approved: return ("bg-success", "Đã duyệt");
+            case DiemTrangThai.Rejected: return ("bg-danger", "Từ chối");
+            default: return ("bg-secondary", "Có thể sửa");
+        }
+    };
+
+    var b = badge(Model.TrangThai);
+    int stt = 0;
+    string fmt(decimal? x) => x.HasValue ? x.Value.ToString("0.##") : "";
+}
+
+<section class="section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold text-primary">DUYỆT ĐIỂM HỌC PHẦN</h4>
+
+        <div class="d-flex gap-2">
+            <!-- Duyệt -->
+            <form asp-area="Admin" asp-controller="DuyetDiem" asp-action="Approve" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.MaLHP" />
+                <button type="submit" class="btn btn-success"
+                        @(Model.TrangThai == DiemTrangThai.Submitted ? null : new { disabled = "disabled" })>
+                    <i class="bi bi-check2-circle me-1"></i>Duyệt
+                </button>
+            </form>
+
+            <!-- Từ chối -->
+            <button type="button" class="btn btn-danger"
+                    data-bs-toggle="modal" data-bs-target="#rejectModal"
+                    @(Model.TrangThai == DiemTrangThai.Submitted ? null : new { disabled = "disabled" })>
+                <i class="bi bi-x-circle me-1"></i>Từ chối
+            </button>
+
+            <a asp-area="Admin" asp-controller="DuyetDiem" asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Quay lại
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <div class="fw-semibold fs-5">@Model.TenHP</div>
+                    <div class="text-muted small">
+                        Học kỳ: <span class="me-3">@Model.HocKy</span>
+                        Năm học: <span class="me-3">@Model.NamHoc</span>
+                    </div>
+                </div>
+                <div>
+                    <span class="badge @b.cls">@b.txt</span>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle shadow-sm">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width:70px;">STT</th>
+                            <th style="width:120px;">Mã SV</th>
+                            <th>Họ tên</th>
+                            <th style="width:140px;" class="text-end">Điểm QT</th>
+                            <th style="width:140px;" class="text-end">Điểm thi</th>
+                            <th style="width:140px;" class="text-end">Điểm tổng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Model.Rows)
+                        {
+                            <tr>
+                                <td>@(++stt)</td>
+                                <td>@r.MaSoSV</td>
+                                <td>@r.HoTen</td>
+                                <td class="text-end">@fmt(r.DiemQT)</td>
+                                <td class="text-end">@fmt(r.DiemThi)</td>
+                                <td class="text-end">@fmt(r.DiemTong)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal từ chối -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-area="Admin" asp-controller="DuyetDiem" asp-action="Reject" method="post" class="modal-content">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.MaLHP" />
+            <div class="modal-header">
+                <h5 class="modal-title">Nhập lý do từ chối</h5>
+                <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control" name="reason" rows="4" placeholder="Lý do từ chối..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Hủy</button>
+                <button class="btn btn-danger" type="submit">
+                    <i class="bi bi-x-circle me-1"></i>Từ chối
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

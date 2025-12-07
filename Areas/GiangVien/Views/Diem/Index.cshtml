@@ -1,0 +1,225 @@
+﻿@using aznews.Areas.Admin.Models
+@model IEnumerable<aznews.Areas.GiangVien.Models.Diem.LhpRowVM>
+
+@{
+    ViewData["Title"] = "QUẢN LÝ ĐIỂM HỌC PHẦN";
+    // optional paging info (nếu có truyền từ controller)
+    int page = ViewBag.Page is int p ? p : 1;
+    int pageSize = ViewBag.PageSize is int s ? s : Model.Count();
+    string q = ViewBag.Q as string ?? "";
+    int sttStart = (page - 1) * pageSize;
+}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <!-- Title + Search -->
+                    <div class="d-flex align-items-center justify-content-between mt-3 mb-3">
+                        <h4 class="fw-bold text-primary m-0 text-uppercase">
+                            @ViewData["Title"]
+                        </h4>
+
+                        <form asp-area="GiangVien" asp-controller="Diem" asp-action="Index" method="get" class="d-flex" role="search">
+                            <input type="search"
+                                   name="q"
+                                   value="@q"
+                                   class="form-control"
+                                   style="width: 340px"
+                                   placeholder="Tìm theo tên hoặc mã học phần..." />
+                            <button class="btn btn-outline-secondary ms-2" type="submit" title="Tìm kiếm">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle mb-0 text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 70px;">STT</th>
+                                    <th>Tên học phần</th>
+                                    <th style="width: 120px;">Học kỳ</th>
+                                    <th style="width: 140px;">Năm học</th>
+                                    <th style="width: 140px;">Trạng thái</th>
+                                    <th style="width: 260px;" class="text-center">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @{
+                                var i = 0;
+                                foreach (var m in Model)
+                                {
+                                    var idx = sttStart + (++i);
+
+                                    // badge status
+                                    string badgeClass;
+                                    string badgeText;
+                                    switch (m.TrangThai)
+                                    {
+                                        case DiemStatus.Submitted:
+                                            badgeClass = "badge bg-warning text-dark";
+                                            badgeText  = "Đã gửi duyệt";
+                                            break;
+                                        case DiemStatus.Approved:
+                                            badgeClass = "badge bg-success";
+                                            badgeText  = "Đã duyệt";
+                                            break;
+                                        case DiemStatus.Rejected:
+                                            badgeClass = "badge bg-danger";
+                                            badgeText  = "Từ chối";
+                                            break;
+                                        default:
+                                            badgeClass = "badge bg-secondary";
+                                            badgeText  = "Có thể sửa";
+                                            break;
+                                    }
+
+                                    // quy ước cho phép sửa/nhập & submit
+                                    bool canEdit   = m.TrangThai is DiemStatus.Editable or DiemStatus.Rejected;
+                                    bool canSubmit = m.TrangThai is DiemStatus.Editable or DiemStatus.Rejected;
+                            }
+                            }
+                            @foreach (var m in Model)
+                            {
+                                var idx = ++sttStart;
+
+                                string badgeClass;
+                                string badgeText;
+                                switch (m.TrangThai)
+                                {
+                                    case DiemStatus.Submitted:
+                                        badgeClass = "badge bg-warning text-dark";
+                                        badgeText = "Đã gửi duyệt";
+                                        break;
+                                    case DiemStatus.Approved:
+                                        badgeClass = "badge bg-success";
+                                        badgeText = "Đã duyệt";
+                                        break;
+                                    case DiemStatus.Rejected:
+                                        badgeClass = "badge bg-danger";
+                                        badgeText = "Từ chối";
+                                        break;
+                                    default:
+                                        badgeClass = "badge bg-secondary";
+                                        badgeText = "Có thể sửa";
+                                        break;
+                                }
+                                bool canEdit = m.TrangThai is DiemStatus.Editable or DiemStatus.Rejected;
+                                bool canSubmit = m.TrangThai is DiemStatus.Editable or DiemStatus.Rejected;
+
+                                <tr>
+                                    <td class="text-center fw-semibold">@idx</td>
+
+                                    <td>
+                                        <div class="fw-semibold">@m.TenDayDu</div>
+                                        <div class="text-muted small">Mã HP: @m.MaLHP</div>
+                                    </td>
+
+                                    <td>@m.HocKy</td>
+                                    <td>@m.NamHoc</td>
+
+                                    <td>
+                                        <span class="@badgeClass">@badgeText</span>
+                                    </td>
+
+                                        <td class="text-center">
+                                            <div class="d-inline-flex gap-2">
+
+                                                @* Nhập/Sửa *@
+                                                @if (canEdit)
+                                                {
+                                                    <a class="btn btn-sm btn-primary"
+                                                       asp-area="GiangVien" asp-controller="Diem" asp-action="Manage"
+                                                       asp-route-id="@m.MaLHP" title="Nhập/Sửa">
+                                                        <i class="bi bi-ui-checks-grid me-1"></i> Nhập/Sửa
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="btn btn-sm btn-primary disabled"
+                                                       tabindex="-1" aria-disabled="true" title="Nhập/Sửa (khóa)">
+                                                        <i class="bi bi-ui-checks-grid me-1"></i> Nhập/Sửa
+                                                    </a>
+                                                }
+
+                                                @* Import CSV *@
+                                                @if (canEdit)
+                                                {
+                                                    <form asp-area="GiangVien"
+                                                          asp-controller="Diem"
+                                                          asp-action="ImportCsv"
+                                                          method="post"
+                                                          enctype="multipart/form-data"
+                                                          class="d-inline"
+                                                          id="import-form-@m.MaLHP">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="maLHP" value="@m.MaLHP" />
+                                                        <input type="file"
+                                                               name="file"
+                                                               id="import-file-@m.MaLHP"
+                                                               accept=".csv,text/csv"
+                                                               class="d-none" />
+                                                        <button type="button"
+                                                                class="btn btn-sm btn-info"
+                                                                title="Import CSV"
+                                                                onclick="document.getElementById('import-file-@m.MaLHP').click()">
+                                                            <i class="bi bi-upload me-1"></i> Import
+                                                        </button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-info disabled"
+                                                            tabindex="-1" aria-disabled="true" title="Import (khóa)">
+                                                        <i class="bi bi-upload me-1"></i> Import
+                                                    </button>
+                                                }
+
+                                                @* Gửi duyệt *@
+                                                <form asp-area="GiangVien" asp-controller="Diem" asp-action="Submit"
+                                                      method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@m.MaLHP" />
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-warning text-dark"
+                                                            title="Gửi duyệt"
+                                                            disabled="@(canSubmit ? null : "disabled")">
+                                                        <i class="bi bi-send-fill me-1"></i> Gửi duyệt
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </td>
+
+
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Giữ phong cách UI hiện tại: bảng rõ ràng & nút gọn gàng */
+    .table th, .table td { vertical-align: middle; }
+    .btn[disabled] { pointer-events: none; opacity: .6; }
+</style>
+<script>
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.matches('input[type="file"][id^="import-file-"]')) {
+        const input = e.target;
+        if (input.files && input.files.length > 0) {
+          input.closest('form').submit();
+        }
+      }
+    });
+</script>

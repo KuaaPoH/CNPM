@@ -15,10 +15,27 @@
         public string? TenNhom { get; set; }     // N1/N2...
         public bool TrangThai { get; set; } = true;
 
+        // ===== Phần mới khớp ALTER TABLE =====
+        public DiemStatus DiemStatus { get; set; }
+        
+        public string? DiemNote { get; set; }
+
+        public DateTime? SubmittedAt { get; set; }
+        public string? SubmittedBy { get; set; }
+
+        public DateTime? ApprovedAt { get; set; }
+        public string? ApprovedBy { get; set; }
+
+        // RowVersion (timestamp) để khóa đồng thời
+        public byte[]? RowVersion { get; set; }
         // nav
         public HocPhan? HocPhan { get; set; }
         public GiangVien? GiangVien { get; set; }
         public LopHocPhan? LopCha { get; set; }
+
         public ICollection<LopHocPhan>? LopCon { get; set; }
+ 
     }
+   
 }
+

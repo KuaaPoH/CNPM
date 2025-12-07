@@ -1,30 +1,28 @@
-﻿<aside id="sidebar" class="sidebar">
+@{
+    ViewData["Title"] = "Trang chủ";
+}
 
-            <ul class="sidebar-nav" id="sidebar-nav">
-                <aside id="sidebar" class="sidebar">
+<div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Tổng quan</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
 
-                    <ul class="sidebar-nav" id="sidebar-nav">
+<section class="section dashboard">
+    <div class="row">
 
-                   
-                            <li class="nav-item">
-                                <a asp-controller="phongban" class="nav-link ">
-                                    <i class="bi bi-person-square"></i>
-                                    <span>Quản lý phong ban</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-action="Index" asp-controller="Nhanvien" class="nav-link ">
-                                    <i class="bi bi-person-check"></i>
-                                    <span>Quản lý nhan vien</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-action="Index" asp-controller="Attendance" class="nav-link ">
-                                    <i class="bi bi-person-check"></i>
-                                    <span>Quản lý chấm công</span>
-                                </a>
-                            </li>
-                    </ul>
-                </aside>
-            </ul>
-        </aside><!-- End Sidebar-->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Chào mừng sinh viên trở lại!</h5>
+                    <p>Hệ thống quản lý đào tạo trường Đại học Vinh.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

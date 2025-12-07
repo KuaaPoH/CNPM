@@ -1,97 +1,140 @@
-﻿@model aznews.Models.Diem.BangDiemIndexVM
+@model aznews.Models.Diem.BangDiemIndexVM
 @{
     ViewData["Title"] = "Bảng điểm chi tiết";
-    // Đổi layout nếu bạn có layout chung của site
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="mb-3">BẢNG ĐIỂM CHI TIẾT</h2>
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
 
-<div class="card shadow-sm mb-3">
-    <div class="card-body">
-        <form method="get" class="row g-2 align-items-end">
-            <div class="col-sm-4 col-md-3">
-                <label class="form-label mb-1">Năm học</label>
-                <select name="namHoc" class="form-select">
-                    <option value="">— Tất cả năm học —</option>
-                    @foreach (var nh in Model.NamHocs ?? Enumerable.Empty<string>())
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold text-primary mb-0 text-uppercase">Bảng điểm chi tiết</h4>
+                    </div>
+
+                    <!-- Filter Form -->
+                    <form method="get" class="mb-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Năm học</label>
+                                <select name="namHoc" class="form-select">
+                                    <option value="">— Tất cả năm học —</option>
+                                    @foreach (var nh in Model.NamHocs ?? Enumerable.Empty<string>())
+                                    {
+                                        <option value="@nh" selected="@(Model.FilterNamHoc == nh)">
+                                            @nh
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Học kỳ</label>
+                                <select name="hocKy" class="form-select">
+                                    <option value="">— Tất cả học kỳ —</option>
+                                    @foreach (var hk in Model.HocKys ?? Enumerable.Empty<string>())
+                                    {
+                                        <option value="@hk" selected="@(Model.FilterHocKy == hk)">
+                                            @hk
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bi bi-funnel me-1"></i> Lọc dữ liệu
+                                </button>
+                                <a class="btn btn-outline-secondary" href="@(Url.Action("Index", "BangDiem"))">
+                                    <i class="bi bi-x-circle me-1"></i> Xóa lọc
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Data Table -->
+                    @if (Model.Rows == null || !Model.Rows.Any())
                     {
-                        <option value="@nh" selected="@(Model.FilterNamHoc == nh)">
-                            @nh
-                        </option>
+                        <div class="alert alert-info d-flex align-items-center" role="alert">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <div>
+                                Chưa có học phần đã được duyệt hoặc không khớp điều kiện lọc.
+                            </div>
+                        </div>
                     }
-                </select>
-            </div>
-
-            <div class="col-sm-4 col-md-3">
-                <label class="form-label mb-1">Học kỳ</label>
-                <select name="hocKy" class="form-select">
-                    <option value="">— Tất cả học kỳ —</option>
-                    @foreach (var hk in Model.HocKys ?? Enumerable.Empty<string>())
+                    else
                     {
-                        <option value="@hk" selected="@(Model.FilterHocKy == hk)">
-                            @hk
-                        </option>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle text-center">
+                                <thead class="table-light text-nowrap">
+                                    <tr>
+                                        <th style="width: 5%">STT</th>
+                                        <th style="width: 15%">Năm học</th>
+                                        <th style="width: 10%">Học kỳ</th>
+                                        <th style="width: 15%">Mã HP</th>
+                                        <th class="text-start">Tên học phần</th>
+                                        <th style="width: 10%">Số TC</th>
+                                        <th style="width: 10%">Điểm QT</th>
+                                        <th style="width: 10%">Điểm thi</th>
+                                        <th style="width: 10%">Điểm tổng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var stt = 1;
+                                        foreach (var r in Model.Rows)
+                                        {
+                                            <tr>
+                                                <td>@stt</td>
+                                                <td>@r.NamHoc</td>
+                                                <td>@r.HocKy</td>
+                                                <td>@r.MaSoHP</td>
+                                                <td class="text-start fw-bold text-dark">@r.TenHP</td>
+                                                <td>@r.SoTC</td>
+                                                <td>
+                                                    @if (r.DiemQT.HasValue)
+                                                    {
+                                                        <span class="badge bg-light text-dark border">@r.DiemQT.Value.ToString("0.00")</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">—</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (r.DiemThi.HasValue)
+                                                    {
+                                                        <span class="badge bg-light text-dark border">@r.DiemThi.Value.ToString("0.00")</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">—</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (r.DiemTong.HasValue)
+                                                    {
+                                                        <span class="badge bg-success">@r.DiemTong.Value.ToString("0.00")</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">—</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                            stt++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
-                </select>
-            </div>
 
-            <div class="col-sm-4 col-md-3">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-search me-1"></i> Lọc
-                </button>
-                <a class="btn btn-outline-secondary ms-1" href="@(Url.Action("Index", "BangDiem"))">
-                    <i class="bi bi-arrow-counterclockwise me-1"></i> Xóa lọc
-                </a>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
-
-@if (Model.Rows == null || !Model.Rows.Any())
-{
-    <div class="alert alert-info">
-        Chưa có học phần đã được duyệt hoặc không khớp điều kiện lọc.
-    </div>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th style="width:70px;" class="text-center">STT</th>
-                    <th style="width:120px;">Năm học</th>
-                    <th style="width:90px;">Học kỳ</th>
-                    <th style="width:120px;">Mã HP</th>
-                    <th>Tên học phần</th>
-                    <th style="width:90px;" class="text-center">Số TC</th>
-                    <th style="width:110px;" class="text-center">Điểm QT</th>
-                    <th style="width:110px;" class="text-center">Điểm thi</th>
-                    <th style="width:120px;" class="text-center">Điểm tổng</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    var stt = 1;
-                    foreach (var r in Model.Rows)
-                    {
-                        <tr>
-                            <td class="text-center">@stt</td>
-                            <td>@r.NamHoc</td>
-                            <td>@r.HocKy</td>
-                            <td>@r.MaSoHP</td>
-                            <td>@r.TenHP</td>
-                            <td class="text-center">@r.SoTC</td>
-                            <td class="text-center">@((r.DiemQT.HasValue) ? r.DiemQT.Value.ToString("0.00") : "—")</td>
-                            <td class="text-center">@((r.DiemThi.HasValue) ? r.DiemThi.Value.ToString("0.00") : "—")</td>
-                            <td class="text-center fw-semibold">@((r.DiemTong.HasValue) ? r.DiemTong.Value.ToString("0.00") : "—")</td>
-                        </tr>
-                        ;
-                        stt++;
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
-}
+</section>

@@ -93,6 +93,12 @@ namespace aznews.Areas.Admin.Controllers
             // Mặc định vai trò sinh viên
             model.MaVaiTro = 3;
 
+            // Mã hóa mật khẩu nếu có (cho Create)
+            if (!string.IsNullOrEmpty(model.MatKhau))
+            {
+                model.MatKhau = BCrypt.Net.BCrypt.HashPassword(model.MatKhau);
+            }
+
             // Upload ảnh (nếu có)
             if (avatar != null && avatar.Length > 0)
             {
@@ -162,7 +168,10 @@ namespace aznews.Areas.Admin.Controllers
 
             // Nếu đổi mật khẩu (nhập mới)
             if (!string.IsNullOrWhiteSpace(model.MatKhau))
-                sv.MatKhau = model.MatKhau; // tuỳ bạn có hash hay không
+            {
+                // Hash mật khẩu mới
+                sv.MatKhau = BCrypt.Net.BCrypt.HashPassword(model.MatKhau);
+            }
 
             // Xoá avatar nếu tick
             if (RemoveAvatar == "true" && !string.IsNullOrEmpty(sv.AnhDaiDien))

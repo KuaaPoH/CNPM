@@ -1,0 +1,214 @@
+@model aznews.Areas.Admin.Models.Home.AdminDashboardVM
+
+@{
+    ViewData["Title"] = "Dashboard Admin";
+}
+
+<div class="pagetitle">
+    <h1>Tổng quan</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Admin">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+
+        <!-- ================= LEFT COLUMNS ================= -->
+        <div class="col-lg-8">
+            <div class="row">
+
+                <!-- Card 1: Sinh viên -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card sales-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sinh viên <span>| Hoạt động</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>@Model.TotalSinhVien</h6>
+                                    <span class="text-muted small pt-2 ps-1">sinh viên</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Giảng viên -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card revenue-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Giảng viên <span>| Hoạt động</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-person-badge"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>@Model.TotalGiangVien</h6>
+                                    <span class="text-muted small pt-2 ps-1">giảng viên</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Lớp chờ duyệt (QUAN TRỌNG) -->
+                <div class="col-xxl-4 col-xl-12">
+                    <div class="card info-card customers-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Lớp chờ duyệt <span>| Cần xử lý</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-danger text-white">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6 class="text-danger">@Model.TotalChoDuyet</h6>
+                                    <a href="/Admin/DuyetDiem?status=Submitted" class="text-primary small pt-1 fw-bold">Xem ngay <i class="bi bi-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Sales -->
+                <div class="col-12">
+                    <!-- ... (giữ nguyên phần code Recent Sales cũ ở đây, tôi dùng replace block để chèn SAU nó) ... -->
+                </div><!-- End Recent Sales -->
+
+
+
+                <!-- Grade Distribution Chart -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Phổ điểm đào tạo <span>| Các lớp đã chốt</span></h5>
+
+                            <!-- Bar Chart -->
+                            <div id="gradeChart"></div>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    var gradeCounts = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GradeDistributionCounts));
+                                    var gradeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GradeDistributionLabels));
+
+                                    new ApexCharts(document.querySelector("#gradeChart"), {
+                                        series: [{
+                                            name: 'Số lượng sinh viên',
+                                            data: gradeCounts
+                                        }],
+                                        chart: {
+                                            type: 'bar',
+                                            height: 350,
+                                            toolbar: { show: false }
+                                        },
+                                        plotOptions: {
+                                            bar: {
+                                                borderRadius: 4,
+                                                horizontal: false,
+                                                columnWidth: '55%',
+                                                endingShape: 'rounded'
+                                            }
+                                        },
+                                        dataLabels: {
+                                            enabled: false
+                                        },
+                                        stroke: {
+                                            show: true,
+                                            width: 2,
+                                            colors: ['transparent']
+                                        },
+                                        xaxis: {
+                                            categories: gradeLabels,
+                                        },
+                                        yaxis: {
+                                            title: {
+                                                text: 'Số lượng (SV)'
+                                            }
+                                        },
+                                        fill: {
+                                            opacity: 1
+                                        },
+                                        tooltip: {
+                                            y: {
+                                                formatter: function (val) {
+                                                    return val + " sinh viên"
+                                                }
+                                            }
+                                        },
+                                        colors: ['#2eca6a', '#4154f1', '#ffc107', '#dc3545'] // Xanh lá, Xanh dương, Vàng, Đỏ
+                                    }).render();
+                                });
+                            </script>
+                            <!-- End Bar Chart -->
+
+                        </div>
+                    </div>
+                </div><!-- End Grade Chart -->
+
+            </div>
+        </div><!-- End Left columns -->
+
+        <!-- ================= RIGHT COLUMNS ================= -->
+        <div class="col-lg-4">
+
+            <!-- Website Traffic -->
+            <div class="card">
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Tiến độ nhập điểm <span>| Học kỳ này</span></h5>
+
+                    <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            var dataValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.StatusCounts));
+                            var dataLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.StatusLabels));
+
+                            echarts.init(document.querySelector("#trafficChart")).setOption({
+                                tooltip: {
+                                    trigger: 'item'
+                                },
+                                legend: {
+                                    top: '5%',
+                                    left: 'center'
+                                },
+                                series: [{
+                                    name: 'Trạng thái',
+                                    type: 'pie',
+                                    radius: ['40%', '70%'],
+                                    avoidLabelOverlap: false,
+                                    label: {
+                                        show: false,
+                                        position: 'center'
+                                    },
+                                    emphasis: {
+                                        label: {
+                                            show: true,
+                                            fontSize: '18',
+                                            fontWeight: 'bold'
+                                        }
+                                    },
+                                    labelLine: {
+                                        show: false
+                                    },
+                                    data: [
+                                        { value: dataValues[0], name: 'Đang nhập (GV)' },
+                                        { value: dataValues[1], name: 'Chờ duyệt' },
+                                        { value: dataValues[2], name: 'Đã chốt' }
+                                    ]
+                                }]
+                            });
+                        });
+                    </script>
+
+                </div>
+            </div><!-- End Website Traffic -->
+
+        </div><!-- End Right columns -->
+
+    </div>
+</section>

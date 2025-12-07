@@ -1,31 +1,161 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
 }
-<link rel="stylesheet" href="~/admin/vendor/bootstrap/css/bootstrap.min.css" />
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="mb-3">Đăng nhập</h5>
-                    @if (ViewBag.Error != null)
-                    {
-                        <div class="alert alert-danger">@ViewBag.Error</div>
-                    }
-                    <form asp-action="Login" method="post">
-                        <div class="mb-3">
-                            <label class="form-label">Tài khoản</label>
-                            <input name="username" class="form-control" />
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Đăng Nhập - Đại Học Vinh</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Style -->
+    <style>
+        body {
+            font-family: "Lato", Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: normal;
+            background: #eef1f7; /* Nền xám xanh nhạt dịu mắt */
+            color: gray;
+        }
+
+        .img {
+            width: 50%; /* Quan trọng: Chiếm 50% chiều rộng */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-image: url('/Imgs/image.webp');
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            position: relative;
+        }
+        
+        /* Lớp phủ màu xanh mờ lên ảnh để chữ Logo nổi hơn nếu cần */
+        .img::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(1, 41, 112, 0); /* Đã chỉnh thành 0 để ảnh sáng (không phủ màu) */
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+
+        .login-wrap {
+            position: relative;
+            background: #fff;
+            border-radius: 20px; /* Bo tròn mạnh hơn */
+            /* Đổ bóng sâu hơn, mềm hơn */
+            -webkit-box-shadow: 0px 15px 40px -10px rgba(0, 0, 0, 0.2);
+            -moz-box-shadow: 0px 15px 40px -10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 15px 40px -10px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Để ảnh bo góc không bị lòi ra */
+        }
+
+        .login-wrap .p-4 {
+            padding: 3rem !important; /* Tăng padding cho thoáng */
+        }
+        
+        /* ... các class khác giữ nguyên ... */
+        .form-control {
+            height: 52px; /* Cao hơn chút */
+            /* ... */
+            background: #f8f9fa; /* Nền input hơi xám nhẹ để phân biệt */
+            border: 1px solid #e9ecef;
+            color: #495057;
+        }
+        /* ... */
+        
+        /* Responsive: Mobile thì ảnh nằm trên, bo góc trên */
+        @@media (max-width: 767.98px) {
+            .img {
+                height: 250px;
+                border-top-left-radius: 20px;
+                border-top-right-radius: 20px;
+                border-bottom-left-radius: 0;
+            }
+            .login-wrap {
+                border-radius: 20px;
+            }
+        }
+    </style>
+
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+    <section class="ftco-section" style="padding-top: 80px; padding-bottom: 80px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section fw-bold" style="color: #012970; font-weight: 700;">QUẢN LÝ SINH VIÊN</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="wrap d-md-flex">
+                        
+                        <!-- Cột Hình Ảnh (Bên Trái) -->
+                        <div class="img d-flex align-items-center justify-content-center">
+                           
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Mật khẩu</label>
-                            <input name="password" type="password" class="form-control" />
+
+                        <!-- Cột Form (Bên Phải) -->
+                        <div class="login-wrap p-4 p-md-5">
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4">Đăng Nhập</h3>
+                                </div>
+                            </div>
+                            
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    @ViewBag.Error
+                                </div>
+                            }
+
+                            <form action="/Account/Login" method="POST" class="signin-form">
+                                <div class="form-group mb-3">
+                                    <label class="label" for="name">Tài khoản</label>
+                                    <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="label" for="password">Mật khẩu</label>
+                                    <input type="password" name="password" class="form-control" placeholder="Mật khẩu" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Đăng nhập</button>
+                                </div>
+                                <div class="form-group d-md-flex">
+                                    <div class="w-50 text-left">
+                                        <label class="checkbox-wrap checkbox-primary mb-0">
+                                            Ghi nhớ tôi
+                                            <input type="checkbox" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="w-50 text-md-right">
+                                        <a href="#" style="color: #012970;">Quên mật khẩu?</a>
+                                    </div>
+                                </div>
+                            </form>
+                            <p class="text-center">Chưa có tài khoản? <a href="#" style="color: #012970;">Liên hệ Admin</a></p>
                         </div>
-                        <button class="btn btn-primary w-100">Đăng nhập</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

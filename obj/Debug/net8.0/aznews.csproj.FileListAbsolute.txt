@@ -577,3 +577,4 @@ D:\CNPM1\obj\Debug\net8.0\refint\aznews.dll
 D:\CNPM1\obj\Debug\net8.0\aznews.pdb
 D:\CNPM1\obj\Debug\net8.0\aznews.genruntimeconfig.cache
 D:\CNPM1\obj\Debug\net8.0\ref\aznews.dll
+D:\CNPM1\bin\Debug\net8.0\BCrypt.Net-Next.dll

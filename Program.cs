@@ -10,7 +10,11 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(conne
 
 // MVC + (dev) runtime compilation + auto anti-forgery cho POST (tùy bật)
 builder.Services
-    .AddControllersWithViews(/*opts => opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())*/ )
+    .AddControllersWithViews(opts => 
+    {
+        // Đăng ký filter kiểm tra đăng nhập toàn cục
+        opts.Filters.Add(new aznews.Filters.AuthenticationFilter());
+    })
 #if DEBUG
     .AddRazorRuntimeCompilation()
 #endif

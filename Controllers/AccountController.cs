@@ -24,48 +24,83 @@ namespace aznews.Controllers
 
             username = username.Trim();
 
+            // 1) Admin
             var admin = await _db.Admins
-           .Include(a => a.VaiTro)
-           .FirstOrDefaultAsync(a => a.TenDangNhap == username && a.MatKhau == password && a.TrangThai);
+               .Include(a => a.VaiTro)
+               .FirstOrDefaultAsync(a => a.TenDangNhap == username && a.TrangThai);
 
             if (admin != null)
             {
-                HttpContext.Session.SetString("UserName", admin.TenDangNhap);
-                HttpContext.Session.SetInt32("Role", admin.MaVaiTro);
-                return RedirectToAction("Index", "Home", new { area = "Admin" });
+                // Verify hash
+                bool isValid = false;
+                if (!string.IsNullOrEmpty(admin.MatKhau))
+                {
+                    // Nếu pass trong DB chưa hash (fallback) -> so sánh thường
+                    if (!admin.MatKhau.StartsWith("$2")) 
+                        isValid = (admin.MatKhau == password);
+                    else
+                        isValid = BCrypt.Net.BCrypt.Verify(password, admin.MatKhau);
+                }
+
+                if (isValid)
+                {
+                    HttpContext.Session.SetString("UserName", admin.TenDangNhap);
+                    HttpContext.Session.SetInt32("Role", admin.MaVaiTro);
+                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+                }
             }
 
 
-            // 2) Giảng viên: MaSoGV + MatKhau, TrangThai = 1
+            // 2) Giảng viên: MaSoGV
             var gv = await _db.GiangViens
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.MaSoGV == username
-                                          && x.MatKhau == password
-                                          && x.TrangThai);
+                .FirstOrDefaultAsync(x => x.MaSoGV == username && x.TrangThai);
 
             if (gv != null)
             {
-                HttpContext.Session.SetInt32("Role", gv.MaVaiTro);       // = 2
-                HttpContext.Session.SetInt32("MaGV", gv.MaGiangVien);
-                HttpContext.Session.SetString("UserName", gv.MaSoGV);
-                HttpContext.Session.SetString("FullName", gv.HoTen ?? "");
-                return RedirectToAction("Index", "Home", new { area = "GiangVien" });
+                bool isValid = false;
+                if (!string.IsNullOrEmpty(gv.MatKhau))
+                {
+                    if (!gv.MatKhau.StartsWith("$2"))
+                        isValid = (gv.MatKhau == password);
+                    else
+                        isValid = BCrypt.Net.BCrypt.Verify(password, gv.MatKhau);
+                }
+
+                if (isValid)
+                {
+                    HttpContext.Session.SetInt32("Role", gv.MaVaiTro);       // = 2
+                    HttpContext.Session.SetInt32("MaGV", gv.MaGiangVien);
+                    HttpContext.Session.SetString("UserName", gv.MaSoGV);
+                    HttpContext.Session.SetString("FullName", gv.HoTen ?? "");
+                    return RedirectToAction("Index", "Home", new { area = "GiangVien" });
+                }
             }
 
-            // 3) Sinh viên: MaSoSV + MatKhau, TrangThai = 1
+            // 3) Sinh viên: MaSoSV
             var sv = await _db.SinhViens
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.MaSoSV == username
-                                          && x.MatKhau == password
-                                          && x.TrangThai);
+                .FirstOrDefaultAsync(x => x.MaSoSV == username && x.TrangThai);
 
             if (sv != null)
             {
-                HttpContext.Session.SetInt32("Role", sv.MaVaiTro);       // = 3
-                HttpContext.Session.SetInt32("MaSV", sv.MaSinhVien);
-                HttpContext.Session.SetString("UserName", sv.MaSoSV);
-                HttpContext.Session.SetString("FullName", sv.HoTen ?? "");
-                return RedirectToAction("Index", "Home");               // giao diện ngoài
+                bool isValid = false;
+                if (!string.IsNullOrEmpty(sv.MatKhau))
+                {
+                    if (!sv.MatKhau.StartsWith("$2"))
+                        isValid = (sv.MatKhau == password);
+                    else
+                        isValid = BCrypt.Net.BCrypt.Verify(password, sv.MatKhau);
+                }
+
+                if (isValid)
+                {
+                    HttpContext.Session.SetInt32("Role", sv.MaVaiTro);       // = 3
+                    HttpContext.Session.SetInt32("MaSV", sv.MaSinhVien);
+                    HttpContext.Session.SetString("UserName", sv.MaSoSV);
+                    HttpContext.Session.SetString("FullName", sv.HoTen ?? "");
+                    return RedirectToAction("Index", "Home");               // giao diện ngoài
+                }
             }
 
             ViewBag.Error = "Sai tài khoản hoặc mật khẩu.";

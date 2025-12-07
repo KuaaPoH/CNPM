@@ -56,6 +56,16 @@ namespace aznews.Areas.Admin.Controllers
         public async Task<IActionResult> Create(AdminGiangVien model)
         {
             if (!ModelState.IsValid) return View(model);
+
+            // Hash mật khẩu
+            if (!string.IsNullOrEmpty(model.MatKhau))
+            {
+                model.MatKhau = BCrypt.Net.BCrypt.HashPassword(model.MatKhau);
+            }
+
+            // Gán role mặc định nếu cần (ví dụ 2)
+            model.MaVaiTro = 2; 
+
             _db.GiangViens.Add(model);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -73,8 +83,34 @@ namespace aznews.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AdminGiangVien model)
         {
+            // Không validate MatKhau bắt buộc ở Edit (nếu model có attribute Required thì cần cẩn thận)
+            // Tốt nhất nên remove key khỏi ModelState nếu logic của bạn cho phép để trống
+            if (string.IsNullOrEmpty(model.MatKhau)) 
+            {
+                ModelState.Remove("MatKhau");
+            }
+
             if (!ModelState.IsValid) return View(model);
-            _db.Update(model);
+
+            var gv = await _db.GiangViens.FindAsync(model.MaGiangVien);
+            if (gv == null) return NotFound();
+
+            // Update info
+            gv.MaSoGV = model.MaSoGV;
+            gv.HoTen = model.HoTen;
+            gv.Email = model.Email;
+            gv.SoDienThoai = model.SoDienThoai;
+            gv.TrangThai = model.TrangThai;
+            // gv.MaVaiTro = 2; // Giữ nguyên hoặc set lại
+
+            // Xử lý mật khẩu
+            if (!string.IsNullOrWhiteSpace(model.MatKhau))
+            {
+                gv.MatKhau = BCrypt.Net.BCrypt.HashPassword(model.MatKhau);
+            }
+            // Nếu model.MatKhau rỗng -> Giữ nguyên gv.MatKhau cũ
+
+            _db.Update(gv);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

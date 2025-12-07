@@ -17,18 +17,8 @@ namespace aznews.Controllers
         // TODO: thay bằng cơ chế lấy mã SV trong hệ thống của bạn (Session/Claims/…)
         private int? GetCurrentSinhVienId()
         {
-            // ví dụ session
-            if (HttpContext.Session.TryGetValue("SV_ID", out _))
-            {
-                if (int.TryParse(HttpContext.Session.GetString("SV_ID"), out var id))
-                    return id;
-            }
-
-            // ví dụ từ Claims:
-            // var idStr = User.FindFirstValue("SV_ID");
-            // if (int.TryParse(idStr, out var id)) return id;
-
-            return null;
+            // Lấy MaSV từ session (khớp với AccountController)
+            return HttpContext.Session.GetInt32("MaSV");
         }
 
         [HttpGet]

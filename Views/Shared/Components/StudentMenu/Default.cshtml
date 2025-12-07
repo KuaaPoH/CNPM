@@ -1,0 +1,33 @@
+@using aznews.Models
+@using aznews.Areas.Admin.Models
+@model IList<AdminMenu>
+@using System
+
+@{
+    var curController = (ViewContext.RouteData.Values["controller"] ?? "").ToString();
+    var curAction = (ViewContext.RouteData.Values["action"] ?? "").ToString();
+}
+
+<!-- Lưu ý: Layout chính đã có thẻ <aside> hay chưa? 
+     Nếu Layout Admin đặt <aside> nằm TRONG component thì ở đây ta cũng làm vậy.
+     Dựa vào file AdminMenu/Default.cshtml ta thấy nó bao gồm cả thẻ <aside>.
+-->
+
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        @foreach (var item in Model)
+        {
+            // Logic Active đơn giản cho menu 1 cấp của sinh viên
+            bool isActive = string.Equals(item.ControllerName, curController, StringComparison.OrdinalIgnoreCase) &&
+                            string.Equals(item.ActionName, curAction, StringComparison.OrdinalIgnoreCase);
+
+            <li class="nav-item">
+                <a class="nav-link @(isActive ? "" : "collapsed")" 
+                   href="/@item.ControllerName/@item.ActionName">
+                    <i class="@item.Icon"></i>
+                    <span>@item.ItemName</span>
+                </a>
+            </li>
+        }
+    </ul>
+</aside>

@@ -13,7 +13,7 @@ namespace aznews.Areas.GiangVien.Controllers
         public SinhVienController(DataContext db) => _db = db;
 
         // /GiangVien/SinhVien/DanhSach?lopId=...
-        public async Task<IActionResult> DanhSach(int lopId, int page = 1)
+        public async Task<IActionResult> DanhSach(int lopId, int page = 1, string q = null)
         {
             const int pageSize = 20;
 
@@ -25,15 +25,23 @@ namespace aznews.Areas.GiangVien.Controllers
 
             var query = _db.DangKyLops
                 .AsNoTracking()
-                .Where(d => d.MaLHP == lopId)
-                .Include(d => d.SinhVien);
+                .Where(d => d.MaLHP == lopId); // Initial filter
 
-            int total = await query.CountAsync();
+            // Apply search filter
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                query = query.Where(d => d.SinhVien!.MaSoSV.Contains(q) || d.SinhVien.HoTen.Contains(q));
+            }
+
+            // Now apply Include
+            var finalQuery = query.Include(d => d.SinhVien);
+
+            int total = await finalQuery.CountAsync(); // Count on finalQuery
             int totalPages = (int)System.Math.Ceiling(total / (double)pageSize);
             if (page < 1) page = 1;
             if (page > totalPages && totalPages > 0) page = totalPages;
 
-            var list = await query
+            var list = await finalQuery // Query from finalQuery
                 .OrderBy(d => d.SinhVien!.HoTen)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -42,6 +50,7 @@ namespace aznews.Areas.GiangVien.Controllers
             ViewBag.Lop = lop;
             ViewBag.Page = page;
             ViewBag.TotalPages = totalPages;
+            ViewBag.Q = q; // Pass search query to view
 
             return View(list);
         }

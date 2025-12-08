@@ -66,4 +66,34 @@ File này lưu trữ chi tiết quá trình phát triển dự án "Hệ thống
 *   Xuất báo cáo điểm ra Excel/PDF.
 
 ---
-*File được cập nhật tự động bởi Gemini Assistant.*
+
+## 5. CHI TIẾT CÔNG VIỆC ĐÃ HOÀN THÀNH (Ngày 08/12/2025)
+
+### A. Sửa lỗi & Cải thiện UI/UX chung
+1.  **Khắc phục `InvalidOperationException` cho Layout:**
+    *   Đã thêm `@RenderSection("Scripts", required: false)` vào `/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml`.
+    *   Đã thêm `@RenderSection("Scripts", required: false)` vào `/Areas/GiangVien/Views/Shared/_Layout_GiangVien.cshtml`.
+2.  **Điều chỉnh màu nền giao diện Admin:**
+    *   Thay đổi màu nền `body` trong `wwwroot/admin/css/style.css` từ `#f6f9ff` thành `#e6ecf3` (xám xanh nhẹ) để có độ tương phản tốt hơn với các thẻ trắng.
+3.  **Cải thiện giao diện trang Đăng nhập:**
+    *   Đồng bộ kiểu chữ và màu chữ của `body` với giao diện admin ("Open Sans", `#444444`).
+    *   Thay đổi tiêu đề `h3` "Đăng Nhập" thành màu `#012970` và font "Nunito".
+    *   Điều chỉnh bố cục chính của form đăng nhập: giữ hình ảnh chiếm 50% chiều rộng và phần form chiếm 50% của tổng chiều rộng `col-lg-12` được căn phải.
+    *   Tách "Ghi nhớ tôi" và "Quên mật khẩu?" thành hai dòng riêng biệt và căn giữa.
+    *   Xóa dòng "Chưa có tài khoản? Liên hệ Admin".
+
+### B. Cải thiện chức năng Quản lý Điểm và Danh sách Sinh viên (Khu vực Giảng viên)
+1.  **Thêm nút "Quay lại" cho các trang Giảng viên:**
+    *   Thêm nút "Quay lại" vào trang Danh sách Sinh viên (`Areas/GiangVien/Views/SinhVien/DanhSach.cshtml`), liên kết đến `GiangVien/LopDay/Index`.
+    *   Thêm nút "Quay lại" vào trang Điểm danh (`Areas/GiangVien/Views/DiemDanh/Index.cshtml`), liên kết đến `GiangVien/LopDay/Index`.
+    *   Điều chỉnh vị trí các nút "Quay lại" này xuống cuối trang theo yêu cầu.
+2.  **Đồng bộ giao diện Danh sách Sinh viên với Danh sách Lớp dạy:**
+    *   Tái cấu trúc bố cục trang Danh sách Sinh viên (`Areas/GiangVien/Views/SinhVien/DanhSach.cshtml`) để giống với `GiangVien/LopDay/Index.cshtml`, bao gồm:
+        *   Tiêu đề `h4` với kiểu dáng nhất quán.
+        *   Nút "Quay lại" được đặt ở đầu trang, bên cạnh tiêu đề.
+        *   Thêm form tìm kiếm sinh viên theo tên/mã số.
+        *   Điều chỉnh kiểu bảng.
+3.  **Triển khai chức năng tìm kiếm Sinh viên:**
+    *   Cập nhật `DanhSach` action method trong `Areas/GiangVien/Controllers/SinhVienController.cs` để chấp nhận tham số tìm kiếm (`q`) và `lopId`.
+    *   Thực hiện lọc dữ liệu sinh viên dựa trên truy vấn tìm kiếm.
+    *   Sửa lỗi biên dịch (`IIncludableQueryable`) trong `SinhVienController.cs` để đảm bảo chức năng tìm kiếm hoạt động ổn định.

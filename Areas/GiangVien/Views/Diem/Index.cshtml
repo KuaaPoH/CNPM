@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "QUẢN LÝ ĐIỂM HỌC PHẦN";
-    // optional paging info (nếu có truyền từ controller)
+    
     int page = ViewBag.Page is int p ? p : 1;
     int pageSize = ViewBag.PageSize is int s ? s : Model.Count();
     string q = ViewBag.Q as string ?? "";

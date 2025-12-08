@@ -1,7 +1,7 @@
 wwwroot\admin\css\auth-style.css
 wwwroot\admin\css\content.css
 wwwroot\admin\css\site.css
-wwwroot\admin\css\style.css
+wwwroot\css\site.css
 wwwroot\admin\favicon.ico
 wwwroot\admin\Imgs\Logodhv.webp
 wwwroot\admin\Imgs\logo_dhvinh.png
@@ -1083,7 +1083,7 @@ wwwroot\admin\vendor\tinymce\tinymce.js
 wwwroot\admin\vendor\tinymce\tinymce.min.js
 wwwroot\css\auth-style.css
 wwwroot\css\content.css
-wwwroot\css\site.css
+wwwroot\Imgs\image.webp
 wwwroot\css\style.css
 wwwroot\favicon.ico
 wwwroot\Imgs\Logodhv.webp
@@ -2167,3 +2167,4 @@ wwwroot\vendor\tinymce\themes\silver\theme.min.js
 wwwroot\vendor\tinymce\tinymce.d.ts
 wwwroot\vendor\tinymce\tinymce.js
 wwwroot\vendor\tinymce\tinymce.min.js
+wwwroot\admin\css\style.css

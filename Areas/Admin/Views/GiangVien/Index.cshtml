@@ -37,9 +37,11 @@
                 </a>
             </div>
 
-            <form method="get" class="input-group mb-3">
-                <input type="text" name="q" value="@q" class="form-control" placeholder="Tìm mã GV / họ tên / email...">
-                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+            <form method="get" class="mb-3">
+                <div class="input-group search-compact">
+                    <input type="text" name="q" value="@q" class="form-control" placeholder="Tìm mã GV / họ tên / email...">
+                    <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+                </div>
             </form>
 
             <div class="table-responsive">
@@ -131,8 +133,6 @@
             }
         </div>
     </div>
-</section>
-
 <style>
     .pager-ellipses .page-link {
         border-radius: 8px;
@@ -146,4 +146,10 @@
         background: #111;
         border-color: #111;
     }
+
+    /* Thêm style cho search-compact */
+    .search-compact {
+        max-width: 360px;
+    }
 </style>
+</section>

@@ -282,7 +282,6 @@ namespace aznews.Areas.GiangVien.Controllers
                 var parts = line.Split(',');
                 if (parts.Length < 3) continue;
 
-                // ---- Cột 1: MaSinhVien (số) hoặc MaSoSV (chuỗi) ----
                 int maSV;
                 var cell = parts[0].Trim();
 

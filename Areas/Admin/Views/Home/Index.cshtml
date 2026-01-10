@@ -1,17 +1,39 @@
 @model aznews.Areas.Admin.Models.Home.AdminDashboardVM
 
 @{
-    ViewData["Title"] = "Dashboard Admin";
+    ViewData["Title"] = "Trung tâm điều hành";
 }
 
-<div class="pagetitle">
-    <h1>Tổng quan</h1>
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/Admin">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-    </nav>
+<div class="pagetitle d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h1 class="mb-1 fw-bold text-primary">TRUNG TÂM ĐIỀU HÀNH</h1>
+        <nav>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/Admin">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <!-- GLOBAL FILTER -->
+    <form class="d-flex flex-wrap gap-2 bg-white p-2 rounded shadow-sm border align-items-center" method="get">
+        <div class="d-flex align-items-center px-2 border-end">
+            <i class="bi bi-funnel-fill text-muted me-2"></i>
+            <span class="fw-bold text-secondary small text-uppercase me-2 d-none d-md-inline">Bộ lọc:</span>
+        </div>
+        <select name="nam" class="form-select form-select-sm border-0 bg-light fw-bold" style="min-width:120px;" onchange="this.form.submit()">
+            @foreach(var n in Model.NamHocList)
+            {
+                <option value="@n" selected="@(n == Model.SelectedNamHoc)">Năm @n</option>
+            }
+        </select>
+        <select name="hk" class="form-select form-select-sm border-0 bg-light fw-bold" style="min-width:80px;" onchange="this.form.submit()">
+            @foreach(var h in Model.HocKyList)
+            {
+                <option value="@h" selected="@(h == Model.SelectedHocKy)">@h</option>
+            }
+        </select>
+    </form>
 </div>
 
 <section class="section dashboard">
@@ -21,134 +43,119 @@
         <div class="col-lg-8">
             <div class="row">
 
-                <!-- Card 1: Sinh viên -->
+                <!-- KPI Cards -->
                 <div class="col-xxl-4 col-md-6">
                     <div class="card info-card sales-card">
                         <div class="card-body">
-                            <h5 class="card-title">Sinh viên <span>| Hoạt động</span></h5>
+                            <h5 class="card-title">Tổng Lớp HP <span>| Kỳ này</span></h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-people"></i>
+                                    <i class="bi bi-journals"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6>@Model.TotalSinhVien</h6>
-                                    <span class="text-muted small pt-2 ps-1">sinh viên</span>
+                                    <h6>@Model.TotalLopHocPhan</h6>
+                                    <span class="text-muted small pt-2 ps-1">lớp đã mở</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 2: Giảng viên -->
                 <div class="col-xxl-4 col-md-6">
                     <div class="card info-card revenue-card">
                         <div class="card-body">
-                            <h5 class="card-title">Giảng viên <span>| Hoạt động</span></h5>
+                            <h5 class="card-title">Giảng viên <span>| Tham gia</span></h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-person-badge"></i>
+                                    <i class="bi bi-person-workspace"></i>
                                 </div>
                                 <div class="ps-3">
                                     <h6>@Model.TotalGiangVien</h6>
-                                    <span class="text-muted small pt-2 ps-1">giảng viên</span>
+                                    <span class="text-muted small pt-2 ps-1">giảng dạy</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 3: Lớp chờ duyệt (QUAN TRỌNG) -->
-                <div class="col-xxl-4 col-xl-12">
+                <div class="col-xxl-4 col-md-6">
                     <div class="card info-card customers-card">
                         <div class="card-body">
-                            <h5 class="card-title">Lớp chờ duyệt <span>| Cần xử lý</span></h5>
+                            <h5 class="card-title">Chờ duyệt <span>| Cần xử lý</span></h5>
                             <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-danger text-white">
-                                    <i class="bi bi-exclamation-triangle"></i>
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center @(Model.TotalChoDuyet > 0 ? "bg-danger text-white" : "bg-success text-white")">
+                                    <i class="bi @(Model.TotalChoDuyet > 0 ? "bi-exclamation-triangle" : "bi-check-lg")"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6 class="text-danger">@Model.TotalChoDuyet</h6>
-                                    <a href="/Admin/DuyetDiem?status=Submitted" class="text-primary small pt-1 fw-bold">Xem ngay <i class="bi bi-arrow-right"></i></a>
+                                    <h6 class="@(Model.TotalChoDuyet > 0 ? "text-danger" : "text-success")">@Model.TotalChoDuyet</h6>
+                                    <a href="/Admin/DuyetDiem?status=Submitted" class="small pt-1 fw-bold text-decoration-none">
+                                        Xem chi tiết <i class="bi bi-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Recent Sales -->
-                <div class="col-12">
-                    <!-- ... (giữ nguyên phần code Recent Sales cũ ở đây, tôi dùng replace block để chèn SAU nó) ... -->
-                </div><!-- End Recent Sales -->
-
-
-
-                <!-- Grade Distribution Chart -->
+                <!-- Phổ điểm (Biểu đồ chính) -->
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Phổ điểm đào tạo <span>| Các lớp đã chốt</span></h5>
-
-                            <!-- Bar Chart -->
-                            <div id="gradeChart"></div>
-
-                            <script>
-                                document.addEventListener("DOMContentLoaded", () => {
-                                    var gradeCounts = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GradeDistributionCounts));
-                                    var gradeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GradeDistributionLabels));
-
-                                    new ApexCharts(document.querySelector("#gradeChart"), {
-                                        series: [{
-                                            name: 'Số lượng sinh viên',
-                                            data: gradeCounts
-                                        }],
-                                        chart: {
-                                            type: 'bar',
-                                            height: 350,
-                                            toolbar: { show: false }
-                                        },
-                                        plotOptions: {
-                                            bar: {
-                                                borderRadius: 4,
-                                                horizontal: false,
-                                                columnWidth: '55%',
-                                                endingShape: 'rounded'
-                                            }
-                                        },
-                                        dataLabels: {
-                                            enabled: false
-                                        },
-                                        stroke: {
-                                            show: true,
-                                            width: 2,
-                                            colors: ['transparent']
-                                        },
-                                        xaxis: {
-                                            categories: gradeLabels,
-                                        },
-                                        yaxis: {
-                                            title: {
-                                                text: 'Số lượng (SV)'
-                                            }
-                                        },
-                                        fill: {
-                                            opacity: 1
-                                        },
-                                        tooltip: {
-                                            y: {
-                                                formatter: function (val) {
-                                                    return val + " sinh viên"
-                                                }
-                                            }
-                                        },
-                                        colors: ['#2eca6a', '#4154f1', '#ffc107', '#dc3545'] // Xanh lá, Xanh dương, Vàng, Đỏ
-                                    }).render();
-                                });
-                            </script>
-                            <!-- End Bar Chart -->
-
+                            <h5 class="card-title">Phổ điểm đào tạo <span>| Dựa trên các lớp đã chốt điểm</span></h5>
+                            <div id="gradeChart" class="w-100"></div>
                         </div>
                     </div>
-                </div><!-- End Grade Chart -->
+                </div>
+
+                <!-- CẢNH BÁO HỌC VỤ -->
+                <div class="col-12">
+                    <div class="card top-selling overflow-auto">
+                        <div class="card-body pb-0">
+                            <h5 class="card-title text-danger fw-bold"><i class="bi bi-bell me-2"></i>Cảnh báo: Các lớp có tỷ lệ rớt cao (>30%)</h5>
+
+                            <table class="table table-borderless table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Môn học</th>
+                                        <th scope="col">Giảng viên</th>
+                                        <th scope="col" class="text-center">Sĩ số</th>
+                                        <th scope="col" class="text-center">Số rớt</th>
+                                        <th scope="col" style="width: 30%">Tỷ lệ rớt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(Model.TopLopRotCao.Any()) {
+                                        @foreach(var item in Model.TopLopRotCao)
+                                        {
+                                            <tr>
+                                                <td><a href="#" class="text-primary fw-bold">@item.TenHP</a> <div class="text-muted small">@item.TenNhom</div></td>
+                                                <td>@item.TenGV</td>
+                                                <td class="text-center">@item.SoSV</td>
+                                                <td class="text-center fw-bold text-danger">@item.SoRot</td>
+                                                <td>
+                                                    <div class="progress" style="height: 20px;">
+                                                        <div class="progress-bar bg-danger" role="progressbar" 
+                                                             style="width: @item.TyLeRot%" 
+                                                             aria-valuenow="@item.TyLeRot" aria-valuemin="0" aria-valuemax="100">
+                                                             @item.TyLeRot%
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    } else {
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-3">
+                                                <i class="bi bi-shield-check fs-3 d-block mb-1 text-success"></i>
+                                                Chưa phát hiện lớp nào có tỷ lệ rớt bất thường.
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div><!-- End Left columns -->
@@ -156,59 +163,119 @@
         <!-- ================= RIGHT COLUMNS ================= -->
         <div class="col-lg-4">
 
-            <!-- Website Traffic -->
+            <!-- Chart: Tiến độ nhập điểm -->
             <div class="card">
                 <div class="card-body pb-0">
-                    <h5 class="card-title">Tiến độ nhập điểm <span>| Học kỳ này</span></h5>
-
-                    <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-
-                    <script>
-                        document.addEventListener("DOMContentLoaded", () => {
-                            var dataValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.StatusCounts));
-                            var dataLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.StatusLabels));
-
-                            echarts.init(document.querySelector("#trafficChart")).setOption({
-                                tooltip: {
-                                    trigger: 'item'
-                                },
-                                legend: {
-                                    top: '5%',
-                                    left: 'center'
-                                },
-                                series: [{
-                                    name: 'Trạng thái',
-                                    type: 'pie',
-                                    radius: ['40%', '70%'],
-                                    avoidLabelOverlap: false,
-                                    label: {
-                                        show: false,
-                                        position: 'center'
-                                    },
-                                    emphasis: {
-                                        label: {
-                                            show: true,
-                                            fontSize: '18',
-                                            fontWeight: 'bold'
-                                        }
-                                    },
-                                    labelLine: {
-                                        show: false
-                                    },
-                                    data: [
-                                        { value: dataValues[0], name: 'Đang nhập (GV)' },
-                                        { value: dataValues[1], name: 'Chờ duyệt' },
-                                        { value: dataValues[2], name: 'Đã chốt' }
-                                    ]
-                                }]
-                            });
-                        });
-                    </script>
-
+                    <h5 class="card-title">Tiến độ nhập điểm</h5>
+                    <div id="trafficChart" style="min-height: 300px;" class="echart w-100"></div>
                 </div>
-            </div><!-- End Website Traffic -->
+            </div>
+
+            <!-- List: Vừa gửi duyệt -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Vừa gửi duyệt <span>| Xử lý ngay</span></h5>
+                    <div class="activity">
+                        @if(Model.RecentSubmitted.Any())
+                        {
+                            @foreach(var item in Model.RecentSubmitted)
+                            {
+                                <div class="activity-item d-flex">
+                                    <div class="activite-label">
+                                        @if(item.SubmittedAt.HasValue) {
+                                            <div class="small fw-bold">@item.SubmittedAt.Value.ToString("HH:mm")</div>
+                                            <div class="small text-muted">@item.SubmittedAt.Value.ToString("dd/MM")</div>
+                                        }
+                                    </div>
+                                    <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
+                                    <div class="activity-content">
+                                        GV <strong>@item.GiangVien?.HoTen</strong>
+                                        vừa gửi điểm lớp 
+                                        <a href="/Admin/DuyetDiem/Review/@item.MaLHP" class="fw-bold text-primary">
+                                            @item.HocPhan?.TenHP
+                                        </a>
+                                        <span class="text-muted small">(@item.TenNhom)</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center text-muted py-2">Không có yêu cầu mới.</div>
+                        }
+                    </div>
+                </div>
+            </div>
 
         </div><!-- End Right columns -->
 
     </div>
 </section>
+
+<!-- SCRIPTS FOR CHARTS -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1. CHART PHỔ ĐIỂM (Bar Chart)
+        var gradeCounts = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GradeDistributionCounts));
+        var gradeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GradeDistributionLabels));
+
+        new ApexCharts(document.querySelector("#gradeChart"), {
+            series: [{
+                name: 'Sinh viên',
+                data: gradeCounts
+            }],
+            chart: {
+                type: 'bar',
+                height: 320,
+                toolbar: { show: false },
+                fontFamily: 'Nunito, sans-serif'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    columnWidth: '50%',
+                    distributed: true,
+                }
+            },
+            dataLabels: { enabled: false },
+            xaxis: {
+                categories: gradeLabels,
+                labels: { style: { fontSize: '12px' } }
+            },
+            colors: ['#198754', '#0d6efd', '#ffc107', '#dc3545'],
+            legend: { show: false },
+            tooltip: {
+                y: { formatter: (val) => val + " SV" }
+            }
+        }).render();
+
+        // 2. CHART TIẾN ĐỘ (Pie Chart)
+        var statusValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.StatusCounts));
+        
+        echarts.init(document.querySelector("#trafficChart")).setOption({
+            tooltip: { trigger: 'item' },
+            legend: { top: '0%', left: 'center' },
+            series: [{
+                name: 'Trạng thái',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                center: ['50%', '55%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 5,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: { show: false, position: 'center' },
+                emphasis: {
+                    label: { show: true, fontSize: '16', fontWeight: 'bold' }
+                },
+                data: [
+                    { value: statusValues[0], name: 'Đang nhập', itemStyle: { color: '#6c757d'} },
+                    { value: statusValues[1], name: 'Chờ duyệt', itemStyle: { color: '#fd7e14'} },
+                    { value: statusValues[2], name: 'Đã chốt', itemStyle: { color: '#198754'} }
+                ]
+            }]
+        });
+    });
+</script>

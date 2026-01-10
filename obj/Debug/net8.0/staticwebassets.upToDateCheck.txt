@@ -1,10 +1,12 @@
 wwwroot\admin\css\auth-style.css
 wwwroot\admin\css\content.css
 wwwroot\admin\css\site.css
-wwwroot\css\site.css
+wwwroot\admin\css\style.css
 wwwroot\admin\favicon.ico
+wwwroot\admin\Imgs\9746cc71-83b6-4460-ba81-853e0ab825a9.jpg
 wwwroot\admin\Imgs\Logodhv.webp
 wwwroot\admin\Imgs\logo_dhvinh.png
+wwwroot\admin\Imgs\SV_SV001_639036111974118950.jpg
 wwwroot\admin\js\main.js
 wwwroot\admin\js\site.js
 wwwroot\admin\lib\bootstrap\dist\css\bootstrap-grid.css
@@ -1083,9 +1085,10 @@ wwwroot\admin\vendor\tinymce\tinymce.js
 wwwroot\admin\vendor\tinymce\tinymce.min.js
 wwwroot\css\auth-style.css
 wwwroot\css\content.css
-wwwroot\Imgs\image.webp
+wwwroot\css\site.css
 wwwroot\css\style.css
 wwwroot\favicon.ico
+wwwroot\Imgs\image.webp
 wwwroot\Imgs\Logodhv.webp
 wwwroot\Imgs\logo_dhvinh.png
 wwwroot\js\main.js
@@ -2167,4 +2170,3 @@ wwwroot\vendor\tinymce\themes\silver\theme.min.js
 wwwroot\vendor\tinymce\tinymce.d.ts
 wwwroot\vendor\tinymce\tinymce.js
 wwwroot\vendor\tinymce\tinymce.min.js
-wwwroot\admin\css\style.css

@@ -30,5 +30,11 @@ namespace aznews.Areas.Admin.Models
         public DateTime? UpdatedAt { get; set; }
         [MaxLength(50)]
         public string? UpdatedBy { get; set; }
+
+        [ForeignKey(nameof(MaLHP))]
+        public virtual LopHocPhan? LopHocPhan { get; set; }
+
+        [ForeignKey(nameof(MaSinhVien))]
+        public virtual SinhVien? SinhVien { get; set; }
     }
 }

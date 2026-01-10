@@ -1,4 +1,4 @@
-﻿@using aznews.Areas.Admin.Models
+@using aznews.Areas.Admin.Models
 @using aznews.Areas.Admin.Models.DuyetDiem
 @model IEnumerable<DuyetRowVM>
 
@@ -20,33 +20,31 @@
 }
 
 <section class="section">
-    <div class="pagetitle mb-3">
-        <h4 class="fw-bold text-primary">PHÊ DUYỆT ĐIỂM</h4>
-    </div>
-
     <div class="card shadow-sm">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center my-3">
-                <form asp-area="Admin" asp-controller="DuyetDiem" asp-action="Index" method="get"
-                      class="d-flex gap-2" role="search">
-                    <input name="q" value="@q" class="form-control" style="min-width:320px"
-                           placeholder="Tìm theo tên/Mã HP, GV..." />
-                    <button class="btn btn-outline-secondary"><i class="bi bi-search"></i></button>
-                </form>
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between mb-3">
+                <h4 class="fw-bold text-primary mb-0 text-uppercase">Phê duyệt điểm</h4>
             </div>
 
+            <form asp-area="Admin" asp-controller="DuyetDiem" asp-action="Index" method="get" class="mb-3">
+                <div class="input-group search-compact">
+                    <input name="q" value="@q" class="form-control" placeholder="Tìm theo tên/Mã HP, GV..." />
+                    <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+
             <div class="table-responsive">
-                <table class="table table-hover table-bordered align-middle shadow-sm">
+                <table class="table table-bordered table-hover align-middle text-center">
                     <thead class="table-light">
                         <tr>
-                            <th style="width:70px;">STT</th>
+                            <th style="width:50px;">STT</th>
                             <th>Tên học phần</th>
-                            <th style="width:110px;">Học kỳ</th>
-                            <th style="width:130px;">Năm học</th>
-                            <th style="width:200px;">Giảng viên</th>
-                            <th style="width:100px;" class="text-center">Sĩ số</th>
-                            <th style="width:140px;" class="text-center">Trạng thái</th>
-                            <th style="width:260px;" class="text-center">Hành động</th>
+                            <th style="width:100px;">Học kỳ</th>
+                            <th style="width:120px;">Năm học</th>
+                            <th style="width:180px;">Giảng viên</th>
+                            <th style="width:80px;">Sĩ số</th>
+                            <th style="width:120px;">Trạng thái</th>
+                            <th style="width:180px;">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +53,7 @@
                             var b = badge(m.TrangThai);
                             <tr>
                                 <td>@(++stt)</td>
-                                <td>
+                                <td class="text-start">
                                     <div class="fw-semibold">
                                         @m.TenHP
                                         @if (!string.IsNullOrWhiteSpace(m.TenNhom))
@@ -67,17 +65,17 @@
                                 </td>
                                 <td>@m.HocKy</td>
                                 <td>@m.NamHoc</td>
-                                <td>@(m.GV ?? "-")</td>
-                                <td class="text-center">@m.SoSV</td>
-                                <td class="text-center">
+                                <td class="text-start">@(m.GV ?? "-")</td>
+                                <td>@m.SoSV</td>
+                                <td>
                                     <span class="badge @b.cls">@b.txt</span>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <div class="d-inline-flex gap-2">
                                         <!-- Review -->
                                         <a class="btn btn-sm btn-outline-primary"
                                            asp-area="Admin" asp-controller="DuyetDiem" asp-action="Review"
-                                           asp-route-id="@m.MaLHP" title="Xem/soát chi tiết">
+                                           asp-route-id="@m.MaLHP" title="Xem chi tiết">
                                             <i class="bi bi-eye"></i>
                                         </a>
 
@@ -87,38 +85,33 @@
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@m.MaLHP" />
                                             <button type="submit"
-                                                    class="btn btn-sm btn-success"
+                                                    class="btn btn-sm btn-outline-success"
                                                     title="Duyệt"
                                                     @(m.TrangThai == DiemStatus.Submitted ? null : new { disabled = "disabled" })>
-                                                <i class="bi bi-check2-circle me-1"></i>Duyệt
+                                                <i class="bi bi-check-lg"></i>
                                             </button>
                                         </form>
 
-                                        <!-- Từ chối (mở modal nhập lý do) -->
+                                        <!-- Từ chối -->
                                         <button type="button"
-                                                class="btn btn-sm btn-danger"
+                                                class="btn btn-sm btn-outline-danger"
                                                 data-bs-toggle="modal" data-bs-target="#rejectModal"
                                                 data-id="@m.MaLHP"
+                                                title="Từ chối"
                                                 @(m.TrangThai == DiemStatus.Submitted ? null : new { disabled = "disabled" })>
-                                            <i class="bi bi-x-circle me-1"></i>Từ chối
+                                            <i class="bi bi-x-lg"></i>
                                         </button>
                                     </div>
 
                                     @* ghi chú thời điểm *@
-                                    <div class="text-muted small mt-1">
+                                    <div class="text-muted small mt-1" style="font-size: 0.75rem;">
                                         @if (m.TrangThai == DiemStatus.Submitted && m.SubmittedAt.HasValue)
                                         {
-                                            <span>
-                                                Gửi: @m.SubmittedAt.Value.ToString("dd/MM/yyyy HH:mm")
-                                                – @m.SubmittedBy
-                                            </span>
+                                            <div>Gửi: @m.SubmittedAt.Value.ToString("dd/MM HH:mm")</div>
                                         }
                                         else if (m.TrangThai == DiemStatus.Approved && m.ApprovedAt.HasValue)
                                         {
-                                            <span>
-                                                Duyệt: @m.ApprovedAt.Value.ToString("dd/MM/yyyy HH:mm")
-                                                – @m.ApprovedBy
-                                            </span>
+                                            <div>Duyệt: @m.ApprovedAt.Value.ToString("dd/MM HH:mm")</div>
                                         }
                                     </div>
                                 </td>
@@ -127,26 +120,32 @@
                     </tbody>
                 </table>
             </div>
+            
+            @if (!Model.Any())
+            {
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                    Chưa có dữ liệu
+                </div>
+            }
 
-            @* modal từ chối *@
+            @* Modal từ chối *@
             <div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
                     <form asp-area="Admin" asp-controller="DuyetDiem" asp-action="Reject" method="post" class="modal-content">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="id" id="reject-id" />
                         <div class="modal-header">
-                            <h5 class="modal-title">Nhập lý do từ chối</h5>
+                            <h5 class="modal-title">Lý do từ chối</h5>
                             <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
                         </div>
                         <div class="modal-body">
                             <textarea class="form-control" name="reason" rows="4"
-                                      placeholder="Lý do từ chối..."></textarea>
+                                      placeholder="Nhập lý do..."></textarea>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Hủy</button>
-                            <button class="btn btn-danger" type="submit">
-                                <i class="bi bi-x-circle me-1"></i>Từ chối
-                            </button>
+                            <button class="btn btn-danger" type="submit">Xác nhận từ chối</button>
                         </div>
                     </form>
                 </div>
@@ -158,9 +157,17 @@
 
 <script>
     const rejectModal = document.getElementById('rejectModal');
-    rejectModal?.addEventListener('show.bs.modal', function (event) {
-        const btn = event.relatedTarget;
-        const id = btn?.getAttribute('data-id');
-        document.getElementById('reject-id').value = id || '';
-    });
+    if (rejectModal) {
+        rejectModal.addEventListener('show.bs.modal', function (event) {
+            const btn = event.relatedTarget;
+            const id = btn.getAttribute('data-id');
+            document.getElementById('reject-id').value = id || '';
+        });
+    }
 </script>
+
+<style>
+    .search-compact {
+        max-width: 360px;
+    }
+</style>

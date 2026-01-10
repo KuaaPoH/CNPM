@@ -1,5 +1,211 @@
-﻿@{
-    ViewData["Title"] = "Trang giảng viên";
+@model aznews.Areas.GiangVien.Models.Home.GiangVienDashboardVM
+@using aznews.Areas.Admin.Models
+
+@{
+    ViewData["Title"] = "Bàn làm việc Giảng viên";
 }
-<h4>Chào mừng giảng viên</h4>
-<p>Đây là trang chính của portal giảng viên.</p>
+
+<div class="pagetitle mb-4">
+    <h1>Xin chào, @Model.HoTenGV</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/GiangVien">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+
+        <!-- KPI Cards -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card info-card sales-card">
+                <div class="card-body">
+                    <h5 class="card-title">Lớp phụ trách</h5>
+                    <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-journal-bookmark-fill"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h6>@Model.LopDangDay</h6>
+                            <span class="text-muted small pt-2 ps-1">lớp học phần</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card info-card revenue-card">
+                <div class="card-body">
+                    <h5 class="card-title">Chưa chốt điểm</h5>
+                    <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-warning text-white">
+                            <i class="bi bi-pencil-square"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h6>@Model.LopChuaNhapDiem</h6>
+                            <span class="text-muted small pt-2 ps-1">lớp cần xử lý</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card info-card customers-card">
+                <div class="card-body">
+                    <h5 class="card-title">Đã hoàn thành</h5>
+                    <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success text-white">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h6>@Model.CountApproved</h6>
+                            <span class="text-muted small pt-2 ps-1">lớp đã duyệt</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                    <h5 class="card-title">Danh sách lớp giảng dạy <span>| Gần nhất</span></h5>
+
+                    <!-- Đổi class datatable thành datatable-custom để tránh main.js tự khởi tạo -->
+                    <table class="table table-borderless datatable-custom">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mã HP</th>
+                                <th scope="col">Tên học phần</th>
+                                <th scope="col">Nhóm</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var item in Model.LopPhuTrach)
+                            {
+                                <tr>
+                                    <td class="text-primary fw-bold">@item.HocPhan?.MaSoHP</td>
+                                    <td>@item.HocPhan?.TenHP</td>
+                                    <td><span class="badge bg-light text-dark border">@item.TenNhom</span></td>
+                                    <td>
+                                        @if(item.DiemStatus == DiemStatus.Approved) {
+                                            <span class="badge bg-success">Đã chốt</span>
+                                        } else if(item.DiemStatus == DiemStatus.Submitted) {
+                                            <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                        } else {
+                                            <span class="badge bg-secondary">Đang nhập</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if(item.DiemStatus != DiemStatus.Approved) {
+                                            <a href="/GiangVien/Diem/Manage/@item.MaLHP" class="btn btn-sm btn-primary">
+                                                <i class="bi bi-pencil me-1"></i> Nhập điểm
+                                            </a>
+                                        } else {
+                                            <a href="/GiangVien/Diem/Manage/@item.MaLHP" class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-eye"></i> Xem
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    
+                    @if(Model.LopPhuTrach.Count > 0) {
+                        <div class="text-center mt-3">
+                            <a href="/GiangVien/LopDay" class="btn btn-link text-decoration-none">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    } else {
+                         <div class="text-center text-muted py-3">Chưa có lớp học phần nào được phân công.</div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Charts -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Tiến độ công việc</h5>
+                    <div id="progressChart" style="min-height: 350px;" class="echart w-100"></div>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Lối tắt</h5>
+                    <div class="d-grid gap-2">
+                        <a href="/GiangVien/LopDay" class="btn btn-outline-primary text-start">
+                            <i class="bi bi-list-task me-2"></i> Danh sách lớp dạy
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-calendar-week me-2"></i> Xem thời khóa biểu
+                        </a>
+                        <a href="#" class="btn btn-outline-success text-start">
+                            <i class="bi bi-file-earmark-spreadsheet me-2"></i> Xuất mẫu điểm Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Cấu hình Datatables cho class riêng để không bị main.js ghi đè
+        const customDatatables = document.querySelectorAll('.datatable-custom');
+        customDatatables.forEach(table => {
+            if (window.simpleDatatables) {
+                new simpleDatatables.DataTable(table, {
+                    perPageSelect: false, // Ẩn "entries per page"
+                    searchable: false,
+                    fixedHeight: true
+                });
+            }
+        });
+
+        // Chart Tiên độ công việc
+        echarts.init(document.querySelector("#progressChart")).setOption({
+            tooltip: { trigger: 'item' },
+            legend: { 
+                bottom: '10%', // Đẩy ghi chú lên cao hơn một chút
+                left: 'center',
+                padding: [10, 0, 0, 0]
+            },
+            series: [{
+                name: 'Trạng thái',
+                type: 'pie',
+                radius: ['40%', '65%'],
+                center: ['50%', '40%'], // Đẩy tâm lên trên một chút nữa
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: { show: false, position: 'center' },
+                emphasis: {
+                    label: { show: true, fontSize: '18', fontWeight: 'bold' }
+                },
+                data: [
+                    { value: @Model.CountEditable, name: 'Đang nhập', itemStyle: { color: '#6c757d'} },
+                    { value: @Model.CountSubmitted, name: 'Chờ duyệt', itemStyle: { color: '#fd7e14'} },
+                    { value: @Model.CountApproved, name: 'Đã hoàn thành', itemStyle: { color: '#198754'} }
+                ]
+            }]
+        });
+    });
+</script>

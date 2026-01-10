@@ -1,0 +1,314 @@
+@model aznews.Areas.Admin.Models.Profile.ProfileVM
+
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+    // Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml"; // Sử dụng layout mặc định
+}
+
+<!-- CSS riêng của trang Profile (từ Template JSP) -->
+<style>
+    /* Scoped CSS from Template-1 to avoid conflicts */
+    .profile-wrapper {
+        /* Default Light Mode Variables */
+        --bg-card: #ffffff;
+        --bg-input: #f3f4f6;
+        --text-main: #1f2937;
+        --text-secondary: #6b7280;
+        --accent-blue: #0d6efd; /* Đổi sang màu Bootstrap Primary cho hợp */
+        --accent-green: #198754;
+        --border-radius: 12px;
+        font-family: 'Nunito', sans-serif; /* Dùng font của dự án hiện tại */
+        color: var(--text-main);
+    }
+
+    /* Dark Mode Support (nếu dự án có class .dark) */
+    :is(.dark .profile-wrapper) {
+        --bg-card: #1a1f33;
+        --bg-input: #232840;
+        --text-main: #ffffff;
+        --text-secondary: #a0aec0;
+    }
+
+    .profile-wrapper .profile-card-item {
+        background-color: var(--bg-card); 
+        border-radius: var(--border-radius); 
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(1, 41, 112, 0.1); /* Shadow giống NiceAdmin */
+        margin-bottom: 25px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: none;
+    }
+
+    .profile-wrapper .profile-card-item:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(1, 41, 112, 0.15); }
+
+    .profile-wrapper .banner-bg {
+        background: linear-gradient(135deg, #4154f1, #2eca6a); /* Màu NiceAdmin */
+        height: 100px; margin: -20px -20px 50px -20px;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .profile-wrapper .avatar-container {
+        width: 120px; height: 120px; border-radius: 50%;
+        background-color: #fff; margin: -80px auto 15px auto;
+        border: 5px solid var(--bg-card); position: relative;
+        display: flex; align-items: center; justify-content: center;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .profile-wrapper .avatar-container img {
+        width: 100%; height: 100%; object-fit: cover;
+    }
+
+    .profile-wrapper .student-name { font-size: 18px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; color: #012970; }
+    .profile-wrapper .student-id { color: #899bbd; font-weight: 600; margin-bottom: 20px; text-align: center; display: block; }
+
+    .profile-wrapper .section-title { font-size: 16px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: #012970; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .profile-wrapper .section-title i { color: #4154f1; }
+
+    .profile-wrapper .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .profile-wrapper .form-group { margin-bottom: 15px; }
+    .profile-wrapper .form-group label { display: block; color: var(--text-secondary); margin-bottom: 8px; font-size: 14px; font-weight: 600; }
+
+    .profile-wrapper .input-wrapper {
+        position: relative; background-color: var(--bg-input); border-radius: 8px;
+        display: flex; align-items: center; padding: 0 15px;
+        border: 1px solid transparent; transition: 0.3s;
+    }
+    .profile-wrapper .input-wrapper:hover { border-color: #b1b7c1; }
+    
+    .profile-wrapper .input-wrapper:focus-within { 
+        border-color: #4154f1; 
+        box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.15);
+        background-color: #fff;
+    }
+
+    .profile-wrapper .input-wrapper i.icon-left { color: #64748b; margin-right: 10px; }
+    .profile-wrapper .input-wrapper input, .profile-wrapper .input-wrapper textarea { 
+        background: transparent; border: none; color: var(--text-main); 
+        padding: 12px 0; width: 100%; outline: none; font-size: 14px;
+    }
+    
+    .profile-wrapper .btn-save {
+        background: #4154f1; color: white; border: none;
+        padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;
+        transition: 0.3s; width: 100%; margin-top: 10px;
+    }
+    .profile-wrapper .btn-save:hover { background: #3343c9; box-shadow: 0 5px 15px rgba(65, 84, 241, 0.3); }
+    
+    /* Custom File Upload */
+    input[type="file"] { display: none; }
+    .custom-file-upload {
+        border: 1px dashed var(--text-secondary);
+        display: inline-block;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 8px;
+        background: var(--bg-input);
+        color: var(--text-secondary);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+    }
+    .custom-file-upload:hover {
+        border-color: #4154f1;
+        color: #4154f1;
+        background: rgba(65, 84, 241, 0.05);
+    }
+
+    /* Layout Grid */
+    .profile-layout {
+        display: grid; grid-template-columns: 350px 1fr; gap: 25px;
+    }
+    @@media (max-width: 992px) {
+        .profile-layout { grid-template-columns: 1fr; }
+        .profile-wrapper .form-grid { grid-template-columns: 1fr; }
+    }
+</style>
+
+<div class="pagetitle">
+    <h1>Hồ sơ cá nhân</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Hồ sơ</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="profile-wrapper">
+    
+    <!-- Thông báo -->
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-1"></i> @Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-octagon me-1"></i> @Model.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="profile-layout">
+        <!-- Left Column: Card hiển thị thông tin chung -->
+        <aside class="left-col">
+            <div class="profile-card-item text-center">
+                <div class="banner-bg"></div>
+                <div class="avatar-container">
+                    <!-- Ảnh đại diện: Dùng ảnh mặc định nếu null -->
+                    <img src="~/admin/Imgs/@Model.AvatarUrl" 
+                         alt="Avatar" id="avatarPreview" 
+                         onerror="this.src='/admin/Imgs/default-avatar.png'">
+                </div>
+                
+                <h2 class="student-name">@Model.FullName</h2>
+                <span class="student-id">@Model.Username</span>
+
+                <div class="mt-3">
+                    <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
+                        <i class="bi bi-shield-lock-fill me-1"></i> @Model.RoleName
+                    </span>
+                </div>
+            </div>
+
+            <div class="profile-card-item">
+                <div class="section-title"><i class="bi bi-info-circle"></i> Trạng thái hệ thống</div>
+                <div class="d-flex justify-content-between mt-3 text-muted small">
+                    <span>Đăng nhập cuối</span>
+                    <span class="text-dark fw-bold">@Model.LastLogin</span>
+                </div>
+                <div class="d-flex justify-content-between mt-2 text-muted small">
+                    <span>Trạng thái</span>
+                    <span class="text-success fw-bold">Hoạt động</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Column: Form cập nhật -->
+        <main class="right-col">
+            
+            <!-- 1. Form Cập nhật thông tin -->
+            <form asp-action="UpdateInfo" method="post" enctype="multipart/form-data">
+                <div class="profile-card-item">
+                    <div class="section-title">
+                        <span><i class="bi bi-pencil-square"></i> Cập nhật thông tin</span>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Tên đăng nhập</label>
+                            <div class="input-wrapper" style="background-color: #e9ecef;">
+                                <i class="bi bi-person-badge icon-left"></i>
+                                <input type="text" value="@Model.Username" readonly disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Họ và tên</label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-person icon-left"></i>
+                                <input asp-for="FullName" placeholder="Nhập họ tên...">
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-envelope icon-left"></i>
+                                <input asp-for="Email" placeholder="Nhập email...">
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-phone icon-left"></i>
+                                <input asp-for="Phone" placeholder="Nhập SĐT...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Giới thiệu bản thân</label>
+                        <div class="input-wrapper">
+                            <i class="bi bi-card-text icon-left"></i>
+                            <textarea asp-for="Description" rows="3" placeholder="Viết đôi dòng về bạn..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ảnh đại diện mới</label>
+                        <label for="file-upload" class="custom-file-upload">
+                            <i class="bi bi-cloud-arrow-up"></i> Chọn ảnh từ máy tính
+                        </label>
+                        <input id="file-upload" type="file" asp-for="AvatarFile" accept="image/*" onchange="previewImage(this)">
+                        <span id="file-name" class="file-name mt-2 d-block text-success small"></span>
+                    </div>
+
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-save me-1"></i> Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+            
+            <!-- 2. Form Đổi mật khẩu -->
+            <form asp-action="ChangePassword" method="post">
+                <input type="hidden" asp-for="Username" />
+                <div class="profile-card-item">
+                    <div class="section-title">
+                        <span><i class="bi bi-key"></i> Đổi mật khẩu</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label>Mật khẩu hiện tại</label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-unlock icon-left"></i>
+                                <input asp-for="CurrentPass" type="password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mật khẩu mới</label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-lock icon-left"></i>
+                                <input asp-for="NewPass" type="password">
+                            </div>
+                            <span asp-validation-for="NewPass" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Nhập lại mật khẩu mới</label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-lock-fill icon-left"></i>
+                                <input asp-for="ConfirmPass" type="password">
+                            </div>
+                            <span asp-validation-for="ConfirmPass" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-save bg-danger text-white">
+                        <i class="bi bi-shield-check me-1"></i> Cập nhật mật khẩu
+                    </button>
+                </div>
+            </form>
+
+        </main>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#avatarPreview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+                document.getElementById('file-name').innerText = "Đã chọn: " + input.files[0].name;
+            }
+        }
+    </script>
+}

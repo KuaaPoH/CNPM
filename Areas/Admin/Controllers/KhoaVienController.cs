@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using aznews.Areas.Admin.Models;
 using aznews.Models;
@@ -16,6 +18,111 @@ namespace aznews.Areas.Admin.Controllers
         public KhoaVienController(DataContext context)
         {
             _context = context;
+        }
+
+        // --- EXPORT CSV (Không cần thư viện) ---
+        public async Task<IActionResult> Export()
+        {
+            var list = await _context.KhoaViens.AsNoTracking().ToListAsync();
+            var sb = new StringBuilder();
+
+            // 1. Header
+            sb.AppendLine("TenKhoaVien,DiaChi,DienThoai,Email");
+
+            // 2. Data
+            foreach (var item in list)
+            {
+                // Xử lý dấu phẩy trong nội dung (nếu có) để không bị lỗi cột
+                // Nếu chuỗi chứa dấu phẩy hoặc dấu ngoặc kép, cần bao quanh bởi dấu ngoặc kép
+                string Escape(string? s) 
+                {
+                    if (string.IsNullOrEmpty(s)) return "";
+                    if (s.Contains(",") || s.Contains("\"") || s.Contains("\n"))
+                    {
+                        return "\"" + s.Replace("\"", "\"\"") + "\"";
+                    }
+                    return s;
+                }
+
+                sb.AppendLine($"{Escape(item.TenKhoaVien)},{Escape(item.DiaChi)},{Escape(item.DienThoai)},{Escape(item.Email)}");
+            }
+
+            // 3. Return File với Encoding UTF-8 có BOM (để Excel hiển thị đúng tiếng Việt)
+            var bytes = Encoding.UTF8.GetPreamble().Concat(Encoding.UTF8.GetBytes(sb.ToString())).ToArray();
+            return File(bytes, "text/csv", $"DS_KhoaVien_{DateTime.Now:yyyyMMdd}.csv");
+        }
+
+        // --- IMPORT CSV ---
+        [HttpPost]
+        public async Task<IActionResult> Import(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                TempData["Error"] = "Vui lòng chọn file .csv";
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                int count = 0;
+                using (var reader = new StreamReader(file.OpenReadStream()))
+                {
+                    // Bỏ qua dòng tiêu đề (Header)
+                    if (!reader.EndOfStream) await reader.ReadLineAsync();
+
+                    while (!reader.EndOfStream)
+                    {
+                        var line = await reader.ReadLineAsync();
+                        if (string.IsNullOrWhiteSpace(line)) continue;
+
+                        // Tách chuỗi cơ bản (Lưu ý: Cách này đơn giản, nếu nội dung có dấu phẩy phức tạp cần regex)
+                        // Giả định file CSV chuẩn đơn giản: Ten,DiaChi,SDT,Email
+                        var values = line.Split(',');
+
+                        if (values.Length >= 1)
+                        {
+                            // Loại bỏ dấu ngoặc kép bao quanh nếu có
+                            string Clean(string s) => s.Trim().Trim('"').Replace("\"\"", "\"");
+
+                            string ten = Clean(values[0]);
+                            string diaChi = values.Length > 1 ? Clean(values[1]) : "";
+                            string sdt = values.Length > 2 ? Clean(values[2]) : "";
+                            string email = values.Length > 3 ? Clean(values[3]) : "";
+
+                            if (string.IsNullOrWhiteSpace(ten)) continue;
+
+                            // Check trùng
+                            if (!await _context.KhoaViens.AnyAsync(x => x.TenKhoaVien == ten))
+                            {
+                                _context.KhoaViens.Add(new KhoaVien 
+                                {
+                                    TenKhoaVien = ten,
+                                    DiaChi = diaChi,
+                                    DienThoai = sdt,
+                                    Email = email
+                                });
+                                count++;
+                            }
+                        }
+                    }
+                }
+
+                if (count > 0)
+                {
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = $"Đã nhập thành công {count} dòng.";
+                }
+                else
+                {
+                    TempData["Warning"] = "Không có dữ liệu mới.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Lỗi đọc file: " + ex.Message;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Index(string? searchString, int page = 1)
@@ -36,21 +143,18 @@ namespace aznews.Areas.Admin.Controllers
                     (x.DienThoai != null && x.DienThoai.ToLower().Contains(k)));
             }
 
-            
             int total = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(total / (double)pageSize);
             if (totalPages == 0) totalPages = 1;
             if (page < 1) page = 1;
             if (page > totalPages) page = totalPages;
 
-            
             var tblist = await query
                 .OrderBy(x => x.MaKhoaVien)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = totalPages;
@@ -59,9 +163,6 @@ namespace aznews.Areas.Admin.Controllers
 
             return View(tblist);
         }
-
-
-
 
         [HttpGet]
         public IActionResult Create() => View();
@@ -80,7 +181,6 @@ namespace aznews.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
- 
                 bool nameExist = await _context.KhoaViens
                     .AnyAsync(x => x.TenKhoaVien != null && x.TenKhoaVien.ToLower() == ten!.ToLower());
 

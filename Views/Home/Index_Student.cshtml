@@ -1,0 +1,210 @@
+@model aznews.Models.SinhVienDashboardVM
+
+@{
+    ViewData["Title"] = "Cổng thông tin sinh viên";
+}
+
+<div class="pagetitle">
+    <h1>Bàn làm việc sinh viên</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+
+        <!-- Cột trái: Thống kê & Biểu đồ -->
+        <div class="col-lg-8">
+            <div class="row">
+
+                <!-- GPA Card -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card sales-card">
+                        <div class="card-body">
+                            <h5 class="card-title">GPA Tích lũy <span>| Hệ 4</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-mortarboard-fill"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>@Model.GPA_TichLuy</h6>
+                                    <span class="text-success small pt-1 fw-bold">Học lực: @(Model.GPA_TichLuy >= 3.2 ? "Giỏi" : Model.GPA_TichLuy >= 2.5 ? "Khá" : "Trung bình")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tín chỉ Card -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card revenue-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Tín chỉ đạt <span>| Tích lũy</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success text-white">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>@Model.TinChi_TichLuy</h6>
+                                    <span class="text-muted small pt-2 ps-1">TC hoàn thành</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cảnh báo Card -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card customers-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Học nợ <span>| Cần học lại</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center @(Model.TinChi_No > 0 ? "bg-danger text-white" : "bg-light text-success")">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6 class="@(Model.TinChi_No > 0 ? "text-danger" : "text-success")">@Model.TinChi_No</h6>
+                                    <span class="text-muted small pt-2 ps-1">tín chỉ nợ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Biểu đồ Line GPA -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Xu hướng học tập <span>| GPA qua các kỳ</span></h5>
+                            <div id="gpaChart"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông tin cá nhân -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                            <div class="row w-100 align-items-center">
+                                <div class="col-md-3 text-center">
+                                    <img src="~/admin/Imgs/@Model.Avatar" alt="Profile" class="rounded-circle border border-3" style="width: 120px; height: 120px; object-fit: cover;" onerror="this.src='/admin/Imgs/default-avatar.png'">
+                                </div>
+                                <div class="col-md-9">
+                                    <h3 class="fw-bold text-primary mb-1">@Model.HoTen</h3>
+                                    <p class="text-muted mb-3">Mã SV: @Model.MaSV</p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="mb-1"><i class="bi bi-building me-2"></i><strong>Lớp:</strong> @Model.LopHanhChinh</p>
+                                            <p class="mb-1"><i class="bi bi-calendar-event me-2"></i><strong>Khóa:</strong> @Model.MaSV.Substring(0, 2)</p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="mb-1"><i class="bi bi-shield-check me-2"></i><strong>Trạng thái:</strong> <span class="badge bg-success">Đang học</span></p>
+                                            <p class="mb-1"><i class="bi bi-journal-bookmark me-2"></i><strong>Đang học:</strong> @Model.MonDangHoc lớp HP</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Cột phải: Điểm mới nhất -->
+        <div class="col-lg-4">
+            <div class="card recent-sales">
+                <div class="card-body">
+                    <h5 class="card-title">Điểm mới nhất <span>| 5 môn vừa chốt</span></h5>
+                    <div class="activity">
+                        @if (Model.DiemMoiNhat.Any())
+                        {
+                            @foreach (var d in Model.DiemMoiNhat)
+                            {
+                                <div class="activity-item d-flex mb-3 border-bottom pb-2">
+                                    <div class="activite-label fw-bold text-primary" style="min-width: 45px;">@d.DiemTong</div>
+                                    <i class='bi bi-circle-fill activity-badge text-success align-self-start mx-2' style="font-size: 8px;"></i>
+                                    <div class="activity-content">
+                                        <div class="fw-bold text-dark" style="font-size: 0.9rem;">@d.TenHP</div>
+                                        <div class="text-muted x-small">
+                                            @d.SoTinChi TC | Điểm chữ: <span class="badge bg-light text-dark border">@d.DiemChu</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center text-muted py-4">Chưa có dữ liệu điểm.</div>
+                        }
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="/BangDiem" class="btn btn-primary btn-sm rounded-pill px-4">Xem tất cả kết quả</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Website Traffic (Donut Chart cho Tín chỉ) -->
+            <div class="card">
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Tiến độ hoàn thành <span>| Tín chỉ</span></h5>
+                    <div id="creditChart" style="min-height: 300px;" class="echart"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Scripts cho biểu đồ -->
+@section Scripts {
+    <!-- Đảm bảo ApexCharts và ECharts đã có trong Layout, nếu chưa thì thêm ở đây -->
+    <script src="~/admin/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="~/admin/vendor/echarts/echarts.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Line Chart GPA
+            var gpaData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BieudoHocTap.Select(x => x.GPA)));
+            var gpaLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BieudoHocTap.Select(x => x.HocKyNam)));
+
+            new ApexCharts(document.querySelector("#gpaChart"), {
+                series: [{ name: "GPA", data: gpaData }],
+                chart: { height: 320, type: 'line', toolbar: { show: false } },
+                dataLabels: { enabled: true },
+                stroke: { curve: 'smooth', width: 3 },
+                colors: ['#4154f1'],
+                xaxis: { categories: gpaLabels },
+                yaxis: { min: 0, max: 4, tickAmount: 4 }
+            }).render();
+
+            // 2. Donut Chart Tín chỉ
+            var tcDat = @Model.TinChi_TichLuy;
+            var tcNo = @Model.TinChi_No;
+            var tcCon = 130 - tcDat - tcNo; // Giả sử tổng 130
+
+            echarts.init(document.querySelector("#creditChart")).setOption({
+                tooltip: { trigger: 'item' },
+                legend: { bottom: '0', left: 'center' },
+                series: [{
+                    name: 'Tín chỉ', type: 'pie', radius: ['40%', '70%'], avoidLabelOverlap: false,
+                    itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 2 },
+                    label: { show: false, position: 'center' },
+                    data: [
+                        { value: tcDat, name: 'Đã hoàn thành', itemStyle: { color: '#198754' } },
+                        { value: tcNo, name: 'Học nợ', itemStyle: { color: '#dc3545' } },
+                        { value: tcCon > 0 ? tcCon : 0, name: 'Còn lại', itemStyle: { color: '#f6f9ff' } }
+                    ]
+                }]
+            });
+        });
+    </script>
+}
+
+<style>
+    .x-small { font-size: 0.75rem; }
+</style>

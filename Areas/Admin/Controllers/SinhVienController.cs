@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +23,6 @@ namespace aznews.Areas.Admin.Controllers
         }
 
         // ========== INDEX ==========
-        // /Admin/SinhVien?q=...&page=1
         public async Task<IActionResult> Index(string? q, int page = 1)
         {
             const int pageSize = 10;
@@ -66,7 +65,6 @@ namespace aznews.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            // mặc định là SV
             var sv = new SinhVien { MaVaiTro = 3, TrangThai = true };
             return View(sv);
         }
@@ -75,13 +73,11 @@ namespace aznews.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SinhVien model, IFormFile? avatar)
         {
-            // Ràng buộc tối thiểu
             if (string.IsNullOrWhiteSpace(model.MaSoSV))
                 ModelState.AddModelError(nameof(model.MaSoSV), "Mã sinh viên không được để trống.");
             if (string.IsNullOrWhiteSpace(model.HoTen))
                 ModelState.AddModelError(nameof(model.HoTen), "Họ tên không được để trống.");
 
-            // Unique MaSoSV
             if (!string.IsNullOrWhiteSpace(model.MaSoSV))
             {
                 bool dup = await _db.SinhViens.AnyAsync(x => x.MaSoSV == model.MaSoSV);
@@ -90,16 +86,13 @@ namespace aznews.Areas.Admin.Controllers
 
             if (!ModelState.IsValid) return View(model);
 
-            // Mặc định vai trò sinh viên
             model.MaVaiTro = 3;
 
-            // Mã hóa mật khẩu nếu có (cho Create)
             if (!string.IsNullOrEmpty(model.MatKhau))
             {
                 model.MatKhau = BCrypt.Net.BCrypt.HashPassword(model.MatKhau);
             }
 
-            // Upload ảnh (nếu có)
             if (avatar != null && avatar.Length > 0)
             {
                 var uploads = Path.Combine(_env.WebRootPath, "uploads");
@@ -140,13 +133,11 @@ namespace aznews.Areas.Admin.Controllers
             var sv = await _db.SinhViens.FindAsync(model.MaSinhVien);
             if (sv == null) return NotFound();
 
-            // Ràng buộc tối thiểu
             if (string.IsNullOrWhiteSpace(model.MaSoSV))
                 ModelState.AddModelError(nameof(model.MaSoSV), "Mã sinh viên không được để trống.");
             if (string.IsNullOrWhiteSpace(model.HoTen))
                 ModelState.AddModelError(nameof(model.HoTen), "Họ tên không được để trống.");
 
-            // Unique MaSoSV (trừ bản ghi hiện tại)
             if (!string.IsNullOrWhiteSpace(model.MaSoSV))
             {
                 bool dup = await _db.SinhViens.AnyAsync(x => x.MaSoSV == model.MaSoSV && x.MaSinhVien != model.MaSinhVien);
@@ -155,7 +146,6 @@ namespace aznews.Areas.Admin.Controllers
 
             if (!ModelState.IsValid) return View(model);
 
-            // Cập nhật các field
             sv.MaSoSV = model.MaSoSV;
             sv.HoTen = model.HoTen;
             sv.NgaySinh = model.NgaySinh;
@@ -164,16 +154,13 @@ namespace aznews.Areas.Admin.Controllers
             sv.SoDienThoai = model.SoDienThoai;
             sv.DiaChi = model.DiaChi;
             sv.TrangThai = model.TrangThai;
-            sv.MaVaiTro = 3; // luôn là SV
+            sv.MaVaiTro = 3;
 
-            // Nếu đổi mật khẩu (nhập mới)
             if (!string.IsNullOrWhiteSpace(model.MatKhau))
             {
-                // Hash mật khẩu mới
                 sv.MatKhau = BCrypt.Net.BCrypt.HashPassword(model.MatKhau);
             }
 
-            // Xoá avatar nếu tick
             if (RemoveAvatar == "true" && !string.IsNullOrEmpty(sv.AnhDaiDien))
             {
                 var old = Path.Combine(_env.WebRootPath, "uploads", sv.AnhDaiDien);
@@ -181,7 +168,6 @@ namespace aznews.Areas.Admin.Controllers
                 sv.AnhDaiDien = null;
             }
 
-            // Upload avatar mới
             if (avatar != null && avatar.Length > 0)
             {
                 var uploads = Path.Combine(_env.WebRootPath, "uploads");
@@ -214,13 +200,11 @@ namespace aznews.Areas.Admin.Controllers
             var sv = await _db.SinhViens.FindAsync(id);
             if (sv == null) return NotFound();
 
-            // trước đây: sv.TrangThai = !(sv.TrangThai ?? false);
             sv.TrangThai = !sv.TrangThai;
 
             _db.SinhViens.Update(sv);
             await _db.SaveChangesAsync();
 
-            // trước đây: (sv.TrangThai ?? false)
             TempData["Success"] = sv.TrangThai ? "Đã bật hoạt động!" : "Đã tắt hoạt động!";
             return RedirectToAction(nameof(Index));
         }
@@ -234,7 +218,6 @@ namespace aznews.Areas.Admin.Controllers
             var sv = await _db.SinhViens.FindAsync(id);
             if (sv == null) return NotFound();
 
-            // Xoá file ảnh nếu có
             if (!string.IsNullOrEmpty(sv.AnhDaiDien))
             {
                 var path = Path.Combine(_env.WebRootPath, "uploads", sv.AnhDaiDien);

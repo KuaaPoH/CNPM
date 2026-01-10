@@ -43,6 +43,10 @@ namespace aznews.Areas.Admin.Models
         // 1 = đang học, 0 = nghỉ
         public bool TrangThai { get; set; } = true;
 
+        public int? MaLopHC { get; set; }
+        [ForeignKey(nameof(MaLopHC))]
+        public virtual LopHanhChinh? LopHanhChinh { get; set; }
+
         [ForeignKey(nameof(MaVaiTro))]
         public VaiTro? VaiTro { get; set; }
     }

@@ -15,35 +15,68 @@ namespace aznews.Areas.Admin.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? hk, string? nam)
         {
-            var vm = new AdminDashboardVM();
+            // 1. Get Distinct Years/Semesters for Filter
+            var namHocs = await _db.LopHocPhans.Select(x => x.NamHoc).Distinct().OrderByDescending(x => x).ToListAsync();
+            var hocKys = await _db.LopHocPhans.Select(x => x.HocKy).Distinct().OrderBy(x => x).ToListAsync();
 
-            // 1. KPI Counts
+            // Default Filter Logic: Chọn năm mới nhất -> Chọn học kỳ mới nhất của năm đó
+            if (string.IsNullOrEmpty(nam) && namHocs.Any()) nam = namHocs.First();
+            if (string.IsNullOrEmpty(hk) && !string.IsNullOrEmpty(nam))
+            {
+                // Thử lấy học kỳ mới nhất CÓ DỮ LIỆU trong năm đó
+                var lastHK = await _db.LopHocPhans.Where(x => x.NamHoc == nam)
+                                    .Select(x => x.HocKy)
+                                    .Distinct()
+                                    .OrderByDescending(x => x)
+                                    .FirstOrDefaultAsync();
+                hk = lastHK ?? (hocKys.FirstOrDefault() ?? "HK1");
+            }
+
+            // Init VM
+            var vm = new AdminDashboardVM
+            {
+                SelectedNamHoc = nam ?? "",
+                SelectedHocKy = hk ?? "",
+                NamHocList = namHocs,
+                HocKyList = hocKys
+            };
+
+            // 2. Base Query theo Filter
+            var queryLop = _db.LopHocPhans.AsNoTracking()
+                .Where(x => x.NamHoc == vm.SelectedNamHoc && x.HocKy == vm.SelectedHocKy);
+
+            // === KPI STATS (Theo kỳ đã chọn) ===
+            // Tổng SV: Đếm distinct MaSV trong bảng DiemLop của các lớp trong kỳ này (chính xác hơn count bảng SinhVien)
+            // Tuy nhiên để nhanh, ta có thể count bảng SinhVien (tổng toàn trường) hoặc count theo đăng ký.
+            // Ở đây mình count tổng toàn trường hoạt động (thường KPI Dashboard cần số tổng quan)
             vm.TotalSinhVien = await _db.SinhViens.CountAsync(x => x.TrangThai);
-            vm.TotalGiangVien = await _db.GiangViens.CountAsync(x => x.TrangThai);
-            vm.TotalLopHocPhan = await _db.LopHocPhans.CountAsync();
             
-            // Số lớp đang chờ duyệt (Submitted)
-            vm.TotalChoDuyet = await _db.LopHocPhans.CountAsync(x => x.DiemStatus == DiemStatus.Submitted);
+            // Giảng viên tham gia dạy trong kỳ
+            vm.TotalGiangVien = await queryLop.Select(x => x.MaGiangVien).Distinct().CountAsync();
 
-            // 2. Chart Data: Thống kê trạng thái nhập điểm
-            // Group by DiemStatus
-            var statusGroup = await _db.LopHocPhans
+            vm.TotalLopHocPhan = await queryLop.CountAsync();
+            
+            // Lớp chờ duyệt (Trong kỳ này)
+            vm.TotalChoDuyet = await queryLop.CountAsync(x => x.DiemStatus == DiemStatus.Submitted);
+
+
+            // === CHART 1: Trạng thái nhập điểm ===
+            var statusStats = await queryLop
                 .GroupBy(x => x.DiemStatus)
                 .Select(g => new { Status = g.Key, Count = g.Count() })
                 .ToListAsync();
 
-            // Map ra list cố định để vẽ biểu đồ cho dễ (Editable, Submitted, Approved)
-            // Thứ tự: [0] Editable, [1] Submitted, [2] Approved
-            int c1 = statusGroup.FirstOrDefault(x => x.Status == DiemStatus.Editable)?.Count ?? 0;
-            int c2 = statusGroup.FirstOrDefault(x => x.Status == DiemStatus.Submitted)?.Count ?? 0;
-            int c3 = statusGroup.FirstOrDefault(x => x.Status == DiemStatus.Approved)?.Count ?? 0;
-
-            vm.StatusCounts = new List<int> { c1, c2, c3 };
             vm.StatusLabels = new List<string> { "Đang nhập/Sửa", "Chờ duyệt", "Đã chốt" };
+            vm.StatusCounts = new List<int>
+            {
+                statusStats.FirstOrDefault(s => s.Status == DiemStatus.Editable)?.Count ?? 0,
+                statusStats.FirstOrDefault(s => s.Status == DiemStatus.Submitted)?.Count ?? 0,
+                statusStats.FirstOrDefault(s => s.Status == DiemStatus.Approved)?.Count ?? 0
+            };
 
-            // 3. Danh sách 5 lớp vừa gửi điểm gần nhất
+            // === TABLE: Lớp vừa gửi duyệt (Global - không cần theo kỳ để Admin xử lý nhanh) ===
             vm.RecentSubmitted = await _db.LopHocPhans
                 .AsNoTracking()
                 .Include(x => x.HocPhan)
@@ -53,26 +86,77 @@ namespace aznews.Areas.Admin.Controllers
                 .Take(5)
                 .ToListAsync();
 
-            // 4. Biểu đồ Phổ điểm (Chỉ tính các lớp ĐÃ DUYỆT - Approved)
-            // Lấy toàn bộ điểm tổng kết (DiemTong) của các lớp đã duyệt
-            // Lưu ý: Query này có thể nặng nếu dữ liệu lớn -> Cần tối ưu sau.
-            // Ở đây demo mình load list diemTong về memory rồi count cho nhanh (với data nhỏ).
-            // Nếu data lớn: Dùng SQL Case When trực tiếp.
+            // === CHART 2 & WARNING: Phân tích điểm (Chỉ tính các lớp ĐÃ CHỐT) ===
+            // Lấy ID các lớp đã chốt trong kỳ
+            var lopApprovedIds = queryLop.Where(x => x.DiemStatus == DiemStatus.Approved).Select(x => x.MaLHP);
             
-            var scores = await _db.DiemLops
+            // Lấy điểm tổng kết
+            var allScores = await _db.DiemLops
                 .AsNoTracking()
-                .Where(d => _db.LopHocPhans.Any(l => l.MaLHP == d.MaLHP && l.DiemStatus == DiemStatus.Approved))
-                .Where(d => d.DiemTong != null)
-                .Select(d => d.DiemTong)
+                .Where(d => lopApprovedIds.Contains(d.MaLHP) && d.DiemTong != null)
+                .Select(d => new { d.MaLHP, Diem = d.DiemTong.Value })
                 .ToListAsync();
 
-            int gioi = scores.Count(s => s >= 8.0m);
-            int kha = scores.Count(s => s >= 6.5m && s < 8.0m);
-            int tb = scores.Count(s => s >= 5.0m && s < 6.5m);
-            int yeu = scores.Count(s => s < 5.0m);
+            // Phổ điểm
+            int gioi = allScores.Count(s => s.Diem >= 8.0m);
+            int kha = allScores.Count(s => s.Diem >= 6.5m && s.Diem < 8.0m);
+            int tb = allScores.Count(s => s.Diem >= 5.0m && s.Diem < 6.5m);
+            int yeu = allScores.Count(s => s.Diem < 5.0m);
 
             vm.GradeDistributionCounts = new List<int> { gioi, kha, tb, yeu };
-            vm.GradeDistributionLabels = new List<string> { "Giỏi (>=8.0)", "Khá (6.5-7.9)", "Trung bình (5.0-6.4)", "Rớt (<5.0)" };
+            vm.GradeDistributionLabels = new List<string> { "Giỏi (≥8.0)", "Khá (6.5-7.9)", "Trung bình (5.0-6.4)", "Rớt (<5.0)" };
+
+            // === CẢNH BÁO: Top lớp có tỷ lệ rớt cao (> 30% chẳng hạn) ===
+            // Group score theo MaLHP
+            var lopStats = allScores
+                .GroupBy(s => s.MaLHP)
+                .Select(g => new
+                {
+                    MaLHP = g.Key,
+                    Total = g.Count(),
+                    Rot = g.Count(s => s.Diem < 5.0m)
+                })
+                .Where(x => x.Total > 0)
+                .Select(x => new
+                {
+                    x.MaLHP,
+                    x.Total,
+                    x.Rot,
+                    Rate = (double)x.Rot * 100.0 / x.Total
+                })
+                .Where(x => x.Rate >= 30) // Chỉ lấy lớp rớt >= 30%
+                .OrderByDescending(x => x.Rate)
+                .Take(5) // Top 5
+                .ToList();
+
+            // Join ngược lại để lấy tên lớp/GV (client-side join vì lopStats là list memory)
+            if (lopStats.Any())
+            {
+                var badLopIds = lopStats.Select(x => x.MaLHP).ToList();
+                var badLopsInfo = await _db.LopHocPhans
+                    .Include(x => x.HocPhan)
+                    .Include(x => x.GiangVien)
+                    .Where(x => badLopIds.Contains(x.MaLHP))
+                    .ToListAsync();
+
+                foreach (var stat in lopStats)
+                {
+                    var info = badLopsInfo.FirstOrDefault(x => x.MaLHP == stat.MaLHP);
+                    if (info != null)
+                    {
+                        vm.TopLopRotCao.Add(new LopCanhBaoVM
+                        {
+                            MaLHP = stat.MaLHP,
+                            TenHP = info.HocPhan?.TenHP ?? "",
+                            TenNhom = info.TenNhom ?? "",
+                            TenGV = info.GiangVien?.HoTen ?? "N/A",
+                            SoSV = stat.Total,
+                            SoRot = stat.Rot,
+                            TyLeRot = Math.Round(stat.Rate, 1)
+                        });
+                    }
+                }
+            }
 
             return View(vm);
         }

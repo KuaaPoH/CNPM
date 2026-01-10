@@ -17,6 +17,9 @@ namespace aznews.Areas.Admin.Models
 
         public int MaVaiTro { get; set; }
 
+        [StringLength(255)]
+        public string? Image { get; set; }
+
         public bool TrangThai { get; set; } = true;
 
         [ForeignKey(nameof(MaVaiTro))]

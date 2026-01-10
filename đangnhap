@@ -1,0 +1,161 @@
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Đăng Nhập - Đại Học Vinh</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Style -->
+    <style>
+        body {
+            font-family: "Open Sans", sans-serif;
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: normal;
+            background: #eef1f7; /* Nền xám xanh nhạt dịu mắt */
+            color: #444444; /* Changed from gray to match admin */
+        }
+
+        .img {
+            width: 50%; /* Quan trọng: Chiếm 50% chiều rộng */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-image: url('/Imgs/image.webp');
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            position: relative;
+        }
+        
+        /* Lớp phủ màu xanh mờ lên ảnh để chữ Logo nổi hơn nếu cần */
+        .img::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(1, 41, 112, 0); /* Đã chỉnh thành 0 để ảnh sáng (không phủ màu) */
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+
+        .login-wrap {
+            position: relative;
+            background: #fff;
+            border-radius: 20px; /* Bo tròn mạnh hơn */
+            /* Đổ bóng sâu hơn, mềm hơn */
+            -webkit-box-shadow: 0px 15px 40px -10px rgba(0, 0, 0, 0.2);
+            -moz-box-shadow: 0px 15px 40px -10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 15px 40px -10px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Để ảnh bo góc không bị lòi ra */
+        }
+
+        .login-wrap .p-4 {
+            padding: 3rem !important; /* Tăng padding cho thoáng */
+        }
+        
+        /* ... các class khác giữ nguyên ... */
+        .form-control {
+            height: 52px; /* Cao hơn chút */
+            /* ... */
+            background: #f8f9fa; /* Nền input hơi xám nhẹ để phân biệt */
+            border: 1px solid #e9ecef;
+            color: #495057;
+        }
+        /* ... */
+        
+        /* Responsive: Mobile thì ảnh nằm trên, bo góc trên */
+        @@media (max-width: 767.98px) {
+            .img {
+                height: 250px;
+                border-top-left-radius: 20px;
+                border-top-right-radius: 20px;
+                border-bottom-left-radius: 0;
+            }
+            .login-wrap {
+                border-radius: 20px;
+            }
+        }
+    </style>
+
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+    <section class="ftco-section" style="padding-top: 80px; padding-bottom: 80px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section fw-bold" style="color: #012970; font-weight: 700;">QUẢN LÝ SINH VIÊN</h2>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-md-12 col-lg-10">
+                    <div class="wrap d-md-flex">
+                        
+                        <!-- Cột Hình Ảnh (Bên Trái) -->
+                        <div class="img d-flex align-items-center justify-content-center">
+                           
+                        </div>
+
+                        <!-- Cột Form (Bên Phải) -->
+                        <div class="login-wrap p-4 p-md-5">
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4" style="color: #012970; font-family: 'Nunito', sans-serif;">Đăng Nhập</h3>
+                                </div>
+                            </div>
+                            
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    @ViewBag.Error
+                                </div>
+                            }
+
+                            <form action="/Account/Login" method="POST" class="signin-form">
+                                <div class="form-group mb-3">
+                                    <label class="label" for="name">Tài khoản</label>
+                                    <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="label" for="password">Mật khẩu</label>
+                                    <input type="password" name="password" class="form-control" placeholder="Mật khẩu" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Đăng nhập</button>
+                                </div>
+                                <div class="form-group">
+                                <div class="w-auto text-center">
+                                        <label class="checkbox-wrap checkbox-primary mb-0">
+                                            Ghi nhớ tôi
+                                            <input type="checkbox" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="w-auto text-center">
+                                        <a href="#" style="color: #012970;">Quên mật khẩu?</a>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
